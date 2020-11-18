@@ -7,7 +7,6 @@
     "loader"
   ],
   "author": "AlfieriChou <alfierichou@gmail.com>",
-  "homepage": "https://github.com/AlfieriChou/galen#readme",
   "license": "ISC",
   "main": "index.js",
   "directories": {
@@ -27,7 +26,7 @@
   "bugs": {
     "url": "https://github.com/AlfieriChou/galen/issues"
   },
-  "gitHead": "91437a6163d6122f94d9ac33417e70a2536de9c1",
+  "gitHead": "76fbca01fd2de8741834cf0b62d54ae8a6a416ed",
   "dependencies": {
     "is-class": "^0.0.9",
     "read-dir-filenames": "^1.0.5"

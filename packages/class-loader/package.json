@@ -1,9 +1,10 @@
 {
   "name": "@galenjs/class-loader",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "class loader",
   "keywords": [
-    "class", "loader"
+    "class",
+    "loader"
   ],
   "author": "AlfieriChou <alfierichou@gmail.com>",
   "homepage": "https://github.com/AlfieriChou/galen#readme",

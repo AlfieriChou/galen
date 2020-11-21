@@ -1,8 +1,10 @@
+const queryFilter = require('@galenjs/sequelize-query-filter')
+
 module.exports = class BaseController {
   static async index (ctx, modelName) {
     const { request: { query } } = ctx
     // TODO: use sequelize query filter
-    const filter = query
+    const filter = queryFilter(query, ctx.models)
     return {
       count: await ctx.models[modelName].count(filter),
       offset: parseInt(query.offset, 10) || 0,

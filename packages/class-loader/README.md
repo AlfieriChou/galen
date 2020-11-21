@@ -4,8 +4,8 @@
 
 ## Usage
 
-```
-const classLoader = require('class-loader');
+```javascript
+const classLoader = require('@galenjs/class-loader');
 
 // TODO: DEMONSTRATE API
 ```

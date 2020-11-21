@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/koa-sequelize-model-router",
-  "version": "0.0.1",
+  "version": "0.1.4",
   "description": "koa sequelize-models router.",
   "keywords": [
     "koa",

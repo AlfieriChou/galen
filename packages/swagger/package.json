@@ -1,0 +1,36 @@
+{
+  "name": "@galenjs/swagger",
+  "version": "0.0.1",
+  "description": "swagger document.",
+  "keywords": [
+    "swagger"
+  ],
+  "author": "AlfieriChou <alfierichou@gmail.com>",
+  "homepage": "https://github.com/AlfieriChou/galen#readme",
+  "license": "MIT",
+  "main": "index.js",
+  "directories": {
+    "test": "__tests__"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlfieriChou/galen.git"
+  },
+  "scripts": {
+    "test": "jest --detectOpenHandles --forceExit",
+    "dev": "jest -o --watch --runInBand --forceExit"
+  },
+  "bugs": {
+    "url": "https://github.com/AlfieriChou/galen/issues"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3"
+  },
+  "dependencies": {
+    "lodash": "^4.17.20"
+  }
+}

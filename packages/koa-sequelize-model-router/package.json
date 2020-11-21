@@ -1,0 +1,41 @@
+{
+  "name": "@galenjs/koa-sequelize-model-router",
+  "version": "0.0.1",
+  "description": "koa sequelize-models router.",
+  "keywords": [
+    "koa",
+    "sequelize",
+    "model",
+    "router"
+  ],
+  "author": "AlfieriChou <alfierichou@gmail.com>",
+  "homepage": "https://github.com/AlfieriChou/galen#readme",
+  "license": "MIT",
+  "main": "index.js",
+  "directories": {
+    "test": "__tests__"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlfieriChou/galen.git"
+  },
+  "scripts": {
+    "test": "jest --detectOpenHandles --forceExit",
+    "dev": "jest -o --watch --runInBand --forceExit"
+  },
+  "bugs": {
+    "url": "https://github.com/AlfieriChou/galen/issues"
+  },
+  "dependencies": {
+    "jsonschema": "^1.4.0",
+    "koa-router": "^10.0.0",
+    "lodash": "^4.17.20"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3"
+  }
+}

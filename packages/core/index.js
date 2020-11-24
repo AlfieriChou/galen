@@ -15,7 +15,7 @@ module.exports = async (modelDirPath) => {
 
   // eslint-disable-next-line array-callback-return
   await Promise.all(filepaths.map((filepath) => {
-    if (!filepath.endsWith('.json') && filepath.endsWith('.yaml')) {
+    if (!filepath.endsWith('.json') && !filepath.endsWith('.yaml')) {
       throw new Error('model supports json and yaml file')
     }
     let schema

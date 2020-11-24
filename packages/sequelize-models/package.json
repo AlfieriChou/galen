@@ -29,6 +29,7 @@
     "url": "https://github.com/AlfieriChou/galen/issues"
   },
   "dependencies": {
+    "js-yaml": "^3.14.0",
     "jsonschema": "^1.4.0",
     "lodash": "^4.17.20",
     "read-dir-filenames": "^1.0.5",

@@ -1,14 +1,8 @@
 const Sequelize = require('sequelize')
-const readDirFilenames = require('read-dir-filenames')
-const _ = require('lodash')
-const path = require('path')
-const fs = require('fs')
-const yaml = require('js-yaml')
 
 const validateMySqlConfig = require('./lib/validateMySqlConfig')
 const createModel = require('./lib/createModel')
 const buildRelations = require('./lib/relations')
-const buildCrudRemoteMethods = require('./lib/crudRemoteMethods')
 const migrateModel = require('./lib/migrate')
 
 const createSequelize = (options) => {
@@ -38,60 +32,20 @@ const createSequelize = (options) => {
   return new Sequelize(database, user, password, sequelizeOpts)
 }
 
-module.exports = async (modelDirPath, { mysql }) => {
+module.exports = async (schemas, { mysql }) => {
   await validateMySqlConfig(mysql)
   const sequelize = createSequelize(mysql)
 
-  let remoteMethods = {}
-  const modelSchemas = {}
-  const schemas = {}
-
-  const filepaths = readDirFilenames(modelDirPath)
-  const db = await filepaths.reduce((ret, filepath) => {
-    if (!filepath.endsWith('.json') && filepath.endsWith('.yaml')) {
-      throw new Error('model supports json and yaml file')
-    }
-    let schema
-    if (filepath.endsWith('.json')) {
-      // eslint-disable-next-line global-require, import/no-dynamic-require
-      schema = require(filepath)
-    }
-    if (filepath.endsWith('.yaml')) {
-      try {
-        schema = yaml.safeLoad(fs.readFileSync(filepath, 'utf8'))
-      } catch (err) {
-        throw new Error(`${filepath.split('/').slice(-1)[0]} load yaml file error`)
-      }
-    }
-    const filename = path.basename(filepath).replace(/\.\w+$/, '')
-    if (!schema.modelName) {
-      schema.modelName = _.upperFirst(filename)
-    }
-    if (!schema.tableName) {
-      schema.tableName = _.snakeCase(filename)
-    }
-    const { modelName, model } = schema
-    const remoteMethod = buildCrudRemoteMethods(filename, schema)
-    remoteMethods = {
-      ...remoteMethods,
-      ...Object.entries(remoteMethod).reduce((acc, [key, value]) => ({
-        ...acc,
-        [`${filename}-${key}`]: value
-      }), {})
-    }
-    modelSchemas[modelName] = schema
-    if (!schema.model) {
+  const db = await Object.entries(schemas).reduce((ret, [modelName, schema]) => {
+    if (schema.dialect === 'virtual') {
       return ret
-    }
-    schemas[modelName] = {
-      type: 'object', properties: model
     }
     return {
       ...ret,
       [modelName]: createModel(schema, sequelize)
     }
   }, {})
-  Object.entries(modelSchemas).forEach(([, modelInst]) => {
+  Object.entries(schemas).forEach(([, modelInst]) => {
     if (modelInst.dialect !== 'virtual') {
       migrateModel(modelInst, sequelize.getQueryInterface(), schemas)
     }
@@ -101,7 +55,5 @@ module.exports = async (modelDirPath, { mysql }) => {
   })
   db.sequelize = sequelize
   db.Sequelize = Sequelize
-  return {
-    db, remoteMethods, modelSchemas, schemas
-  }
+  return db
 }

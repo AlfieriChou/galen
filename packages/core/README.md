@@ -4,8 +4,15 @@
 
 ## Usage
 
-```
-const core = require('core');
+```javascript
+const loadModels = require('@galenjs/core')
+const path = require('path')
 
-// TODO: DEMONSTRATE API
+const bootstrap = async () => {
+  const {
+    remoteMethods, modelSchemas, schemas
+  } = await loadModels(path.join(__dirname, './model'))
+}
+
+bootstrap()
 ```

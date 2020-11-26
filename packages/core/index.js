@@ -15,11 +15,11 @@ module.exports = async (modelDirPath) => {
 
   // eslint-disable-next-line array-callback-return
   await Promise.all(filepaths.map((filepath) => {
-    if (!filepath.endsWith('.json') && !filepath.endsWith('.yaml')) {
+    if (!/^.*\.(?:js|json|yaml)$/i.test(filepath)) {
       throw new Error('model supports json and yaml file')
     }
     let schema
-    if (filepath.endsWith('.json')) {
+    if (!/^.*\.(?:js|json)$/i.test(filepath)) {
       // eslint-disable-next-line global-require, import/no-dynamic-require
       schema = require(filepath)
     }
@@ -31,6 +31,7 @@ module.exports = async (modelDirPath) => {
       }
     }
     const filename = path.basename(filepath).replace(/\.\w+$/, '')
+    // TODO: validate schema
     if (!schema.modelName) {
       schema.modelName = _.upperFirst(filename)
     }

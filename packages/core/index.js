@@ -5,6 +5,7 @@ const fs = require('fs')
 const yaml = require('js-yaml')
 
 const buildCrudRemoteMethods = require('./lib/remoteMethods')
+const validateSchema = require('./lib/validateSchema')
 
 module.exports = async (modelDirPath) => {
   let remoteMethods = {}
@@ -14,7 +15,7 @@ module.exports = async (modelDirPath) => {
   const filepaths = readDirFilenames(modelDirPath)
 
   // eslint-disable-next-line array-callback-return
-  await Promise.all(filepaths.map((filepath) => {
+  await Promise.all(filepaths.map(async (filepath) => {
     if (!/^.*\.(?:js|json|yaml)$/i.test(filepath)) {
       throw new Error('model supports json and yaml file')
     }
@@ -30,6 +31,17 @@ module.exports = async (modelDirPath) => {
         throw new Error(`${filepath.split('/').slice(-1)[0]} load yaml file error`)
       }
     }
+    await validateSchema(schema, {
+      type: 'object',
+      properties: {
+        model: { type: 'object' },
+        dialect: { type: 'string' },
+        tableName: { type: 'string' },
+        modelName: { type: 'string' },
+        relations: { type: 'object' },
+        output: { type: 'object' }
+      }
+    })
     const filename = path.basename(filepath).replace(/\.\w+$/, '')
     // TODO: validate schema
     if (!schema.modelName) {

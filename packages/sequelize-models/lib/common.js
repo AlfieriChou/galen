@@ -10,11 +10,8 @@ const sequelizeTypes = {
 }
 
 const jsonToModel = (properties, keyFn) => Object.entries(properties)
-  .reduce((ret, [k, value]) => {
-    let key = k
-    if (keyFn) {
-      key = keyFn(key)
-    }
+  .reduce((ret, [field, value]) => {
+    const key = keyFn ? keyFn(field) : field
     const comment = value.description || ''
     return {
       ...ret,

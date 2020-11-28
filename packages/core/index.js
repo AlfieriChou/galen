@@ -34,6 +34,7 @@ module.exports = async (modelDirPath) => {
     await validateSchema(schema, {
       type: 'object',
       properties: {
+        plugins: { type: 'array', items: { type: 'string' } },
         model: { type: 'object' },
         dialect: { type: 'string' },
         tableName: { type: 'string' },

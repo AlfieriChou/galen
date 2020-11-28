@@ -15,10 +15,7 @@ const jsonToModel = (properties, keyFn) => Object.entries(properties)
     if (keyFn) {
       key = keyFn(key)
     }
-    let comment
-    if (value.description) {
-      comment = value.description
-    }
+    const comment = value.description || ''
     return {
       ...ret,
       [key]: {

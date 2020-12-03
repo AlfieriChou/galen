@@ -14,7 +14,7 @@ module.exports = ({ modelName, relations }, models) => {
     if (!['belongsTo', 'hasOne', 'hasMany', 'belongsToMany'].includes(value.type)) {
       throw new Error('invalid associate!')
     }
-    if (value.type === 'belongsToMany') {
+    if (['belongsToMany', 'hasMany'].includes(value.type)) {
       assert(value.through, 'through is required!')
       options.through = value.through
     }

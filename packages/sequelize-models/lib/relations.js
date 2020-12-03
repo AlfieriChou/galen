@@ -9,7 +9,7 @@ module.exports = ({ modelName, relations }, models) => {
       options.foreignKey = value.foreignKey
     }
     if (value.primaryKey) {
-      options.primaryKey = value.primaryKey
+      options.otherKey = value.primaryKey
     }
     if (!['belongsTo', 'hasOne', 'hasMany', 'belongsToMany'].includes(value.type)) {
       throw new Error('invalid associate!')

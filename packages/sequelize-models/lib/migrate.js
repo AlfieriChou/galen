@@ -36,17 +36,17 @@ module.exports = async ({
   }
   // change table columns properties
   const tableInfo = await getTableInfo(tableName, sequelize)
-  Object.entries(migrateModel).reduce(async (promise, [key, value]) => {
+  // eslint-disable-next-line consistent-return
+  await Object.entries(migrateModel).reduce(async (promise, [key, value]) => {
     await promise
     // no column create column
     const column = tableInfo[_.snakeCase(key)]
     if (!column) {
-      await sequelize.addColumn(tableName, _.snakeCase(key), {
+      return sequelize.addColumn(tableName, _.snakeCase(key), {
         ...value,
         type: sequelizeTypes[value.type]
       })
-    } else {
-      // TODO modify field properties
     }
+    // TODO modify field properties
   }, Promise.resolve())
 }

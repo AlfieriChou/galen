@@ -62,14 +62,16 @@ module.exports = async (schemas, { mysql }) => {
       [modelName]: createModel(schema, sequelize)
     }
   }, {})
-  Object.entries(schemas).forEach(([, modelInst]) => {
+  // 必须要阻塞启动
+  await Object.entries(schemas).reduce(async (promise, [, modelInst]) => {
+    await promise
     if (modelInst.dialect !== 'virtual') {
-      migrateModel(modelInst, sequelize.getQueryInterface(), schemas)
+      await migrateModel(modelInst, sequelize.getQueryInterface(), schemas)
     }
     if (modelInst.dialect !== 'virtual' && modelInst.relations) {
-      buildRelations(modelInst, db)
+      await buildRelations(modelInst, db)
     }
-  })
+  }, Promise.resolve())
   db.sequelize = sequelize
   db.Sequelize = Sequelize
   return db

@@ -12,14 +12,19 @@ const sequelizeTypes = {
 const jsonToModel = (properties, keyFn) => Object.entries(properties)
   .reduce((ret, [field, value]) => {
     const key = keyFn ? keyFn(field) : field
-    const comment = value.description || ''
+    const columnInfo = {
+      ...value,
+      type: sequelizeTypes[value.type]
+    }
+    if (value.default) {
+      columnInfo.defaultValue = value.default
+    }
+    if (value.description) {
+      columnInfo.comment = value.description
+    }
     return {
       ...ret,
-      [key]: {
-        ...value,
-        type: sequelizeTypes[value.type],
-        comment
-      }
+      [key]: columnInfo
     }
   }, {})
 

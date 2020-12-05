@@ -42,10 +42,17 @@ module.exports = async ({
     // no column create column
     const column = tableInfo[_.snakeCase(key)]
     if (!column) {
-      return sequelize.addColumn(tableName, _.snakeCase(key), {
+      const columnInfo = {
         ...value,
         type: sequelizeTypes[value.type]
-      })
+      }
+      if (value.default) {
+        columnInfo.defaultValue = value.default
+      }
+      if (value.description) {
+        columnInfo.comment = value.description
+      }
+      return sequelize.addColumn(tableName, _.snakeCase(key), columnInfo)
     }
     // TODO modify field properties
   }, Promise.resolve())

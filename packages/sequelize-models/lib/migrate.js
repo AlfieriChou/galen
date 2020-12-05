@@ -20,15 +20,7 @@ module.exports = async ({
         return {
           ...acc,
           [`${key}Id`]: {
-            type: schema.properties.id.type,
-            // TODO: references
-            // references: {
-            //   model: {
-            //     tableName: _.snakeCase(relation.model),
-            //     schema: 'schema'
-            //   },
-            //   key: 'id'
-            // },
+            type: schema.model.id.type,
             description: `关联${relation.model}`
           }
         }

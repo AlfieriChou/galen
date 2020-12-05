@@ -7,8 +7,8 @@ module.exports = async ({ modelName, relations }, models) => {
     await validateSchema(value, {
       type: 'object',
       properties: {
-        type: { type: 'string' },
-        model: { type: 'string', enum: ['belongsTo', 'hasOne', 'hasMany', 'belongsToMany'] },
+        type: { type: 'string', enum: ['belongsTo', 'hasOne', 'hasMany', 'belongsToMany'] },
+        model: { type: 'string' },
         through: { type: 'string' },
         primaryKey: { type: 'string' },
         foreignKey: { type: 'string' }

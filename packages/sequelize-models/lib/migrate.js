@@ -9,25 +9,30 @@ module.exports = async ({
   model, tableName, relations
   // eslint-disable-next-line consistent-return
 }, sequelize, schemas) => {
-  let migrateModel = model
-  if (relations) {
-    migrateModel = {
-      ...migrateModel,
-      ...Object.entries(relations)
-        .reduce((acc, [key, relation]) => {
-          if (relation.type !== 'belongsTo') {
-            return acc
+  const migrateModel = {
+    ...model,
+    ...Object.entries(relations || {})
+      .reduce((acc, [key, relation]) => {
+        if (relation.type !== 'belongsTo') {
+          return acc
+        }
+        const schema = schemas[relation.model]
+        return {
+          ...acc,
+          [`${key}Id`]: {
+            type: schema.properties.id.type,
+            // TODO: references
+            // references: {
+            //   model: {
+            //     tableName: _.snakeCase(relation.model),
+            //     schema: 'schema'
+            //   },
+            //   key: 'id'
+            // },
+            description: `关联${relation.model}`
           }
-          const schema = schemas[relation.model]
-          return {
-            ...acc,
-            [`${key}Id`]: {
-              type: schema.properties.id.type,
-              description: `关联${relation.model}`
-            }
-          }
-        }, {})
-    }
+        }
+      }, {})
   }
 
   const allTableNames = await getTableNames(sequelize)

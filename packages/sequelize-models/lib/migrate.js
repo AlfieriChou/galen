@@ -10,6 +10,11 @@ module.exports = async ({
   // eslint-disable-next-line consistent-return
 }, sequelize, schemas) => {
   const migrateModel = {
+    id: {
+      type: 'integer',
+      autoIncrement: true,
+      primaryKey: true
+    },
     ...model,
     ...Object.entries(relations || {})
       .reduce((acc, [key, relation]) => {

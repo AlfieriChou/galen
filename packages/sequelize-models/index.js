@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 
-const validateMySqlConfig = require('./lib/validateMySqlConfig')
+const validateSchema = require('./lib/validateSchema')
 const createModel = require('./lib/createModel')
 const buildRelations = require('./lib/relations')
 const migrateModel = require('./lib/migrate')
@@ -33,7 +33,24 @@ const createSequelize = (options) => {
 }
 
 module.exports = async (schemas, { mysql }) => {
-  await validateMySqlConfig(mysql)
+  await validateSchema(mysql, {
+    type: 'object',
+    properties: {
+      host: { type: 'string' },
+      database: { type: 'string' },
+      user: { type: 'string' },
+      password: { type: 'string' },
+      debug: { type: 'boolean' },
+      pool: {
+        type: 'object',
+        properties: {
+          min: { type: 'integer' },
+          max: { type: 'integer' }
+        }
+      }
+    },
+    required: ['host', 'database', 'user', 'password']
+  })
   const sequelize = createSequelize(mysql)
 
   const db = await Object.entries(schemas).reduce((ret, [modelName, schema]) => {
@@ -45,14 +62,16 @@ module.exports = async (schemas, { mysql }) => {
       [modelName]: createModel(schema, sequelize)
     }
   }, {})
-  Object.entries(schemas).forEach(([, modelInst]) => {
+  // 必须要阻塞启动
+  await Object.entries(schemas).reduce(async (promise, [, modelInst]) => {
+    await promise
     if (modelInst.dialect !== 'virtual') {
-      migrateModel(modelInst, sequelize.getQueryInterface(), schemas)
+      await migrateModel(modelInst, sequelize.getQueryInterface(), schemas)
     }
     if (modelInst.dialect !== 'virtual' && modelInst.relations) {
-      buildRelations(modelInst, db)
+      await buildRelations(modelInst, db)
     }
-  })
+  }, Promise.resolve())
   db.sequelize = sequelize
   db.Sequelize = Sequelize
   return db

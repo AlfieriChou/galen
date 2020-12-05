@@ -9,25 +9,30 @@ module.exports = async ({
   model, tableName, relations
   // eslint-disable-next-line consistent-return
 }, sequelize, schemas) => {
-  let migrateModel = model
-  if (relations) {
-    migrateModel = {
-      ...migrateModel,
-      ...Object.entries(relations)
-        .reduce((acc, [key, relation]) => {
-          if (relation.type !== 'belongsTo') {
-            return acc
+  const migrateModel = {
+    ...model,
+    ...Object.entries(relations || {})
+      .reduce((acc, [key, relation]) => {
+        if (relation.type !== 'belongsTo') {
+          return acc
+        }
+        const schema = schemas[relation.model]
+        return {
+          ...acc,
+          [`${key}Id`]: {
+            type: schema.properties.id.type,
+            // TODO: references
+            // references: {
+            //   model: {
+            //     tableName: _.snakeCase(relation.model),
+            //     schema: 'schema'
+            //   },
+            //   key: 'id'
+            // },
+            description: `关联${relation.model}`
           }
-          const schema = schemas[relation.model]
-          return {
-            ...acc,
-            [`${key}Id`]: {
-              type: schema.properties.id.type,
-              description: `关联${relation.model}`
-            }
-          }
-        }, {})
-    }
+        }
+      }, {})
   }
 
   const allTableNames = await getTableNames(sequelize)
@@ -36,17 +41,24 @@ module.exports = async ({
   }
   // change table columns properties
   const tableInfo = await getTableInfo(tableName, sequelize)
-  Object.entries(migrateModel).reduce(async (promise, [key, value]) => {
+  // eslint-disable-next-line consistent-return
+  await Object.entries(migrateModel).reduce(async (promise, [key, value]) => {
     await promise
     // no column create column
     const column = tableInfo[_.snakeCase(key)]
     if (!column) {
-      await sequelize.addColumn(tableName, _.snakeCase(key), {
+      const columnInfo = {
         ...value,
         type: sequelizeTypes[value.type]
-      })
-    } else {
-      // TODO modify field properties
+      }
+      if (value.default) {
+        columnInfo.defaultValue = value.default
+      }
+      if (value.description) {
+        columnInfo.comment = value.description
+      }
+      return sequelize.addColumn(tableName, _.snakeCase(key), columnInfo)
     }
+    // TODO modify field properties
   }, Promise.resolve())
 }

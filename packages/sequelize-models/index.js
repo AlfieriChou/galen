@@ -4,6 +4,7 @@ const validateSchema = require('./lib/validateSchema')
 const createModel = require('./lib/createModel')
 const buildRelations = require('./lib/relations')
 const migrateModel = require('./lib/migrate')
+const createIndex = require('./lib/createIndex')
 
 const createSequelize = (options) => {
   const {
@@ -62,14 +63,20 @@ module.exports = async (schemas, { mysql }) => {
       [modelName]: createModel(schema, sequelize)
     }
   }, {})
+
+  const queryInterface = sequelize.getQueryInterface()
+
   // 必须要阻塞启动
   await Object.entries(schemas).reduce(async (promise, [, modelInst]) => {
     await promise
     if (modelInst.dialect !== 'virtual') {
-      await migrateModel(modelInst, sequelize.getQueryInterface(), schemas)
+      await migrateModel(modelInst, queryInterface, schemas)
     }
     if (modelInst.dialect !== 'virtual' && modelInst.relations) {
       await buildRelations(modelInst, db)
+    }
+    if (modelInst.dialect !== 'virtual' && modelInst.indexes) {
+      await createIndex(modelInst, sequelize, queryInterface)
     }
   }, Promise.resolve())
   db.sequelize = sequelize

@@ -37,6 +37,10 @@ module.exports = async (modelDirPath) => {
     if (!schema.tableName) {
       schema.tableName = _.snakeCase(filename)
     }
+    // support virtual mysql
+    if (!schema.dialect) {
+      schema.dialect = 'mysql'
+    }
     const { modelName, model } = schema
     const remoteMethod = buildCrudRemoteMethods(filename, schema)
     remoteMethods = {

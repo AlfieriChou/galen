@@ -55,7 +55,7 @@ module.exports = async (schemas, { mysql }) => {
   const sequelize = createSequelize(mysql)
 
   const db = await Object.entries(schemas).reduce((ret, [modelName, schema]) => {
-    if (schema.dialect === 'virtual') {
+    if (schema.dialect !== 'mysql') {
       return ret
     }
     return {
@@ -69,13 +69,14 @@ module.exports = async (schemas, { mysql }) => {
   // 必须要阻塞启动
   await Object.entries(schemas).reduce(async (promise, [, modelInst]) => {
     await promise
-    if (modelInst.dialect !== 'virtual') {
-      await migrateModel(modelInst, queryInterface, schemas)
+    if (modelInst.dialect !== 'mysql') {
+      return
     }
-    if (modelInst.dialect !== 'virtual' && modelInst.relations) {
+    await migrateModel(modelInst, queryInterface, schemas)
+    if (modelInst.relations) {
       await buildRelations(modelInst, db)
     }
-    if (modelInst.dialect !== 'virtual' && modelInst.indexes) {
+    if (modelInst.indexes) {
       await createIndex(modelInst, sequelize, queryInterface)
     }
   }, Promise.resolve())

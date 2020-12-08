@@ -17,11 +17,12 @@ jobs:
     - name: npm install, build, and test
       run: |
         npm install -g yarn
-        yarn
         ls -a
         cd packages/class-loader
+        yarn
         yarn run test
         cd ../core
+        yarn
         yarn run test
       env:
         CI: true

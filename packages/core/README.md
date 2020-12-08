@@ -83,7 +83,6 @@ model:
     allowNull: false
 ```
 
-
 ## relations
 
 关联关系

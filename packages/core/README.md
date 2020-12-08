@@ -17,7 +17,42 @@ const bootstrap = async () => {
 bootstrap()
 ```
 
-## example
+## tableName
+
+默认创建的表名
+例如
+
+```yaml
+tableName: 't_user'
+```
+
+## modelName
+
+默认模型名
+例如
+
+```yaml
+modelName: 'User'
+```
+
+## dialect
+
+默认使用的是mysql
+
+- mysql-默认创建sequelize模型
+- virtual-虚拟模型类型（不创建任何模型）
+
+例如
+
+```yaml
+dialect: 'mysql'
+```
+
+## model
+
+模型属性
+
+例如
 
 ```yaml
 model:
@@ -47,3 +82,48 @@ model:
     type: date
     allowNull: false
 ```
+
+
+## relations
+
+关联关系
+
+- belongsTo
+
+```yaml
+relations:
+  role:
+    type: 'belongsTo'
+    model: 'Role'
+```
+
+- hasOne
+
+- belongsToMany
+
+```yaml
+relations:
+  roles:
+    type: 'belongsToMany'
+    model: 'Role'
+    through: 'UserRole'
+```
+
+## indexes
+
+联合索引（目前，仅支持的类型是unique）
+
+例如
+
+```yaml
+indexes:
+  testIndex:
+    type: 'unique'
+    fields:
+      - phone
+      - nickName
+```
+
+## remoteMethods
+
+接口请求信息

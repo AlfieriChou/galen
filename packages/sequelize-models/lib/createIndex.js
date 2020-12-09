@@ -15,20 +15,30 @@ module.exports = async ({
       type: 'object',
       properties: {
         fields: { type: 'array', items: { type: 'string' } },
-        // TODO: support full_text index
-        type: { type: 'string', enum: ['unique'] }
+        type: { type: 'string', enum: ['index', 'unique'] }
       },
       required: ['fields', 'type']
     }, {
       extendErr: 'indexes'
     })
-    await queryInterface.addIndex(
-      tableName,
-      indexes[key].fields.map(field => _.snakeCase(field)),
-      {
-        name: key,
-        type: _.toUpper(indexes[key].type)
-      }
-    )
+    if (indexes[key].type === 'unique') {
+      await queryInterface.addIndex(
+        tableName,
+        indexes[key].fields.map(field => _.snakeCase(field)),
+        {
+          name: key,
+          type: _.toUpper(indexes[key].type)
+        }
+      )
+    }
+    if (indexes[key].type === 'index') {
+      await queryInterface.addIndex(
+        tableName,
+        indexes[key].fields.map(field => _.snakeCase(field)),
+        {
+          name: key
+        }
+      )
+    }
   }, Promise.resolve())
 }

@@ -20,6 +20,7 @@ module.exports = ({
         fields: [key]
       }]
     }
+    // TODO: full_text
     return acc
   }, [])
   if (indexes.length) {

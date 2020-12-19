@@ -24,5 +24,11 @@ jobs:
         cd ../core
         yarn
         yarn run test
+        cd ../base
+        yarn
+        yarn run test
+        cd ../func
+        yarn
+        yarn run test
       env:
         CI: true

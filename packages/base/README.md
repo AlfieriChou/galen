@@ -11,7 +11,10 @@ const path = require('path')
 const bootstrap = async () => {
   const {
     remoteMethods, modelSchemas, schemas
-  } = await loadModels(path.join(__dirname, './model'))
+  } = await loadModels({
+    workspace: process.cwd(),
+    modelPath: 'model'
+  })
 }
 
 bootstrap()

@@ -6,8 +6,7 @@ const yaml = require('js-yaml')
 
 const buildCrudRemoteMethods = require('./lib/remoteMethods')
 
-module.exports = async (modelDirPath) => {
-  let remoteMethods = {}
+const buildModels = async (modelDirPath) => {
   const modelSchemas = {}
   const schemas = {}
 
@@ -42,20 +41,52 @@ module.exports = async (modelDirPath) => {
       schema.dialect = 'mysql'
     }
     const { modelName, model } = schema
-    const remoteMethod = buildCrudRemoteMethods(filename, schema)
-    remoteMethods = {
-      ...remoteMethods,
-      ...Object.entries(remoteMethod).reduce((acc, [key, value]) => ({
-        ...acc,
-        [`${filename}-${key}`]: value
-      }), {})
-    }
     modelSchemas[modelName] = {
       model: {},
       ...schema
     }
     schemas[modelName] = {
       type: 'object', properties: model || {}
+    }
+  }))
+
+  return {
+    modelSchemas, schemas
+  }
+}
+
+module.exports = async ({
+  plugins = [],
+  workspace,
+  modelPath
+}) => {
+  let remoteMethods = {}
+  let modelSchemas = {}
+  let schemas = {}
+
+  if (plugins.length > 0) {
+    await Promise.all(plugins.map(async (pluginName) => {
+      const pluginModelDirPath = path.join(workspace, `./${plugins}/${pluginName}/${modelPath}`)
+      const pluginData = await buildModels(pluginModelDirPath)
+      modelSchemas = _.merge(modelSchemas, pluginData.modelSchemas)
+      schemas = _.merge(schemas, pluginData.schemas)
+    }))
+  }
+
+  const modelDirPath = path.join(workspace, `./${modelPath}`)
+  const modelData = await buildModels(modelDirPath)
+  modelSchemas = _.merge(modelSchemas, modelData.modelSchemas)
+  schemas = _.merge(schemas, modelData.schemas)
+
+  // eslint-disable-next-line array-callback-return
+  await Promise.all(Object.entries(modelSchemas).map(([modelName, modelSchema]) => {
+    const remoteMethod = buildCrudRemoteMethods(_.lowerFirst(modelName), modelSchema)
+    remoteMethods = {
+      ...remoteMethods,
+      ...Object.entries(remoteMethod).reduce((acc, [key, value]) => ({
+        ...acc,
+        [`${_.lowerFirst(modelName)}-${key}`]: value
+      }), {})
     }
   }))
 

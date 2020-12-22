@@ -66,7 +66,7 @@ module.exports = async ({
 
   if (plugins.length > 0) {
     await Promise.all(plugins.map(async (pluginName) => {
-      const pluginModelDirPath = path.join(workspace, `./${plugins}/${pluginName}/${modelPath}`)
+      const pluginModelDirPath = path.join(workspace, `./plugins/${pluginName}/${modelPath}`)
       const pluginData = await buildModels(pluginModelDirPath)
       modelSchemas = _.merge(modelSchemas, pluginData.modelSchemas)
       schemas = _.merge(schemas, pluginData.schemas)

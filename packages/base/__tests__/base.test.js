@@ -44,4 +44,22 @@ describe('@galenjs core', () => {
     expect(schemas).toHaveProperty('User')
     done()
   })
+
+  it('load js plugins', async done => {
+    const { remoteMethods, modelSchemas, schemas } = await loadModels({
+      plugins: ['base'],
+      workspace: path.resolve(__dirname, '.'),
+      modelPath: 'js'
+    })
+    expect(typeof remoteMethods).toBe('object')
+    expect(remoteMethods).toHaveProperty('user-index', 'user-create', 'user-show', 'user-update', 'user-destroy')
+    expect(typeof modelSchemas).toBe('object')
+    expect(modelSchemas).toHaveProperty('User')
+    expect(typeof schemas).toBe('object')
+    expect(schemas).toHaveProperty('User')
+    // test extend model
+    expect(modelSchemas.User.model).toHaveProperty('lastLoginAt')
+    expect(schemas.User.properties).toHaveProperty('lastLoginAt')
+    done()
+  })
 })

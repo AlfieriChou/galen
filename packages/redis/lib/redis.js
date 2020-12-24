@@ -2,48 +2,62 @@ const Redis = require('ioredis')
 
 module.exports = class RedisService {
   constructor (options) {
-    this.redis = new Redis(options)
+    this.redis = Object.entries({
+      main: {},
+      ...options.clients
+    }).reduce((ret, [serviceName, config]) => {
+      if (typeof config !== 'object') {
+        throw new Error('client config must be an object')
+      }
+      return {
+        ...ret,
+        [serviceName]: new Redis({
+          ...options.default,
+          ...config
+        })
+      }
+    }, {})
   }
 
-  getRedis (name) {
-    return this.redis.get(name)
+  select (name) {
+    return this.redis[name]
   }
 
   async get (name, key) {
-    return this.getRedis(name).get(key)
+    return this.select(name).get(key)
   }
 
   async decr (name, key, expire) {
     if (expire) {
-      return this.getRedis(name).multi().decr(key)
+      return this.select(name).multi().decr(key)
         .expire(key, Math.floor(expire))
         .exec()
         .then(([[, count]]) => count)
     }
-    return this.getRedis(name).decr(key)
+    return this.select(name).decr(key)
   }
 
   async incr (name, key, expire) {
     if (expire) {
-      return this.getRedis(name).multi().incr(key)
+      return this.select(name).multi().incr(key)
         .expire(key, Math.floor(expire))
         .exec()
         .then(([[, count]]) => count)
     }
-    return this.getRedis(name).incr(key)
+    return this.select(name).incr(key)
   }
 
   async getJson (name, key) {
-    return this.getRedis(name).hgetall(key)
+    return this.select(name).hgetall(key)
   }
 
   async setJson (name, key, obj, expire) {
     if (expire) {
-      return this.getRedis(name).multi()
+      return this.select(name).multi()
         .hmset(key, obj)
         .expire(key, Math.floor(expire))
         .exec()
     }
-    return this.getRedis(name).hmset(key, obj)
+    return this.select(name).hmset(key, obj)
   }
 }

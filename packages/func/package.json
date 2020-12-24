@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/func",
-  "version": "0.2.1",
+  "version": "0.2.4",
   "description": "galenjs function.",
   "keywords": [
     "function"
@@ -8,13 +8,9 @@
   "author": "AlfieriChou <alfierichou@gmail.com>",
   "homepage": "https://github.com/AlfieriChou/galen#readme",
   "license": "ISC",
-  "main": "lib/func.js",
   "directories": {
     "test": "__tests__"
   },
-  "files": [
-    "lib"
-  ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
     "access": "public"
@@ -32,5 +28,8 @@
   },
   "devDependencies": {
     "jest": "^26.6.3"
+  },
+  "peerDependencies": {
+    "jsonschema": "^1.4.0"
   }
 }

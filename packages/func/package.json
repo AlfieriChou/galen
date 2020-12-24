@@ -8,13 +8,9 @@
   "author": "AlfieriChou <alfierichou@gmail.com>",
   "homepage": "https://github.com/AlfieriChou/galen#readme",
   "license": "ISC",
-  "main": "lib/func.js",
   "directories": {
     "test": "__tests__"
   },
-  "files": [
-    "lib"
-  ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
     "access": "public"

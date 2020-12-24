@@ -1,0 +1,35 @@
+{
+  "name": "@galenjs/redis",
+  "version": "0.2.2",
+  "description": "galenjs redis.",
+  "keywords": [
+    "redis"
+  ],
+  "author": "AlfieriChou <alfierichou@gmail.com>",
+  "homepage": "https://github.com/AlfieriChou/galen#readme",
+  "license": "ISC",
+  "main": "lib/redis.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "http://registry.npm.taobao.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlfieriChou/galen.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/AlfieriChou/galen/issues"
+  },
+  "dependencies": {
+    "ioredis": "^4.19.4"
+  }
+}

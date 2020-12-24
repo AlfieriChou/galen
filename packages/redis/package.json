@@ -30,7 +30,7 @@
     "url": "https://github.com/AlfieriChou/galen/issues"
   },
   "dependencies": {
-    "@galenjs/func": "^0.2.3",
+    "@galenjs/func": "^0.2.4",
     "ioredis": "^4.19.4",
     "jsonschema": "^1.4.0"
   }

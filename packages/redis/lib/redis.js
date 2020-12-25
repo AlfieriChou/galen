@@ -27,6 +27,15 @@ module.exports = class RedisService {
     return this.select(name).get(key)
   }
 
+  async set (name, key, value, expire) {
+    if (!expire) {
+      return this.select(name).set(key, value)
+    }
+    return this.select(name).multi().set(key, value)
+      .expire(key, Math.floor(expire))
+      .exec()
+  }
+
   async decr (name, key, expire) {
     if (expire) {
       return this.select(name).multi().decr(key)

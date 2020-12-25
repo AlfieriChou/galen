@@ -52,6 +52,7 @@ module.exports = async (schemas, { mysql }) => {
     },
     required: ['host', 'database', 'user', 'password']
   })
+  // TODO: create multiple instances
   const sequelize = createSequelize(mysql)
 
   const db = await Object.entries(schemas).reduce((ret, [modelName, schema]) => {

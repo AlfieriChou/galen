@@ -8,16 +8,13 @@
   "author": "AlfieriChou <alfierichou@gmail.com>",
   "homepage": "https://github.com/AlfieriChou/galen#readme",
   "license": "ISC",
-  "main": "lib/redis.js",
+  "main": "index.js",
   "directories": {
-    "lib": "lib",
     "test": "__tests__"
   },
-  "files": [
-    "lib"
-  ],
   "publishConfig": {
-    "registry": "http://registry.npm.taobao.org"
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
   },
   "repository": {
     "type": "git",
@@ -33,5 +30,6 @@
     "@galenjs/func": "^0.2.5",
     "ioredis": "^4.19.4",
     "jsonschema": "^1.4.0"
-  }
+  },
+  "gitHead": "85a39cad87c7303b15eea4366ba5279a67cf72dd"
 }

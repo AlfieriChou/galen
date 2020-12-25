@@ -31,5 +31,6 @@
   },
   "peerDependencies": {
     "jsonschema": "^1.4.0"
-  }
+  },
+  "gitHead": "85a39cad87c7303b15eea4366ba5279a67cf72dd"
 }

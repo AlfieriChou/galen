@@ -33,8 +33,13 @@ const createSequelize = (options) => {
   return new Sequelize(database, user, password, sequelizeOpts)
 }
 
-module.exports = async (schemas, { mysql }) => {
-  await validateSchema(mysql, {
+module.exports = async (schemas, {
+  clients = {
+    main: {}
+  },
+  ...mysqlOptions
+}) => {
+  await validateSchema(mysqlOptions.default, {
     type: 'object',
     properties: {
       host: { type: 'string' },
@@ -52,19 +57,25 @@ module.exports = async (schemas, { mysql }) => {
     },
     required: ['host', 'database', 'user', 'password']
   })
-  const sequelize = createSequelize(mysql)
+
+  const sequelizeInstances = Object.entries(clients).reduce((acc, [key, value]) => ({
+    ...acc,
+    [key]: createSequelize({
+      ...mysqlOptions.default,
+      ...value
+    })
+  }), {})
 
   const db = await Object.entries(schemas).reduce((ret, [modelName, schema]) => {
     if (schema.dialect !== 'mysql') {
       return ret
     }
+    const sequelize = sequelizeInstances[schema.databaseName || 'main']
     return {
       ...ret,
       [modelName]: createModel(schema, sequelize)
     }
   }, {})
-
-  const queryInterface = sequelize.getQueryInterface()
 
   // 必须要阻塞启动
   await Object.entries(schemas).reduce(async (promise, [, modelInst]) => {
@@ -72,6 +83,8 @@ module.exports = async (schemas, { mysql }) => {
     if (modelInst.dialect !== 'mysql') {
       return
     }
+    const sequelize = sequelizeInstances[modelInst.databaseName || 'main']
+    const queryInterface = sequelize.getQueryInterface()
     await migrateModel(modelInst, queryInterface, schemas)
     if (modelInst.relations) {
       await buildRelations(modelInst, db)
@@ -80,7 +93,8 @@ module.exports = async (schemas, { mysql }) => {
       await createIndex(modelInst, sequelize, queryInterface)
     }
   }, Promise.resolve())
-  db.sequelize = sequelize
+  // db.sequelize = sequelize
+  db.select = name => sequelizeInstances[name]
   db.Sequelize = Sequelize
   return db
 }

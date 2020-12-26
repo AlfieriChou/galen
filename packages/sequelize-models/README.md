@@ -1,11 +1,25 @@
 # `sequelize-models`
 
-> TODO: description
+> galenjs sequelize models
 
 ## Usage
 
-```
-const sequelizeModels = require('sequelize-models');
+```javascript
+const createSequelizeModels = require('sequelize-models')
 
-// TODO: DEMONSTRATE API
+const bootstrap = async () => {
+  const db = await createSequelizeModels(schemas, {
+    default: {
+      host: '127.0.0.1',
+      user: 'root',
+      password: 'alfieri',
+      database: 'test'
+    },
+    clients: {
+      main: {}
+    }
+  })
+}
+
+bootstrap()
 ```

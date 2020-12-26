@@ -20,9 +20,22 @@ const bootstrap = async () => {
 bootstrap()
 ```
 
+## databaseName
+
+背景: sequelize-models支持多实例
+
+模型数据库名称（默认为main）-仅支持sequelize models
+
+例如
+
+```yaml
+databaseName: 'main'
+```
+
 ## tableName
 
 默认创建的表名
+
 例如
 
 ```yaml
@@ -32,6 +45,7 @@ tableName: 't_user'
 ## modelName
 
 默认模型名
+
 例如
 
 ```yaml

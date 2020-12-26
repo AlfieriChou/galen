@@ -10,5 +10,6 @@ galen's packages.
 * [func](https://github.com/AlfieriChou/galen/tree/master/packages/func)
 * [sequelize-models](https://github.com/AlfieriChou/galen/tree/master/packages/sequelize-models)
 * [sequelize-query-filter](https://github.com/AlfieriChou/galen/tree/master/packages/sequelize-query-filter)
+* [redis](https://github.com/AlfieriChou/galen/tree/master/packages/redis)
 * [swagger](https://github.com/AlfieriChou/galen/tree/master/packages/swagger)
 * [koa-sequelize-model-router](https://github.com/AlfieriChou/galen/tree/master/packages/koa-sequelize-model-router)

@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/redis",
-  "version": "0.2.6",
+  "version": "0.2.8",
   "description": "galenjs redis.",
   "keywords": [
     "redis"
@@ -27,7 +27,7 @@
     "url": "https://github.com/AlfieriChou/galen/issues"
   },
   "dependencies": {
-    "@galenjs/func": "^0.2.6",
+    "@galenjs/func": "^0.2.8",
     "ioredis": "^4.19.4",
     "jsonschema": "^1.4.0"
   },

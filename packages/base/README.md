@@ -32,6 +32,18 @@ bootstrap()
 databaseName: 'main'
 ```
 
+## tags
+
+背景: 支持influx
+
+模型标签-influx
+
+例如
+
+```yaml
+tags: ['host']
+```
+
 ## tableName
 
 默认创建的表名
@@ -58,6 +70,7 @@ modelName: 'User'
 
 - mysql-默认创建sequelize模型
 - virtual-虚拟模型类型（不创建任何模型）
+- influx
 
 例如
 

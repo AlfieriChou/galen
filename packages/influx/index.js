@@ -17,14 +17,14 @@ module.exports = async (modelSchemas, {
     }
     return acc
   }, [])
-  const influxClient = new Influx.InfluxDB({
+  const client = new Influx.InfluxDB({
     host,
     database,
     schema: schemas
   })
-  const dbNames = await influxClient.getDatabaseNames()
+  const dbNames = await client.getDatabaseNames()
   if (!dbNames.includes(database)) {
-    await influxClient.createDatabase(database)
+    await client.createDatabase(database)
   }
-  return influxClient
+  return client
 }

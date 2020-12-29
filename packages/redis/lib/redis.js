@@ -19,6 +19,14 @@ module.exports = class RedisService {
     }, {})
   }
 
+  async quit () {
+    await Object.entries(this.redis)
+      .reduce(async (promise, [_, client]) => {
+        await promise
+        await client.quit()
+      }, Promise.resolve())
+  }
+
   select (name) {
     return this.redis[name]
   }

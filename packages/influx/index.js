@@ -8,15 +8,16 @@ module.exports = async (modelSchemas, {
 }) => {
   assert(host, '[influx] host is required')
   assert(database, '[influx] database is required')
-  const schemas = modelSchemas.reduce((acc, schema) => {
-    if (schema.dialect === 'influx') {
-      return [...acc, createModel({
-        tags: [],
-        ...schema
-      })]
-    }
-    return acc
-  }, [])
+  const schemas = Object.entries(modelSchemas)
+    .reduce((acc, [_, schema]) => {
+      if (schema.dialect === 'influx') {
+        return [...acc, createModel({
+          tags: [],
+          ...schema
+        })]
+      }
+      return acc
+    }, [])
   const client = new Influx.InfluxDB({
     host,
     database,

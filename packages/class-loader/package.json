@@ -30,7 +30,7 @@
   "gitHead": "76fbca01fd2de8741834cf0b62d54ae8a6a416ed",
   "dependencies": {
     "is-class": "^0.0.9",
-    "read-dir-filenames": "^1.0.5"
+    "read-dir-filenames": "^1.0.6"
   },
   "devDependencies": {
     "jest": "^26.6.3"

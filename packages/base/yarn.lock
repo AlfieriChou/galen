@@ -2764,10 +2764,10 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
   integrity sha512-NAnt2iGDXohE5LI7uBnLnqvLQMtzhkiAOLXTmv+qnF9Ky7xAPcX8Up/xWIhxvLVGJvuLiNc4xQLtuqDRzb4fSA==
 
-read-dir-filenames@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.npm.taobao.org/read-dir-filenames/download/read-dir-filenames-1.0.5.tgz#6f44f7c8fa811931dfe9780ad67f6f394fc8216f"
-  integrity sha1-b0T3yPqBGTHf6XgK1n9vOU/IIW8=
+read-dir-filenames@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.npm.taobao.org/read-dir-filenames/download/read-dir-filenames-1.0.6.tgz#a02546256ae4691940ac4ae39555b3148f8f3598"
+  integrity sha1-oCVGJWrkaRlArErjlVWzFI+PNZg=
 
 read-pkg-up@^7.0.1:
   version "7.0.1"

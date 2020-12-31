@@ -34,7 +34,7 @@
     "js-yaml": "^3.14.0",
     "jsonschema": "^1.4.0",
     "lodash": "^4.17.20",
-    "read-dir-filenames": "^1.0.5"
+    "read-dir-filenames": "^1.0.6"
   },
   "devDependencies": {
     "jest": "^26.6.3"

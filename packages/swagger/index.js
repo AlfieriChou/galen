@@ -62,26 +62,35 @@ module.exports = (info, { schemas, remoteMethods }) => {
               description: 'response success',
               content: {
                 'application/json': {
-                  schema: { $ref: `#/components/schemas/${schemaKey.split('-')[0]}` }
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      code: { type: 'number' },
+                      message: { type: 'string' },
+                      data: {
+                        $ref: `#/components/schemas/${schemaKey.split('-')[0]}`
+                      }
+                    }
+                  }
                 }
               }
             }
-            const outputSchema = {}
+            const outputData = {}
             if (type === 'array') {
-              outputSchema.type = 'array'
-              outputSchema.items = model ? schemas[model] : result || {}
+              outputData.type = 'array'
+              outputData.items = model ? schemas[model] : result || {}
             }
             if (type === 'object') {
-              outputSchema.type = 'object'
-              outputSchema.properties = model ? schemas[model] : result || {}
+              outputData.type = 'object'
+              outputData.properties = model ? schemas[model].properties : result || {}
             }
             if (type === 'number') {
-              outputSchema.type = 'number'
-              outputSchema.description = '返回标识'
+              outputData.type = 'number'
+              outputData.description = '返回标识'
             }
             if (type === 'string') {
-              outputSchema.type = 'string'
-              outputSchema.description = '返回标识'
+              outputData.type = 'string'
+              outputData.description = '返回标识'
             }
             return {
               ...outputRets,
@@ -89,7 +98,14 @@ module.exports = (info, { schemas, remoteMethods }) => {
                 description: 'response success',
                 content: {
                   'application/json': {
-                    schema: outputSchema
+                    schema: {
+                      type: 'object',
+                      properties: {
+                        code: { type: 'number' },
+                        message: { type: 'string' },
+                        data: outputData
+                      }
+                    }
                   }
                 }
               }

@@ -44,7 +44,7 @@ module.exports = (info, { schemas, remoteMethods }) => {
       }
       if (output) {
         content.responses = Object.entries(output)
-          .reduce((outputRets, [responseKey, { type, result }]) => {
+          .reduce((outputRets, [responseKey, { type, model, result }]) => {
             if (!resTypeList.includes(type)) throw new Error('output type mast ba array or object or number or string or html!')
             if (type === 'html') {
               return {
@@ -66,23 +66,22 @@ module.exports = (info, { schemas, remoteMethods }) => {
                 }
               }
             }
-            let outputSchema
+            const outputSchema = {}
             if (type === 'array') {
-              outputSchema = {
-                type: 'array',
-                items: result || {
-                  type: 'string'
-                }
-              }
+              outputSchema.type = 'array'
+              outputSchema.items = model ? schemas[model] : result || {}
             }
             if (type === 'object') {
-              outputSchema = { type: 'object', properties: result || {} }
+              outputSchema.type = 'object'
+              outputSchema.properties = model ? schemas[model] : result || {}
             }
             if (type === 'number') {
-              outputSchema = { type: 'object', properties: { result: { type: 'number', description: '返回标识' } } }
+              outputSchema.type = 'number'
+              outputSchema.description = '返回标识'
             }
             if (type === 'string') {
-              outputSchema = { type: 'object', properties: { result: { type: 'string', description: '返回标识' } } }
+              outputSchema.type = 'string'
+              outputSchema.description = '返回标识'
             }
             return {
               ...outputRets,

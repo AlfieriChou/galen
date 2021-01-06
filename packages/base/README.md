@@ -212,3 +212,113 @@ remoteMethods:
               type: date
               allowNull: false 
 ```
+
+### path
+
+接口路径，可以默认添加prefix
+
+### method
+
+接口方法，get,post,put,delete,patch,head
+
+### 标签接口分类tags
+
+例如
+
+```yaml
+tags:
+  - user
+```
+
+### 接口描述-summary
+
+### query
+
+请求query参数
+例如
+
+```yaml
+query:
+  filter:
+    type: string
+    description: '查询参数'
+```
+
+### requestBody
+
+请求体
+例如
+
+```yaml
+requestBody:
+  body:
+    phone:
+      type: string
+      length: 11
+      description: '手机号'
+    password:
+      type: string
+      length: 32
+      description: '密码'
+  required:
+    - phone
+    - password
+```
+
+### params
+
+例如
+
+```yaml
+query:
+  id:
+    type: string
+    description: 'id'
+```
+
+### output
+
+返回结果
+例如
+
+```yaml
+output:
+  200:
+    type: 'object'
+    result:
+      id:
+        type: integer
+        autoIncrement: true
+        primaryKey: true
+      phone:
+        type: string
+        length: 11
+        description: '手机号'
+      password:
+        type: string
+        length: 32
+        description: '密码'
+      nickName:
+        type: string
+        length: 32
+        description: '昵称'
+      createdAt:
+        type: date
+        allowNull: false
+      updatedAt:
+        type: date
+        allowNull: false
+      deletedAt:
+        type: date
+        allowNull: false 
+```
+
+output支持model
+例如
+
+```yaml
+output:
+  200:
+    type: 'object'
+    model: 'User'
+```

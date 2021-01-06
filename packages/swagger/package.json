@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/swagger",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "swagger document.",
   "keywords": [
     "swagger"

@@ -29,4 +29,53 @@ const bootstrap = () => {
 bootstrap()
 ```
 
-support connect multi instance
+### 支持配置多实例
+
+```js
+{
+  default: {
+    host: '127.0.0.1',
+    port: 6379
+  },
+  clients: {
+    main: {
+      keyPrefix: 'main',
+      db: 1
+    },
+    test: {
+      keyPrefix: 'test',
+      db: 2
+    }
+  }
+}
+```
+
+* default为默认配置可以为空对象
+* clients则是需要配置的配置实例的信息
+
+### 安全关闭
+
+```javascript
+const createRedisClient = require('@galenjs/redis');
+
+const bootstrap = () => {
+  const client = await createRedisClient({
+    default: {
+      host: '127.0.0.1',
+      port: 6379
+    },
+    clients: {
+      main: {
+        keyPrefix: 'test',
+        db: 1
+      }
+    }
+  })
+
+  // do something
+
+  await client.quit()
+}
+
+bootstrap()
+```

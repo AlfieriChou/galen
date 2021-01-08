@@ -8,7 +8,6 @@ const buildCrudRemoteMethods = require('./lib/remoteMethods')
 
 const buildModels = async (modelDirPath) => {
   const modelSchemas = {}
-  const schemas = {}
 
   const filepaths = readDirFilenames(modelDirPath)
 
@@ -40,19 +39,14 @@ const buildModels = async (modelDirPath) => {
     if (!schema.dialect) {
       schema.dialect = 'mysql'
     }
-    const { modelName, model } = schema
+    const { modelName } = schema
     modelSchemas[modelName] = {
       model: {},
       ...schema
     }
-    schemas[modelName] = {
-      type: 'object', properties: model || {}
-    }
   }))
 
-  return {
-    modelSchemas, schemas
-  }
+  return modelSchemas
 }
 
 module.exports = async ({
@@ -62,24 +56,36 @@ module.exports = async ({
 }) => {
   let remoteMethods = {}
   let modelSchemas = {}
-  let schemas = {}
+  const schemas = {}
 
   if (plugins.length > 0) {
     await Promise.all(plugins.map(async (pluginName) => {
       const pluginModelDirPath = path.join(workspace, `./plugins/${pluginName}/${modelPath}`)
-      const pluginData = await buildModels(pluginModelDirPath)
-      modelSchemas = _.merge(modelSchemas, pluginData.modelSchemas)
-      schemas = _.merge(schemas, pluginData.schemas)
+      const pluginModelSchemas = await buildModels(pluginModelDirPath)
+      modelSchemas = _.merge(modelSchemas, pluginModelSchemas)
     }))
   }
 
   const modelDirPath = path.join(workspace, `./${modelPath}`)
-  const modelData = await buildModels(modelDirPath)
-  modelSchemas = _.merge(modelSchemas, modelData.modelSchemas)
-  schemas = _.merge(schemas, modelData.schemas)
+  const mainModelSchemas = await buildModels(modelDirPath)
+  modelSchemas = _.merge(modelSchemas, mainModelSchemas)
 
-  // eslint-disable-next-line array-callback-return
-  await Promise.all(Object.entries(modelSchemas).map(([modelName, modelSchema]) => {
+  Object.entries(modelSchemas).forEach(([modelName, modelSchema]) => {
+    const schema = {
+      type: 'object',
+      properties: modelSchema.model || {}
+    }
+    if (modelSchema.relations) {
+      Object.entries(modelSchema.relations).forEach(
+        ([key, { type, model }]) => {
+          if (type === 'belongsTo') {
+            const relationIdProps = modelSchemas[model].model.id || { type: 'integer' }
+            schema.properties[`${key}Id`] = _.pick(relationIdProps, ['type', 'description'])
+          }
+        }
+      )
+    }
+    schemas[modelName] = schema
     const remoteMethod = buildCrudRemoteMethods(_.lowerFirst(modelName), modelSchema)
     remoteMethods = {
       ...remoteMethods,
@@ -88,8 +94,7 @@ module.exports = async ({
         [`${_.lowerFirst(modelName)}-${key}`]: value
       }), {})
     }
-  }))
-
+  })
   return {
     remoteMethods, modelSchemas, schemas
   }

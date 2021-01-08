@@ -14,6 +14,10 @@ describe('@galenjs core', () => {
     expect(modelSchemas).toHaveProperty('User')
     expect(typeof schemas).toBe('object')
     expect(schemas).toHaveProperty('User')
+    expect(schemas).toHaveProperty('Role')
+    expect(schemas).toHaveProperty('UserRole')
+    expect(schemas.UserRole.properties).toHaveProperty('userId')
+    expect(schemas.UserRole.properties).toHaveProperty('roleId')
     done()
   })
 

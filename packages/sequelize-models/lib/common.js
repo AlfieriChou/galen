@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
 
+// TODO: support FLOAT BIGINT
 const sequelizeTypes = {
   integer: Sequelize.INTEGER,
   string: Sequelize.STRING,

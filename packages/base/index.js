@@ -5,6 +5,7 @@ const fs = require('fs')
 const yaml = require('js-yaml')
 
 const buildCrudRemoteMethods = require('./lib/remoteMethods')
+const validateSchema = require('./lib/validateSchema')
 
 const buildModels = async (modelDirPath) => {
   const modelSchemas = {}
@@ -12,7 +13,7 @@ const buildModels = async (modelDirPath) => {
   const filepaths = readDirFilenames(modelDirPath)
 
   // eslint-disable-next-line array-callback-return
-  await Promise.all(filepaths.map((filepath) => {
+  await Promise.all(filepaths.map(async (filepath) => {
     if (!/^.*?\.(js|json|yaml)$/.test(filepath)) {
       throw new Error('model supports js, json and yaml file')
     }
@@ -28,7 +29,99 @@ const buildModels = async (modelDirPath) => {
         throw new Error(`${filepath.split('/').slice(-1)[0]} load yaml file error`)
       }
     }
+
     const filename = path.basename(filepath).replace(/\.\w+$/, '')
+
+    await validateSchema(schema, {
+      type: 'object',
+      properties: {
+        databaseName: { type: 'string' },
+        tags: { type: 'array', items: { type: 'string' } },
+        tableName: { type: 'string' },
+        modelName: { type: 'string' },
+        dialect: { type: 'string', enum: ['mysql', 'virtual', 'influx'] },
+        model: { type: 'object' },
+        relations: { type: 'object' },
+        indexes: { type: 'object' },
+        remoteMethods: { type: 'object' }
+      }
+    })
+    if (schema.relations) {
+      await Object.entries(schema.relations).reduce(async (promise, [, value]) => {
+        await promise
+        await validateSchema(value, {
+          type: 'object',
+          properties: {
+            type: { type: 'string', enum: ['belongsTo', 'hasOne', 'belongsToMany'] },
+            modelName: { type: 'string' },
+            primaryKey: { type: 'string' },
+            foreignKey: { type: 'string' },
+            through: { type: 'string' }
+          },
+          required: ['type', 'modelName']
+        })
+      }, Promise.resolve())
+    }
+    if (schema.indexes) {
+      await Object.entries(schema.indexes).reduce(async (promise, [, value]) => {
+        await promise
+        await validateSchema(value, {
+          type: 'object',
+          properties: {
+            type: { type: 'string', enum: ['index', 'unique'] },
+            fields: { type: 'array', items: { type: 'string' } }
+          },
+          required: ['type', 'fields']
+        })
+      }, Promise.resolve())
+    }
+    if (schema.model) {
+      await Object.entries(schema.model).reduce(async (promise, [, value]) => {
+        await promise
+        await validateSchema(value, {
+          type: 'object',
+          properties: {
+            type: {
+              type: 'string',
+              enum: ['integer', 'bigint', 'string', 'date', 'boolean', 'float', 'json', 'array']
+            },
+            autoIncrement: { type: 'boolean' },
+            description: { type: 'string' },
+            length: { type: 'number' },
+            maxLength: { type: 'number' },
+            minLength: { type: 'number' },
+            allowNull: { type: 'boolean' }
+          },
+          required: ['type']
+        })
+      }, Promise.resolve())
+    }
+    if (schema.remoteMethods) {
+      await Object.entries(schema.remoteMethods).reduce(async (promise, [, value]) => {
+        await promise
+        await validateSchema(value, {
+          type: 'object',
+          properties: {
+            path: { type: 'string' },
+            method: { type: 'string' },
+            tags: { type: 'array', items: { type: 'string' } },
+            summary: { type: 'string' },
+            requestBody: {
+              type: 'object',
+              properties: {
+                body: { type: 'object' },
+                required: { type: 'array', items: { type: 'string' } }
+              }
+            },
+            params: { type: 'object' },
+            query: { type: 'object' },
+            output: { type: 'object' }
+          },
+          required: ['path', 'method']
+        })
+      }, Promise.resolve())
+    }
+
     if (!schema.modelName) {
       schema.modelName = _.upperFirst(filename)
     }

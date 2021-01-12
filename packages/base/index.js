@@ -83,14 +83,21 @@ const buildModels = async (modelDirPath) => {
           properties: {
             type: {
               type: 'string',
-              enum: ['integer', 'bigint', 'string', 'date', 'boolean', 'float', 'json', 'array']
+              enum: [
+                'integer', 'bigint', 'float', 'double',
+                'decimal', 'text', 'string', 'date',
+                'boolean', 'float', 'json', 'array',
+                'uuid', 'uuidv1', 'uuidv4'
+              ]
             },
             autoIncrement: { type: 'boolean' },
             description: { type: 'string' },
             length: { type: 'number' },
             maxLength: { type: 'number' },
             minLength: { type: 'number' },
-            allowNull: { type: 'boolean' }
+            allowNull: { type: 'boolean' },
+            validate: { type: 'object' },
+            enum: { type: 'array', items: { type: 'string' } }
           },
           required: ['type']
         })

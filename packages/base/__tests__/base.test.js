@@ -2,7 +2,7 @@ const path = require('path')
 
 const loadModels = require('..')
 
-describe('@galenjs core', () => {
+describe('@galenjs base', () => {
   it('load yaml', async done => {
     const { remoteMethods, modelSchemas, schemas } = await loadModels({
       workspace: path.resolve(__dirname, '.'),

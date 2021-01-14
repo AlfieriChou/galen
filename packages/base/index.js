@@ -53,12 +53,12 @@ const buildModels = async (modelDirPath) => {
           type: 'object',
           properties: {
             type: { type: 'string', enum: ['belongsTo', 'hasOne', 'belongsToMany'] },
-            modelName: { type: 'string' },
+            model: { type: 'string' },
             primaryKey: { type: 'string' },
             foreignKey: { type: 'string' },
             through: { type: 'string' }
           },
-          required: ['type', 'modelName']
+          required: ['type', 'model']
         })
       }, Promise.resolve())
     }

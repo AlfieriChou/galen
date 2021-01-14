@@ -2,6 +2,13 @@ const Sequelize = require('sequelize')
 
 const sequelizeTypes = {
   integer: Sequelize.INTEGER,
+  float: Sequelize.FLOAT,
+  bigint: Sequelize.BIGINT,
+  text: Sequelize.TEXT,
+  decimal: Sequelize.DECIMAL,
+  uuid: Sequelize.UUID,
+  uuidv1: Sequelize.UUIDV1,
+  uuidv4: Sequelize.UUIDV4,
   string: Sequelize.STRING,
   date: Sequelize.DATE,
   boolean: Sequelize.BOOLEAN,

@@ -21,9 +21,6 @@ jobs:
         cd packages/class-loader
         yarn
         yarn run test
-        cd ../core
-        yarn
-        yarn run test
         cd ../base
         yarn
         yarn run test

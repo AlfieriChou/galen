@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/sequelize-query-filter",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "Sequelize query filter.",
   "keywords": [
     "sequelize",

@@ -7,6 +7,11 @@
   resolved "https://registry.npmjs.org/@galenjs/func/-/func-0.4.0.tgz#3f854266db19c4433deb016a27fbbad84af34583"
   integrity sha512-Mk5BZ0MnV7c28CciLBxEDAJrzVUt581zdi+wBwqoFJ9M1Md4c770Qb15iN93sB7USnzYYNqoHpuw5Rsg5LHJQQ==
 
+"@galenjs/influx-query-filter@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.npmjs.org/@galenjs/influx-query-filter/-/influx-query-filter-0.4.2.tgz#5acac4a248c6f48d5e33e5e7f603f3168413dab0"
+  integrity sha512-zopzpyyi+uJhV0yYTDqd0idjm/Xdpzx4Y0YFySj2ettk1rVNP4MPeQhgv1+6yiaTloE6jtE5nTT1/mBVrf/gEg==
+
 "@galenjs/sequelize-query-filter@^0.4.0":
   version "0.4.0"
   resolved "https://registry.npmjs.org/@galenjs/sequelize-query-filter/-/sequelize-query-filter-0.4.0.tgz#42bede72455c208b2f9e0456cba8a990c3c27245"

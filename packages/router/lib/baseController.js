@@ -1,12 +1,20 @@
 const sequelizeQueryFilter = require('@galenjs/sequelize-query-filter')
+const influxQueryFilter = require('@galenjs/influx-query-filter')
+const _ = require('lodash')
 
 module.exports = class BaseController {
-  static async index (modelName, _modelSchema, ctx) {
+  static async index (modelName, modelSchema, ctx) {
     const { request: { query } } = ctx
-    // TODO: influx
-    // if (modelSchema.dialect === 'influx') {
-
-    // }
+    if (modelSchema.dialect === 'influx') {
+      const list = await ctx.influx.query(influxQueryFilter({
+        filter: query,
+        ...modelSchema
+      }))
+      return {
+        total: list.length,
+        list
+      }
+    }
     const filter = sequelizeQueryFilter(query, ctx.models)
     return {
       total: await ctx.models[modelName].count(filter),
@@ -14,9 +22,20 @@ module.exports = class BaseController {
     }
   }
 
-  static async create (modelName, _modelSchema, ctx) {
+  static async create (modelName, modelSchema, ctx) {
     const { request: { body } } = ctx
-    // TODO: influx
+    if (modelSchema.dialect === 'influx') {
+      try {
+        await ctx.influx.writePoints([{
+          measurement: modelSchema.tableName,
+          tags: _.pick(body, modelSchema.tags || []),
+          fields: _.omit(body, modelSchema.tags || [])
+        }])
+        return { success: true }
+      } catch (err) {
+        ctx.throw(400, '数据写入失败')
+      }
+    }
     return ctx.models[modelName].create(body)
   }
 

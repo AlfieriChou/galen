@@ -9,8 +9,10 @@ const parseFilter = ({
   tableName, filter, tags
 }) => {
   const {
-    where, order, limit // offset
+    order = 'time desc',
+    limit = 20
   } = filter
+  const where = JSON.parse(filter.where || '{}')
   let query = `select * from ${tableName}`
   if (Object.keys(where).length > 0) {
     Object.entries(where).forEach(([key, value]) => {

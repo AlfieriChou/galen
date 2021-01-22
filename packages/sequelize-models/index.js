@@ -96,5 +96,12 @@ module.exports = async (schemas, {
   // db.sequelize = sequelize
   db.select = name => sequelizeInstances[name]
   db.Sequelize = Sequelize
+  db.quit = async () => {
+    await Object.entries(sequelizeInstances)
+      .reduce(async (promise, [_key, client]) => {
+        await promise
+        await client.close()
+      }, Promise.resolve())
+  }
   return db
 }

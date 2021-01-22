@@ -19,11 +19,14 @@ module.exports = class RedisService {
     }, {})
   }
 
-  async quit () {
+  async quit (log) {
+    const logger = log || console
     await Object.entries(this.redis)
-      .reduce(async (promise, [_, client]) => {
+      .reduce(async (promise, [_key, client]) => {
         await promise
+        logger.info('[@galenjs/redis] ', _key, 'start close')
         await client.quit()
+        logger.info('[@galenjs/redis] ', _key, 'close done')
       }, Promise.resolve())
   }
 

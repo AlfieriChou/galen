@@ -96,11 +96,14 @@ module.exports = async (schemas, {
   // db.sequelize = sequelize
   db.select = name => sequelizeInstances[name]
   db.Sequelize = Sequelize
-  db.quit = async () => {
+  db.quit = async (log) => {
+    const logger = log || console
     await Object.entries(sequelizeInstances)
       .reduce(async (promise, [_key, client]) => {
         await promise
+        logger.info('[@galenjs/sequelize-models] ', _key, 'start close')
         await client.close()
+        logger.info('[@galenjs/sequelize-models] ', _key, 'close done')
       }, Promise.resolve())
   }
   return db

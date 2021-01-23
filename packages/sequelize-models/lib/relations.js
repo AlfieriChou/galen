@@ -14,7 +14,7 @@ module.exports = async ({ modelName, relations }, models) => {
         foreignKey: { type: 'string' }
       },
       required: ['type', 'model']
-    }, { extendErr: 'relations' })
+    }, { extendErr: '[@galenjs/sequelize-model] relations' })
     const options = {
       as: key
     }

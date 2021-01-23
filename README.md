@@ -18,4 +18,4 @@ galen's packages.
 
 ## 使用案例
 
-![demo](https://github.com/AlfieriChou/galen-demo)
+[demo](https://github.com/AlfieriChou/galen-demo)

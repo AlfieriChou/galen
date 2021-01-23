@@ -125,15 +125,17 @@ module.exports = (info, { schemas, remoteMethods }) => {
     openapi: '3.0.0',
     info,
     paths: methods.reduce((acc, method) => _.merge(acc, method), {}),
-    components: Object.entries(schemas)
-      .reduce((ret, [key, properties]) => {
-        if (Object.keys(properties).length === 0) {
-          return ret
-        }
-        return {
-          ...ret,
-          [key]: properties
-        }
-      }, {})
+    components: {
+      schemas: Object.entries(schemas)
+        .reduce((ret, [key, value]) => {
+          if (Object.keys(value.properties).length === 0) {
+            return ret
+          }
+          return {
+            ...ret,
+            [key]: value
+          }
+        }, {})
+    }
   }
 }

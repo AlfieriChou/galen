@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/base",
-  "version": "0.4.6-alpha.0",
+  "version": "0.4.6",
   "description": "galenjs base.",
   "keywords": [
     "json",

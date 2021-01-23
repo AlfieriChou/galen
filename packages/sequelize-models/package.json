@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/sequelize-models",
-  "version": "0.4.6-alpha.0",
+  "version": "0.4.6",
   "description": "sequelize models.",
   "keywords": [
     "sequelize",

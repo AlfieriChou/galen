@@ -40,7 +40,7 @@ const buildModels = async (modelDirPath) => {
         tableName: { type: 'string' },
         modelName: { type: 'string' },
         dialect: { type: 'string', enum: ['mysql', 'virtual', 'influx'] },
-        model: { type: 'object' },
+        properties: { type: 'object' },
         relations: { type: 'object' },
         indexes: { type: 'object' },
         remoteMethods: { type: 'object' }
@@ -75,8 +75,8 @@ const buildModels = async (modelDirPath) => {
         })
       }, Promise.resolve())
     }
-    if (schema.model) {
-      await Object.entries(schema.model).reduce(async (promise, [, value]) => {
+    if (schema.properties) {
+      await Object.entries(schema.properties).reduce(async (promise, [, value]) => {
         await promise
         await validateSchema(value, {
           type: 'object',
@@ -141,7 +141,7 @@ const buildModels = async (modelDirPath) => {
     }
     const { modelName } = schema
     modelSchemas[modelName] = {
-      model: {},
+      properties: {},
       ...schema
     }
   }))
@@ -173,13 +173,13 @@ module.exports = async ({
   Object.entries(modelSchemas).forEach(([modelName, modelSchema]) => {
     const schema = {
       type: 'object',
-      properties: modelSchema.model || {}
+      properties: modelSchema.properties || {}
     }
     if (modelSchema.relations) {
       Object.entries(modelSchema.relations).forEach(
         ([key, { type, model }]) => {
           if (type === 'belongsTo') {
-            const relationIdProps = modelSchemas[model].model.id || { type: 'integer' }
+            const relationIdProps = modelSchemas[model].properties.id || { type: 'integer' }
             schema.properties[`${key}Id`] = _.pick(relationIdProps, ['type', 'description'])
           }
         }

@@ -16,6 +16,8 @@ describe('@galenjs base', () => {
     expect(schemas).toHaveProperty('User')
     expect(schemas).toHaveProperty('Role')
     expect(schemas).toHaveProperty('UserRole')
+    expect(modelSchemas.UserRole.properties).toHaveProperty('userId')
+    expect(modelSchemas.UserRole.properties).toHaveProperty('roleId')
     expect(schemas.UserRole.properties).toHaveProperty('userId')
     expect(schemas.UserRole.properties).toHaveProperty('roleId')
     done()
@@ -62,7 +64,7 @@ describe('@galenjs base', () => {
     expect(typeof schemas).toBe('object')
     expect(schemas).toHaveProperty('User')
     // test extend model
-    expect(modelSchemas.User.model).toHaveProperty('lastLoginAt')
+    expect(modelSchemas.User.properties).toHaveProperty('lastLoginAt')
     expect(schemas.User.properties).toHaveProperty('lastLoginAt')
     done()
   })

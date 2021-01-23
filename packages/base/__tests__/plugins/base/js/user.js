@@ -1,4 +1,4 @@
-const model = {
+const properties = {
   "lastLoginAt": {
     "type": "date",
     "allowNull": false
@@ -6,5 +6,5 @@ const model = {
 }
 
 module.exports = {
-  model
+  properties
 }

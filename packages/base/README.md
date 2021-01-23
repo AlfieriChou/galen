@@ -78,14 +78,14 @@ modelName: 'User'
 dialect: 'mysql'
 ```
 
-## model
+## properties
 
 模型属性
 
 例如
 
 ```yaml
-model:
+properties:
   id:
     type: integer
     autoIncrement: true

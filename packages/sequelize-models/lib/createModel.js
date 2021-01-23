@@ -1,7 +1,7 @@
 const { jsonToModel } = require('./common')
 
 module.exports = ({
-  model, modelName, tableName, plugins
+  properties, modelName, tableName, plugins
 }, sequelize) => {
   const options = {
     ...plugins,
@@ -9,12 +9,12 @@ module.exports = ({
     tableName
   }
   // indexes
-  const indexes = Object.keys(model).reduce((acc, key) => {
+  const indexes = Object.keys(properties).reduce((acc, key) => {
     // TODO: index
-    // if (model[key].index) {
+    // if (properties[key].index) {
     //   return [...acc, {}]
     // }
-    if (model[key].unique) {
+    if (properties[key].unique) {
       return [...acc, {
         unique: true,
         fields: [key]
@@ -26,5 +26,5 @@ module.exports = ({
   if (indexes.length) {
     options.indexes = indexes
   }
-  return sequelize.define(modelName, jsonToModel(model), options)
+  return sequelize.define(modelName, jsonToModel(properties), options)
 }

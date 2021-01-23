@@ -1,5 +1,5 @@
 {
-  "model": {
+  "properties": {
     "id": {
       "type": "integer",
       "autoIncrement": true,

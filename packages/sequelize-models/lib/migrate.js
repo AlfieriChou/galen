@@ -6,7 +6,7 @@ const getTableNames = async sequelize => sequelize.showAllTables()
 const getTableInfo = async (tableName, sequelize) => sequelize.describeTable(tableName)
 
 module.exports = async ({
-  model, tableName, relations
+  properties, tableName, relations
   // eslint-disable-next-line consistent-return
 }, sequelize, schemas) => {
   const migrateModel = {
@@ -15,7 +15,7 @@ module.exports = async ({
       autoIncrement: true,
       primaryKey: true
     },
-    ...model,
+    ...properties,
     ...Object.entries(relations || {})
       .reduce((acc, [key, relation]) => {
         if (relation.type !== 'belongsTo') {
@@ -25,7 +25,7 @@ module.exports = async ({
         return {
           ...acc,
           [`${key}Id`]: {
-            type: schema.model.id.type,
+            type: schema.properties.id.type,
             description: `关联${relation.model}`
           }
         }

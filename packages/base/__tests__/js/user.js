@@ -1,4 +1,4 @@
-const model = {
+const properties = {
   "id": {
     "type": "integer",
     "autoIncrement": true,
@@ -34,5 +34,5 @@ const model = {
 }
 
 module.exports = {
-  model
+  properties
 }

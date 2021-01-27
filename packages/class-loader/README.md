@@ -1,11 +1,13 @@
 # `class-loader`
 
-> TODO: description
+> galenjs class loader
 
 ## Usage
 
 ```javascript
-const classLoader = require('@galenjs/class-loader');
+const path = require('path')
+const classLoader = require('@galenjs/class-loader')
 
-// TODO: DEMONSTRATE API
+const controller = classLoader(path.resolve(__dirname, 'app/controller'))
+await controller.user.create()
 ```

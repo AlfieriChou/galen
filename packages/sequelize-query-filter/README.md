@@ -1,13 +1,21 @@
 # `sequelize-query-filter`
 
-> TODO: description
+> galenjs sequelize query filter
 
 ## Usage
 
 ```javascript
-const sequelizeQueryFilter = require('@galenjs/sequelize-query-filter');
-
-// TODO: DEMONSTRATE API
+const sequelizeQueryFilter = require('@galenjs/sequelize-query-filter')
+/***
+  * @param {object} query
+  * @param {object} query.where 搜索条件 {"name":{"$like": "%abc%"}}
+  * @param {array} query.include 关联关系 [{"model":"UserRole","include":[{"model":"Role"}]}]
+  * @param {number} query.limit 条数限制 10
+  * @param {number} query.offset 偏移量 0
+  * @param {array} query.order 排序 [["createdAt", "desc"]]
+  * @param {object} models sequelize models
+*/
+sequelizeQueryFilter(query, models)
 ```
 
 ## where
@@ -78,11 +86,11 @@ limit=20
 ## offset - default 0
 
 ```javascript
-limit=0
+offset=0
 ```
 
 ## example
 
 ```javascript
-v1/users?{"nickname":{"$like":"%abc%"}}&offset=0&limit=10&order=[["createdAt", "desc"]]&include=[{"model":"UserRole","include":[{"model":"Role"}]}]
+v1/users?where={"nickname":{"$like":"%abc%"}}&offset=0&limit=10&order=[["createdAt", "desc"]]&include=[{"model":"UserRole","include":[{"model":"Role"}]}]
 ```

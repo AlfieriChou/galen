@@ -1,10 +1,9 @@
 const KoaRouter = require('koa-router')
 const { Validator } = require('jsonschema')
 const _ = require('lodash')
+const { camelJsonKeys } = require('@galenjs/func/lodash')
 
-const {
-  camelObjKeys, intersection, BaseController
-} = require('./lib')
+const BaseController = require('./lib/baseController')
 
 const v = new Validator()
 
@@ -12,7 +11,7 @@ const checkRoles = async apiInfo => async (ctx, next) => {
   if (!apiInfo.roles) {
     return next()
   }
-  const intersectionRoles = intersection(apiInfo.roles, ctx.roles)
+  const intersectionRoles = _.intersection(apiInfo.roles, ctx.roles)
   if (intersectionRoles.length === 0) {
     ctx.throw(403, 'permission denied')
   }
@@ -43,17 +42,18 @@ module.exports = async ({ remoteMethods, modelSchemas, prefix = '/v1' }) => {
 
   await Object.entries(remoteMethods)
     .reduce(async (promise, [key, apiInfo]) => {
-      const [modelName, handler] = key.split('-')
+      const [filename, handler] = key.split('-')
+      const modelName = _.upperFirst(filename)
       await promise
       if (/^[A-Z]/.test(handler)) {
         return
       }
-      // TODO: validate apiInfo
-      const { dialect } = modelSchemas[_.upperFirst(modelName)]
-      if (dialect && dialect === 'virtual') {
+
+      const modelSchema = modelSchemas[modelName]
+      if (modelSchema.dialect && modelSchema.dialect === 'virtual') {
         // eslint-disable-next-line consistent-return
         return api[apiInfo.method](apiInfo.path, async (ctx) => {
-          ctx.body = await ctx.controller[modelName][handler](ctx)
+          ctx.body = await ctx.controller[filename][handler](ctx)
         })
       }
       api[apiInfo.method](
@@ -62,21 +62,21 @@ module.exports = async ({ remoteMethods, modelSchemas, prefix = '/v1' }) => {
         await validate(apiInfo),
         // eslint-disable-next-line consistent-return
         async (ctx) => {
-          if (ctx.controller[modelName] && ctx.controller[modelName][handler]) {
-            const ret = await ctx.controller[modelName][handler](ctx)
+          if (ctx.controller[filename] && ctx.controller[filename][handler]) {
+            const ret = await ctx.controller[filename][handler](ctx)
             ctx.body = {
-              status: 200,
+              code: 200,
               message: 'success',
-              result: camelObjKeys(ret)
+              result: camelJsonKeys(ret)
             }
             return
           }
           if (BaseController[handler]) {
-            const ret = await BaseController[handler](ctx, _.upperFirst(modelName))
+            const ret = await BaseController[handler](modelName, modelSchema, ctx)
             ctx.body = {
-              status: 200,
+              code: 200,
               message: 'success',
-              result: camelObjKeys(ret)
+              result: camelJsonKeys(ret)
             }
             return
           }

@@ -13,8 +13,7 @@ galen's packages.
 * [redis](https://github.com/AlfieriChou/galen/tree/master/packages/redis)
 * [influx](https://github.com/AlfieriChou/galen/tree/master/packages/influx)
 * [swagger](https://github.com/AlfieriChou/galen/tree/master/packages/swagger)
-* [koa-sequelize-model-router](https://github.com/AlfieriChou/galen/tree/master/packages/koa-sequelize-model-router)
-* [router](https://github.com/AlfieriChou/galen/tree/master/packages/router)
+* [koa-router](https://github.com/AlfieriChou/galen/tree/master/packages/koa-router)
 
 ## 使用案例
 

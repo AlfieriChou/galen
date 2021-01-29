@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/router",
-  "version": "0.4.3",
+  "version": "0.5.0",
   "description": "galenjs router base on koa-router.",
   "keywords": [
     "router"
@@ -27,9 +27,9 @@
     "url": "https://github.com/AlfieriChou/galen/issues"
   },
   "dependencies": {
-    "@galenjs/func": "^0.4.0",
-    "@galenjs/influx-query-filter": "^0.4.3",
-    "@galenjs/sequelize-query-filter": "^0.4.0",
+    "@galenjs/func": "^0.5.0",
+    "@galenjs/influx-query-filter": "^0.5.0",
+    "@galenjs/sequelize-query-filter": "^0.5.0",
     "jsonschema": "^1.4.0",
     "koa-router": "^10.0.0",
     "lodash": "^4.17.20"

@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@galenjs/func@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.npmjs.org/@galenjs/func/-/func-0.5.0.tgz#a01ad89426749cc62fe2710895e47bb312dfcb36"
+  integrity sha512-kqSz8USY+5Z80TK+MK5cZCyRdYBdM8YzHgSrG00d52yUG2JUVAcUS5DO3+O36YBvLxz5gMr3nk7MWavIx8yjmA==
+
 "@sqltools/formatter@1.2.2":
   version "1.2.2"
   resolved "https://registry.npmjs.org/@sqltools/formatter/-/formatter-1.2.2.tgz#9390a8127c0dcba61ebd7fdcc748655e191bdd68"
@@ -235,6 +240,11 @@ js-yaml@^3.14.0:
   dependencies:
     argparse "^1.0.7"
     esprima "^4.0.0"
+
+jsonschema@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.npmjs.org/jsonschema/-/jsonschema-1.4.0.tgz#1afa34c4bc22190d8e42271ec17ac8b3404f87b2"
+  integrity sha512-/YgW6pRMr6M7C+4o8kS+B/2myEpHCrxO4PEWnqJNBFMjn7EWXqlQ4tGwL6xTHeRplwuZmcAncdvfOad1nT2yMw==
 
 lodash@^4.17.20:
   version "4.17.20"

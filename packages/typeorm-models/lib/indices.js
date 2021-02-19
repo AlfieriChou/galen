@@ -1,7 +1,7 @@
 const _ = require('lodash')
 
 module.exports = ({ tableName, properties, indexes = {} }) => {
-  const keyIndexes = Object.entries(properties).reduce((acc, [key, value]) => {
+  const keyIndices = Object.entries(properties).reduce((acc, [key, value]) => {
     if (!value.index) {
       return acc
     }
@@ -13,7 +13,7 @@ module.exports = ({ tableName, properties, indexes = {} }) => {
       }
     ]
   }, [])
-  const indexIndexes = Object.entries(indexes).reduce((acc, [key, value]) => {
+  const indexIndices = Object.entries(indexes).reduce((acc, [key, value]) => {
     if (value.type !== 'index') {
       return acc
     }
@@ -26,7 +26,7 @@ module.exports = ({ tableName, properties, indexes = {} }) => {
     ]
   }, [])
   return [
-    ...keyIndexes,
-    ...indexIndexes
+    ...keyIndices,
+    ...indexIndices
   ]
 }

@@ -1,3 +1,5 @@
+const _ = require('lodash')
+
 const typeEnum = {
   string: String,
   number: Number,
@@ -8,7 +10,7 @@ const typeEnum = {
 module.exports = properties => Object.entries(properties)
   .reduce((acc, [key, value]) => ({
     ...acc,
-    [key]: {
+    [_.snakeCase(key)]: {
       ...value,
       type: typeEnum[value.type] || value.type
     }

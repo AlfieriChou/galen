@@ -17,5 +17,5 @@ module.exports = (schema) => {
   if (indices.length) {
     entityInfo.indices = indices
   }
-  return EntitySchema(entityInfo)
+  return new EntitySchema(entityInfo)
 }

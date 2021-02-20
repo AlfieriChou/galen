@@ -21,7 +21,7 @@ module.exports = ({ tableName, properties, indexes = {} }) => {
       ...acc,
       {
         name: key,
-        columns: value.fields
+        columns: value.fields.map(field => _.snakeCase(field))
       }
     ]
   }, [])

@@ -14,6 +14,7 @@ galen's packages.
 * [influx](https://github.com/AlfieriChou/galen/tree/master/packages/influx)
 * [swagger](https://github.com/AlfieriChou/galen/tree/master/packages/swagger)
 * [koa-router](https://github.com/AlfieriChou/galen/tree/master/packages/koa-router)
+* [typeorm-models](https://github.com/AlfieriChou/galen/tree/master/packages/typeorm-models)
 
 ## 使用案例
 

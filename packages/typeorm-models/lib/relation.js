@@ -11,7 +11,7 @@ const relationTypes = {
 module.exports = ({
   relations = {}
 }) => Object.entries(relations)
-  .reduce(async (acc, [key, value]) => {
+  .reduce((acc, [key, value]) => {
     validateSchema(value, {
       type: 'object',
       properties: {

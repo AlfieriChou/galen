@@ -1,7 +1,7 @@
 const createUnique = require('../lib/unique')
 
 describe('test unique', () => {
-  it('belongsTo', done => {
+  it('properties unique', done => {
     const uniques = createUnique({
       tableName: 'user',
       properties: {

@@ -28,5 +28,8 @@ jobs:
         yarn
         yarn add jsonschema --peer
         yarn run test
+        cd ../typeorm-models
+        yarn
+        yarn run test
       env:
         CI: true

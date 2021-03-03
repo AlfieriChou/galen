@@ -58,3 +58,4 @@ bootstrap()
 * clients则是需要配置的配置实例的信息
 
 [separating-entity-definition](https://typeorm.io/#/separating-entity-definition)
+[example](https://github.com/AlfieriChou/galen-demo/tree/feat/typeorm)

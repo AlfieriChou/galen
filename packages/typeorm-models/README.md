@@ -8,7 +8,9 @@
 const createTypeOrmModels = require('@galenjs/typeorm-models')
 
 const bootstrap = async () => {
-  const models = await createTypeOrmModels(schemas, {
+  const {
+    models, connections
+  } = await createTypeOrmModels(schemas, {
     default: {
       host: '127.0.0.1',
       username: 'root',
@@ -19,6 +21,14 @@ const bootstrap = async () => {
       main: {}
     }
   })
+
+  // TODO: add connections get
+  const connection = connections.main
+  // TODO: find camelCase
+  const data = await connection.getRepository(models.User).find({
+    nick_name: 'test'
+  })
+  console.log(JSON.stringify(data, null, 2))
 }
 
 bootstrap()

@@ -44,7 +44,7 @@ module.exports = async (schemas, {
       [clientName]: [...entities, models[key]]
     }
   }, {})
-  await Object.keys(clients)
+  const connections = await Object.keys(clients)
     .reduce(async (promise, clientName) => {
       const acc = await promise
       return {
@@ -55,5 +55,5 @@ module.exports = async (schemas, {
         })
       }
     }, Promise.resolve({}))
-  return models
+  return { models, connections }
 }

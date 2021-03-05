@@ -58,19 +58,24 @@ module.exports = async (schemas, {
     required: ['host', 'database', 'user', 'password']
   })
 
-  const sequelizeInstances = Object.entries(clients).reduce((acc, [key, value]) => ({
-    ...acc,
-    [key]: createSequelize({
-      ...mysqlOptions.default,
-      ...value
-    })
-  }), {})
+  const instances = new Map(Object
+    .entries(clients)
+    .reduce((acc, [key, value]) => ([
+      ...acc,
+      [
+        key,
+        createSequelize({
+          ...mysqlOptions.default,
+          ...value
+        })
+      ]
+    ]), []))
 
   const db = await Object.entries(schemas).reduce((ret, [modelName, schema]) => {
     if (schema.dialect !== 'mysql') {
       return ret
     }
-    const sequelize = sequelizeInstances[schema.databaseName || 'main']
+    const sequelize = instances.get(schema.databaseName || 'main')
     return {
       ...ret,
       [modelName]: createModel(schema, sequelize)
@@ -83,7 +88,7 @@ module.exports = async (schemas, {
     if (modelInst.dialect !== 'mysql') {
       return
     }
-    const sequelize = sequelizeInstances[modelInst.databaseName || 'main']
+    const sequelize = instances.get(modelInst.databaseName || 'main')
     const queryInterface = sequelize.getQueryInterface()
     await migrateModel(modelInst, queryInterface, schemas)
     if (modelInst.relations) {
@@ -93,17 +98,16 @@ module.exports = async (schemas, {
       await createIndex(modelInst, sequelize, queryInterface)
     }
   }, Promise.resolve())
-  // db.sequelize = sequelize
-  db.select = name => sequelizeInstances[name]
+  db.select = name => instances.get(name)
   db.Sequelize = Sequelize
   db.quit = async (log) => {
     const logger = log || console
-    await Object.entries(sequelizeInstances)
-      .reduce(async (promise, [_key, client]) => {
+    await [...instances.keys()]
+      .reduce(async (promise, key) => {
         await promise
-        logger.info('[@galenjs/sequelize-models] ', _key, 'start close')
-        await client.close()
-        logger.info('[@galenjs/sequelize-models] ', _key, 'close done')
+        logger.info('[@galenjs/sequelize-models] ', key, 'start close')
+        await instances.get(key).close()
+        logger.info('[@galenjs/sequelize-models] ', key, 'close done')
       }, Promise.resolve())
   }
   return db

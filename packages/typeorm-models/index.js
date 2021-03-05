@@ -44,16 +44,22 @@ module.exports = async (schemas, {
       [clientName]: [...entities, models[key]]
     }
   }, {})
-  const connections = await Object.keys(clients)
+  const connectionInstances = await Object.keys(clients)
     .reduce(async (promise, clientName) => {
       const acc = await promise
-      return {
+      return [
         ...acc,
-        [clientName]: await createClient(clientsEntities[clientName] || [], {
-          ...typeOrmOptions.default,
-          ...clients[clientName]
-        })
-      }
-    }, Promise.resolve({}))
-  return { models, connections }
+        [
+          clientName,
+          (await createClient(clientsEntities[clientName] || [], {
+            ...typeOrmOptions.default,
+            ...clients[clientName]
+          }))
+        ]
+      ]
+    }, Promise.resolve([]))
+  return {
+    models,
+    connections: new Map(connectionInstances)
+  }
 }

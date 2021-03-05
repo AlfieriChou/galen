@@ -22,10 +22,8 @@ const bootstrap = async () => {
     }
   })
 
-  // TODO: add connections get
-  const connection = connections.main
   // TODO: find camelCase
-  const data = await connection.getRepository(models.User).find({
+  const data = await connections.get('main').getRepository(models.User).find({
     nick_name: 'test'
   })
   console.log(JSON.stringify(data, null, 2))

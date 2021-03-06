@@ -2,36 +2,36 @@ const Redis = require('ioredis')
 
 module.exports = class RedisService {
   constructor (options) {
-    this.redis = Object.entries({
+    this.redis = new Map(Object.entries({
       main: {},
       ...options.clients
     }).reduce((ret, [serviceName, config]) => {
       if (typeof config !== 'object') {
         throw new Error('client config must be an object')
       }
-      return {
+      return [
         ...ret,
-        [serviceName]: new Redis({
+        [serviceName, new Redis({
           ...options.default,
           ...config
-        })
-      }
-    }, {})
+        })]
+      ]
+    }, []))
   }
 
   async quit (log) {
     const logger = log || console
-    await Object.entries(this.redis)
-      .reduce(async (promise, [_key, client]) => {
+    await [...this.redis.keys()]
+      .reduce(async (promise, key) => {
         await promise
-        logger.info('[@galenjs/redis] ', _key, 'start close')
-        await client.quit()
-        logger.info('[@galenjs/redis] ', _key, 'close done')
+        logger.info('[@galenjs/redis] ', key, 'start close')
+        await this.redis.get(key).quit()
+        logger.info('[@galenjs/redis] ', key, 'close done')
       }, Promise.resolve())
   }
 
   select (name) {
-    return this.redis[name]
+    return this.redis.get(name)
   }
 
   async get (name, key) {

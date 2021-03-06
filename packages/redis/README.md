@@ -73,7 +73,23 @@ const bootstrap = () => {
   })
 
   // do something
+  // get
+  await client.get('main', 'test')
+  // set
+  await client.set('main', 'test', 'value', 10)
+  // incr
+  await client.incr('main', 'test', 10)
+  // decr
+  await client.decr('main', 'test', 10)
+  // getJson
+  await client.getJson('main', 'test')
+  // setJson
+  await client.setJson('main', 'test', { a: 'b' }, 10)
 
+  // select redis instance
+  client.select('main')
+
+  // graceful exit
   await client.quit()
 }
 

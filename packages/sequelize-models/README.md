@@ -68,12 +68,16 @@ const bootstrap = () => {
   })
 
   // do something
-  // await db.User.findAll()
-  // await db.User.findOne()
-  // await db.User.create()
-  // await db.User.update()
-  // await db.User.destroy()
+  await db.User.findAll()
+  await db.User.findOne()
+  await db.User.create()
+  await db.User.update()
+  await db.User.destroy()
 
+  // select sequelize instance
+  db.select('main')
+
+  // graceful exit
   await db.quit()
 }
 

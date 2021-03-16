@@ -27,7 +27,34 @@ module.exports = ({
       type: relationTypes[value.type],
       target: _.snakeCase(value.model)
     }
-    // TODO: joinTable joinColumn
+    if (value.foreignKey) {
+      relationOptions.joinColumn = {
+        name: value.foreignKey || `${_.snakeCase(value.model)}_id`
+      }
+    }
+    if (['hasOne', 'hasMany'].includes(value.type)) {
+      if (!value.through) {
+        relationOptions.joinTable = {
+          name: _.snakeCase(value.model),
+          joinColumn: {
+            name: value.primaryKey || `${_.snakeCase(value.model)}_id`
+          }
+        }
+      } else {
+        relationOptions.joinTable = {
+          name: _.snakeCase(value.through),
+          joinColumn: {
+            name: `${key}_id`
+          },
+          joinTable: {
+            name: _.snakeCase(value.model || value.keyThrough),
+            joinColumn: {
+              name: value.primaryKey || `${_.snakeCase(value.model)}_id`
+            }
+          }
+        }
+      }
+    }
     return {
       ...acc,
       [key]: relationOptions

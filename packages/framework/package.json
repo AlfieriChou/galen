@@ -25,5 +25,16 @@
   },
   "bugs": {
     "url": "https://github.com/AlfieriChou/galen/issues"
+  },
+  "dependencies": {
+    "@galenjs/base": "^0.5.0",
+    "@galenjs/koa-router": "^0.5.5",
+    "@galenjs/sequelize-models": "^0.5.7",
+    "koa": "^2.13.1",
+    "koa-bodyparser": "^4.3.0"
+  },
+  "peerDependencies": {
+    "@galenjs/influx": "^0.5.0",
+    "@galenjs/redis": "^0.5.8"
   }
 }

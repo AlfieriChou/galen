@@ -48,6 +48,7 @@ module.exports = ({
           },
           joinTable: {
             name: _.snakeCase(value.model || value.keyThrough),
+            type: 'one-to-one',
             joinColumn: {
               name: value.primaryKey || `${_.snakeCase(value.model)}_id`
             }

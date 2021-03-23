@@ -6,8 +6,8 @@ const loadModels = require('@galenjs/base')
 const loadSequelizeModels = require('@galenjs/sequelize-models')
 const createRedisClients = require('@galenjs/redis')
 
-module.exports = async (config) => {
-  await validateJsonSchema(config, {
+const loadConfig = (config) => {
+  validateJsonSchema(config, {
     type: 'object',
     properties: {
       port: { type: 'number' },
@@ -62,19 +62,29 @@ module.exports = async (config) => {
     },
     required: ['port', 'workspace', 'modelPath']
   })
-  const app = new Koa()
-  const { remoteMethods, modelSchemas, schemas } = await loadModels({
-    workspace: config.workspace,
-    modelPath: config.modelPath
-  })
-  app.context.remoteMethods = remoteMethods
-  app.context.modelSchemas = modelSchemas
-  app.context.schemas = schemas
-  if (config.sequelizeOptions) {
-    app.context.models = await loadSequelizeModels(modelSchemas, config.sequelizeOptions)
+  return config
+}
+
+module.exports = class Application {
+  constructor (config) {
+    this.config = loadConfig(config)
   }
-  if (config.redisOptions) {
-    app.context.redis = await createRedisClients(config.redisOptions)
+
+  async init () {
+    const app = new Koa()
+    const { remoteMethods, modelSchemas, schemas } = await loadModels({
+      workspace: this.config.workspace,
+      modelPath: this.config.modelPath
+    })
+    app.context.remoteMethods = remoteMethods
+    app.context.modelSchemas = modelSchemas
+    app.context.schemas = schemas
+    if (this.config.sequelizeOptions) {
+      app.context.models = await loadSequelizeModels(modelSchemas, this.config.sequelizeOptions)
+    }
+    if (this.config.redisOptions) {
+      app.context.redis = await createRedisClients(this.config.redisOptions)
+    }
+    return app
   }
-  return app
 }

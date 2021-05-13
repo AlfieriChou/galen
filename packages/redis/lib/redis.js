@@ -102,4 +102,23 @@ module.exports = class RedisService {
     }
     return this.select(name).lpush(key, ...list)
   }
+
+  async getMembers (name, key) {
+    return this.select(name).smembers(key)
+  }
+
+  async getMembersLength (name, key) {
+    return this.select(name).scard(key)
+  }
+
+  async setMembers (name, key, members, expire) {
+    assert(members.length > 0, 'members must be non-empty')
+    if (expire) {
+      return this.select(name).multi()
+        .sadd(key, ...members)
+        .expire(key, Math.floor(expire))
+        .exec()
+    }
+    return this.select(name).sadd(key, ...members)
+  }
 }

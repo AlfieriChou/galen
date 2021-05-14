@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/typeorm-models",
-  "version": "0.5.6",
+  "version": "0.5.11",
   "description": "generate typeorm entities by json.",
   "keywords": [
     "typeorm",

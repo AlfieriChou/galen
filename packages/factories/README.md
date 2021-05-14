@@ -8,7 +8,7 @@
 const {
   camelJsonKeys,
   snakeJsonKeys
-} = require('@galenjs/func/lodash')
+} = require('@galenjs/factories/lodash')
 
 camelJsonKeys({
   field_one: {
@@ -34,14 +34,14 @@ snakeJsonKeys({
 ## sleep
 
 ```javascript
-const { sleep } = require('@galenjs/func/sleep')
+const { sleep } = require('@galenjs/factories/sleep')
 await sleep(1000)
 ```
 
 ## validateJsonSchema
 
 ```javascript
-const validateSchema = require('@galenjs/func/validateJsonSchema')
+const validateSchema = require('@galenjs/factories/validateJsonSchema')
 
 await validateSchema({ field: 1 }, {
   type: 'object',
@@ -56,7 +56,7 @@ await validateSchema({ field: 1 }, {
 ## parseCsv
 
 ```javascript
-const { parseCsv } = require('@galenjs/func/csv')
+const { parseCsv } = require('@galenjs/factories/csv')
 
 parseCsv(`id,name
 1,Harper Lee

@@ -1,5 +1,5 @@
 const { createConnection } = require('typeorm')
-const validateSchema = require('@galenjs/func/validateJsonSchema')
+const validateSchema = require('@galenjs/factories/validateJsonSchema')
 
 const createEntity = require('./lib/entity')
 

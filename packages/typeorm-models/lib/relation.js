@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const validateSchema = require('@galenjs/func/validateJsonSchema')
+const validateSchema = require('@galenjs/factories/validateJsonSchema')
 
 const relationTypes = {
   belongsTo: 'one-to-one',

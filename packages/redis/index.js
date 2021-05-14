@@ -1,4 +1,4 @@
-const validateSchema = require('@galenjs/func/validateJsonSchema')
+const validateSchema = require('@galenjs/factories/validateJsonSchema')
 
 const RedisService = require('./lib/redis')
 

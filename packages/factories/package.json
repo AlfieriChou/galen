@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/factories",
-  "version": "0.5.0",
+  "version": "0.5.10",
   "description": "galenjs factories.",
   "keywords": [
     "function"

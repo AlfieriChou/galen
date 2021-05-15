@@ -2,7 +2,7 @@ const _ = require('lodash')
 
 const buildCrudRemoteMethods = (apiName, {
   description = apiName,
-  model,
+  properties,
   required = []
 }) => ({
   index: {
@@ -23,7 +23,13 @@ const buildCrudRemoteMethods = (apiName, {
         type: 'object',
         result: {
           total: { type: 'integer', description: '总数' },
-          list: { type: 'array', items: { type: 'object', properties: model }, description: '数据' }
+          list: {
+            type: 'array',
+            items: {
+              type: 'object', properties
+            },
+            description: '数据'
+          }
         }
       }
     }
@@ -34,13 +40,13 @@ const buildCrudRemoteMethods = (apiName, {
     tags: [`${apiName}`],
     summary: `创建${description}`,
     requestBody: {
-      body: _.omit(model, ['id', 'createdAt', 'updatedAt', 'deletedAt']),
+      body: _.omit(properties, ['id', 'createdAt', 'updatedAt', 'deletedAt']),
       required
     },
     output: {
       200: {
         type: 'object',
-        result: model
+        result: properties
       }
     }
   },
@@ -49,11 +55,11 @@ const buildCrudRemoteMethods = (apiName, {
     method: 'get',
     tags: [`${apiName}`],
     summary: `获取${description}详情`,
-    params: _.pick(model, ['id']),
+    params: _.pick(properties, ['id']),
     output: {
       200: {
         type: 'object',
-        result: model
+        result: properties
       }
     }
   },
@@ -62,9 +68,9 @@ const buildCrudRemoteMethods = (apiName, {
     method: 'put',
     tags: [`${apiName}`],
     summary: `修改${description}信息`,
-    params: _.pick(model, ['id']),
+    params: _.pick(properties, ['id']),
     requestBody: {
-      body: _.omit(model, ['id', 'createdAt', 'updatedAt', 'deletedAt'])
+      body: _.omit(properties, ['id', 'createdAt', 'updatedAt', 'deletedAt'])
     },
     output: {
       200: {
@@ -80,7 +86,7 @@ const buildCrudRemoteMethods = (apiName, {
     method: 'delete',
     tags: [`${apiName}`],
     summary: `删除${description}`,
-    params: _.pick(model, ['id']),
+    params: _.pick(properties, ['id']),
     output: {
       200: {
         type: 'number'

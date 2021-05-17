@@ -29,6 +29,7 @@
     "url": "https://github.com/AlfieriChou/galen/issues"
   },
   "dependencies": {
+    "@galenjs/factories": "^0.5.10",
     "jsonschema": "^1.4.0",
     "lodash": "^4.17.20",
     "sequelize": "^6.3.5"

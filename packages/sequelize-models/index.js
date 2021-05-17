@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
+const validateSchema = require('@galenjs/factories/validateJsonSchema')
 
-const validateSchema = require('./lib/validateSchema')
 const createModel = require('./lib/createModel')
 const buildRelations = require('./lib/relations')
 const migrateModel = require('./lib/migrate')

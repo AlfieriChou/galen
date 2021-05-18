@@ -3,15 +3,16 @@ const validateSchema = require('@galenjs/factories/validateJsonSchema')
 
 module.exports = class Amqp {
   constructor (config) {
-    this.config = config
     validateSchema(config, {
       type: 'object',
       properties: {
         url: { type: 'string' },
+        consumerPath: { type: 'string' },
         sub: { type: 'object' }
       },
-      required: ['url', 'sub']
+      required: ['url', 'sub', 'consumerPath']
     })
+    this.config = config
     this.client = amqp.connect(this.config.url)
     this.timers = {}
   }
@@ -32,7 +33,7 @@ module.exports = class Amqp {
     )
   }
 
-  async setup () {
+  async setup (ctx) {
     this.channel = await this.client.createChannel()
     await Promise.all(
       Object.entities(this.config.sub)
@@ -47,8 +48,10 @@ module.exports = class Amqp {
                 .fill()
                 .reduce(async (promise, _item) => {
                   await promise
-                  await this.consumer(key, (msg) => {
-                    console.log('message', msg)
+                  // eslint-disable-next-line import/no-dynamic-require, global-require
+                  const consumerClass = require(`${this.config.consumerPath}/${key}`)()
+                  await this.consumer(key, async (msg) => {
+                    await consumerClass.onMsg(msg, ctx)
                   })
                 }, Promise.resolve())
             )
@@ -57,7 +60,7 @@ module.exports = class Amqp {
     )
   }
 
-  async send (channelName, message, options) {
+  async send (channelName, message, options = {}) {
     return this.channel.sendToQueue(
       channelName,
       Buffer.from(message),

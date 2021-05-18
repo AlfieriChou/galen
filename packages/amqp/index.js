@@ -22,7 +22,17 @@ module.exports = class Amqp {
     await this.client.close()
   }
 
-  async createChannels () {
+  async consumer (channelName, run) {
+    await this.channel.consume(
+      channelName,
+      async (message) => {
+        await run(message)
+        this.channel.ack(message)
+      }
+    )
+  }
+
+  async setup () {
     this.channel = await this.client.createChannel()
     await Promise.all(
       Object.entities(this.config.sub)
@@ -31,8 +41,17 @@ module.exports = class Amqp {
           pullBatchSize = 5 // 默认每次拉五条
         }]) => {
           await this.channel.assertQueue(key)
-          this.timers[key] = setInterval(() => {
-            console.log('channel pull message', pullBatchSize)
+          this.timers[key] = setInterval(async () => {
+            await Promise.all(
+              new Array(pullBatchSize)
+                .fill()
+                .reduce(async (promise, _item) => {
+                  await promise
+                  await this.consumer(key, (msg) => {
+                    console.log('message', msg)
+                  })
+                }, Promise.resolve())
+            )
           }, pullInterval)
         })
     )

@@ -29,6 +29,7 @@
   "dependencies": {
     "@galenjs/factories": "^0.5.10",
     "amqplib": "^0.7.1",
-    "jsonschema": "^1.4.0"
+    "jsonschema": "^1.4.0",
+    "shortid": "^2.2.16"
   }
 }

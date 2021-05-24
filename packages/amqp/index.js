@@ -1,12 +1,14 @@
 const amqp = require('amqplib')
 const shortId = require('shortid')
+const assert = require('assert')
 const validateSchema = require('@galenjs/factories/validateJsonSchema')
 
 module.exports = class Amqp {
   constructor ({
     config,
-    logger = console
+    logger
   }) {
+    assert(logger, '[amqp] logger is required')
     validateSchema(config, {
       type: 'object',
       properties: {
@@ -71,7 +73,7 @@ module.exports = class Amqp {
       Buffer.from(msg),
       options
     )
-    this.logger.info('send msg: ', channelName, msg, ret)
+    this.logger.info('[amqp] send msg: ', channelName, msg, ret)
     return ret
   }
 }

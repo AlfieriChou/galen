@@ -4,16 +4,28 @@
 
 ## Usage
 
-app.js
+install
+
+```bash
+yarn add @galenjs/amqp
+// or
+npm i @galenjs/amqp
+// or
+pnpm install @galenjs/amqp
+```
 
 ```javascript
+// app.js
 const Amqp = require('./index')
 
 const amqp = new Amqp({
   config: {
     url: 'amqp://localhost:5672',
     sub: {
-      test: {}
+      test: {
+        pullInterval: 1000, // 默认1s拉一次消息
+        pullBatchSize: 5 // 每次拉5条
+      }
     },
     consumerPath: `${process.cwd()}/test`
   },
@@ -31,9 +43,8 @@ setInterval(async () => {
 }, 10000)
 ```
 
-test/test.js
-
 ```javascript
+// test/test.js
 module.exports = class Test {
   static async onMsg (msg) {
     console.log('[message]: ', msg)

@@ -33,7 +33,10 @@ module.exports = class Amqp {
     await this.channel.consume(
       channelName,
       async (message) => {
+        // TODO: 填充消息ID
+        this.logger.info('[amqp] consumer: ', channelName)
         await run(message)
+        this.logger.info('[amqp] consumer done: ', channelName)
         this.channel.ack(message)
       }
     )

@@ -2,6 +2,7 @@ const amqp = require('amqplib')
 const shortId = require('shortid')
 const assert = require('assert')
 const validateSchema = require('@galenjs/factories/validateJsonSchema')
+const classLoader = require('@galenjs/class-loader')
 
 module.exports = class Amqp {
   constructor ({
@@ -20,6 +21,7 @@ module.exports = class Amqp {
     })
     this.config = config
     this.timers = {}
+    this.amqpService = {}
     this.logger = logger
   }
 
@@ -45,6 +47,7 @@ module.exports = class Amqp {
   async setup (ctx) {
     this.client = await amqp.connect(this.config.url)
     this.channel = await this.client.createChannel()
+    this.amqpService = classLoader(this.config.consumerClass)
     Object.entries(this.config.sub)
       .reduce(async (promise, [key, {
         pullInterval = 1000, // 默认1s拉一次消息
@@ -56,10 +59,8 @@ module.exports = class Amqp {
           new Array(pullBatchSize)
             .fill()
             .forEach(async (_item) => {
-              // eslint-disable-next-line import/no-dynamic-require, global-require
-              const consumerClass = require(`${this.config.consumerPath}/${key}`)
               await this.consumer(key, async (msg) => {
-                await consumerClass.onMsg(msg, ctx)
+                await this.amqpService[key].onMsg(msg, ctx)
               })
             })
         }, pullInterval)

@@ -27,6 +27,7 @@
     "url": "https://github.com/AlfieriChou/galen/issues"
   },
   "dependencies": {
+    "@galenjs/class-loader": "^0.5.0",
     "@galenjs/factories": "^0.5.10",
     "amqplib": "^0.7.1",
     "jsonschema": "^1.4.0",

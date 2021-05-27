@@ -2,6 +2,14 @@
 # yarn lockfile v1
 
 
+"@galenjs/class-loader@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.npmjs.org/@galenjs/class-loader/-/class-loader-0.5.0.tgz#2862292bb2d596b199fdbf43578d7774b37ef65c"
+  integrity sha512-uOqPGPwWtuyTAPU0P1I58ueffuQRj2jib9uBswjtzE+E7/5wTmPoaloqY1ddsJY93CRoYsLE4NSSGKNSMfc2rg==
+  dependencies:
+    is-class "^0.0.9"
+    read-dir-filenames "^1.0.6"
+
 "@galenjs/factories@^0.5.10":
   version "0.5.10"
   resolved "https://registry.yarnpkg.com/@galenjs/factories/-/factories-0.5.10.tgz#d9f70d8f805d3c8e017e1b15455be7d4ce9f3c97"
@@ -55,6 +63,11 @@ inherits@~2.0.1:
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
+is-class@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.npmjs.org/is-class/-/is-class-0.0.9.tgz#3024c17b1cf8f6bdc1f3eca1bae507ea992b6d93"
+  integrity sha512-kUfRnejcRC9YLgblxoJ76dp9gZ3vMKTrDS5I6z2UVMOsHHSImNKCJocjQTkZr38PwiSZ9LVklaHEENaVYeFTXg==
+
 isarray@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/isarray/-/isarray-0.0.1.tgz#8a18acfca9a8f4177e09abfc6038939b05d1eedf"
@@ -79,6 +92,11 @@ querystringify@^2.1.1:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.2.0.tgz#3345941b4153cb9d082d8eee4cda2016a9aef7f6"
   integrity sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==
+
+read-dir-filenames@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.npmjs.org/read-dir-filenames/-/read-dir-filenames-1.0.6.tgz#a02546256ae4691940ac4ae39555b3148f8f3598"
+  integrity sha512-AhVznShG7+H8fEzD8tfkILCXcUM/MBP7bvs+GVMFPyYnNxA1ItMfa3tdc0Vqaee5+l5t6udj9tm3KZ5fTD3JuQ==
 
 "readable-stream@1.x >=1.1.9":
   version "1.1.14"

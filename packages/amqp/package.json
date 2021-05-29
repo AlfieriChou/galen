@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/amqp",
-  "version": "0.5.14",
+  "version": "0.5.15",
   "description": "galenjs amqp.",
   "keywords": [
     "amqp"

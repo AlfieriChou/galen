@@ -10,7 +10,7 @@ galen是一个低代码平台，采用sequelize模型为主，后续将会完全
 
 ### packages
 
-* 类文件loader-[class-loader](https://github.com/AlfieriChou/galen/tree/master/packages/class-loader)
+* 类文件加载器-[class-loader](https://github.com/AlfieriChou/galen/tree/master/packages/class-loader)
 * 模型定义基础库-[base](https://github.com/AlfieriChou/galen/tree/master/packages/base)
 * 公用方法-[factories](https://github.com/AlfieriChou/galen/tree/master/packages/factories)
 * sequelize模型-[sequelize-models](https://github.com/AlfieriChou/galen/tree/master/packages/sequelize-models)
@@ -21,6 +21,7 @@ galen是一个低代码平台，采用sequelize模型为主，后续将会完全
 * swagger文档-[swagger](https://github.com/AlfieriChou/galen/tree/master/packages/swagger)
 * [koa-router](https://github.com/AlfieriChou/galen/tree/master/packages/koa-router)
 * typeorm模型-[typeorm-models](https://github.com/AlfieriChou/galen/tree/master/packages/typeorm-models)
+* amqp-[amqp](https://github.com/AlfieriChou/galen/tree/master/packages/amqp)
 
 ### 使用案例
 

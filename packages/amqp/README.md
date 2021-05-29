@@ -46,7 +46,7 @@ setInterval(async () => {
 ```javascript
 // test/test.js
 module.exports = class Test {
-  static async onMsg (msg) {
+  async onMsg (msg) {
     console.log('[message]: ', msg)
   }
 }

@@ -47,7 +47,7 @@ module.exports = class Amqp {
   async setup (ctx) {
     this.client = await amqp.connect(this.config.url)
     this.channel = await this.client.createChannel()
-    this.amqpService = classLoader(this.config.consumerClass)
+    this.amqpService = classLoader(this.config.consumerPath)
     Object.entries(this.config.sub)
       .reduce(async (promise, [key, {
         pullInterval = 1000, // 默认1s拉一次消息

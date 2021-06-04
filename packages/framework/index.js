@@ -1,6 +1,5 @@
 const Koa = require('koa')
 
-const validateJsonSchema = require('@galenjs/factories/validateJsonSchema')
 const loadModels = require('@galenjs/base')
 const buildRouter = require('@galenjs/koa-router')
 /* eslint-disable */
@@ -9,70 +8,13 @@ const createRedisClients = require('@galenjs/redis')
 /* eslint-disable */
 
 const gracefulExit = require('./lib/gracefulExit')
-
-const validateConfig = async (config) => {
-  await validateJsonSchema(config, {
-    type: 'object',
-    properties: {
-      port: { type: 'number' },
-      workspace: { type: 'string' },
-      modelPath: { type: 'string' },
-      sequelize: {
-        type: 'object',
-        properties: {
-          default: {
-            type: 'object',
-            properties: {
-              host: { type: 'string' },
-              database: { type: 'string' },
-              user: { type: 'string' },
-              password: { type: 'string' },
-              debug: { type: 'boolean' },
-              pool: {
-                type: 'object',
-                properties: {
-                  min: { type: 'integer' },
-                  max: { type: 'integer' }
-                }
-              }
-            },
-            required: ['host', 'database', 'user', 'password']
-          },
-          clients: {
-            type: 'object'
-          }
-        },
-        required: ['default', 'clients']
-      },
-      redis: {
-        type: 'object',
-        properties: {
-          default: {
-            type: 'object',
-            properties: {
-              host: { type: 'string' },
-              port: { type: 'number' },
-              password: { type: 'string' },
-              db: { type: 'number' },
-              keyPrefix: { type: 'string' }
-            }
-          },
-          clients: {
-            type: 'object'
-          }
-        },
-        required: ['default', 'clients']
-      }
-    },
-    required: ['port', 'workspace', 'modelPath']
-  })
-  return config
-}
+const validateConfig = require('./lib/validateConfig')
 
 module.exports = class Application {
   constructor (config) {
     this.config = config
     this.pendingCount = 0
+    this.logger = console
   }
 
   async init () {
@@ -119,7 +61,7 @@ module.exports = class Application {
   async listen () {
     const server = this.app.listen(this.config.port, () => {
       // eslint-disable-next-line no-console
-      console.log(`✅  The server is running at http://localhost:${this.config.port}`)
+      this.logger.info(`✅  The server is running at http://localhost:${this.config.port}`)
     })
   
     gracefulExit(server, async () => {

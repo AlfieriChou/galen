@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/framework",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "galenjs framework.",
   "keywords": [
     "framework"
@@ -32,10 +32,10 @@
     "koa": "^2.13.1"
   },
   "peerDependencies": {
+    "@galenjs/class-loader": "^0.6.0",
     "@galenjs/factories": "^0.6.0",
     "@galenjs/influx": "^0.6.0",
     "@galenjs/redis": "^0.6.0",
-    "@galenjs/sequelize-models": "^0.6.0",
-    "@galenjs/class-loader": "^0.6.0"
+    "@galenjs/sequelize-models": "^0.6.0"
   }
 }

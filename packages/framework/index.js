@@ -1,10 +1,13 @@
 const Koa = require('koa')
+const fs = require('fs')
 
 const loadModels = require('@galenjs/base')
 const buildRouter = require('@galenjs/koa-router')
 /* eslint-disable */
 const loadSequelizeModels = require('@galenjs/sequelize-models')
 const createRedisClients = require('@galenjs/redis')
+const createInfluxClient = require('@galenjs/influx')
+const classLoader = require('@galenjs/class-loader')
 /* eslint-disable */
 
 const gracefulExit = require('./lib/gracefulExit')
@@ -20,24 +23,54 @@ module.exports = class Application {
   async init () {
     await validateConfig(this.config)
     const app = new Koa()
+    this.app = app
+    this.ctx = app.context
     const { remoteMethods, modelSchemas, schemas } = await loadModels({
       workspace: this.config.workspace,
       modelPath: this.config.modelPath
     })
-    app.context.remoteMethods = remoteMethods
+    this.ctx.remoteMethods = remoteMethods
     this.remoteMethods = remoteMethods
-    app.context.modelSchemas = modelSchemas
+    this.ctx.modelSchemas = modelSchemas
     this.modelSchemas = modelSchemas
-    app.context.schemas = schemas
+    this.ctx.schemas = schemas
     this.schemas = schemas
     if (this.config.sequelize) {
-      app.context.models = await loadSequelizeModels(modelSchemas, this.config.sequelize)
+      this.ctx.models = await loadSequelizeModels(modelSchemas, this.config.sequelize)
     }
     if (this.config.redis) {
-      app.context.redis = await createRedisClients(this.config.redis)
+      this.ctx.redis = await createRedisClients(this.config.redis)
     }
-    this.app = app
-    this.ctx = app.context
+    if (this.config.influx) {
+      this.ctx.influx = await createInfluxClient(modelSchemas, this.config.influx)
+    }
+    if (this.config.controllerPath) {
+      this.ctx.controller = fs.existsSync(controllerPath) ? classLoader(controllerPath) : {}
+    }
+    if (this.config.servicePath) {
+      this.ctx.service = fs.existsSync(servicePath) ? classLoader(servicePath) : {}
+    }
+    this.app.use(async (ctx) => {
+      this.pendingCount += 1
+      if (ctx.request.method === 'OPTIONS') {
+        ctx.response.status = 200
+      }
+      try {
+        await next()
+      } catch (err) {
+        this.logger.error('error: ', err)
+        ctx.status = err.status || 500
+        ctx.body = {
+          code: ctx.status,
+          message: err.message
+        }
+      } finally {
+        this.pendingCount -= 1
+        if (this.pendingCount === 0) {
+          ctx.app.emit('pendingCount0')
+        }
+      }
+    })
   }
 
   async loadRoutes () {

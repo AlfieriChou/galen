@@ -52,7 +52,17 @@ module.exports = async config => {
           }
         },
         required: ['default', 'clients']
-      }
+      },
+      influx: {
+        type: 'object',
+        properties: {
+          host: { type: 'string' },
+          database: { type: 'string' }
+        },
+        required: ['host', 'database']
+      },
+      controllerPath: { type: 'string' },
+      servicePath: { type: 'string' }
     },
     required: ['port', 'workspace', 'modelPath']
   })

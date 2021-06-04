@@ -2,33 +2,41 @@
 # yarn lockfile v1
 
 
-"@galenjs/base@^0.5.12":
-  version "0.5.12"
-  resolved "https://registry.npmjs.org/@galenjs/base/-/base-0.5.12.tgz#e21e2c0e63af5c8045a7a93a81f2af7ef8cfe9bc"
-  integrity sha512-BnsWjW862tnlmCgvJ7wt7XS4raTMC4P4MC0e08Hq9A4RuVDW6bbHuhCOboUMLXuJ+yBVWdzZo8plyIvqBWh47Q==
+"@galenjs/base@^0.5.16":
+  version "0.5.16"
+  resolved "https://registry.yarnpkg.com/@galenjs/base/-/base-0.5.16.tgz#fe55faa10d56c23e4c3c5f30520f3c5bc5f34acc"
+  integrity sha512-6rMZnpgnRdoYbEfs/LOJ52N6hkQu1xD3xOdSjduxs3OjZipzK2qkbzsb/m7CAwvPdrW7iuRRZBF27fAxIjz9YA==
   dependencies:
-    "@galenjs/factories" "^0.5.10"
+    "@galenjs/factories" "^0.5.16"
     js-yaml "^3.14.0"
     jsonschema "^1.4.0"
     lodash "^4.17.20"
     read-dir-filenames "^1.0.6"
 
-"@galenjs/factories@^0.5.10":
-  version "0.5.10"
-  resolved "https://registry.npmjs.org/@galenjs/factories/-/factories-0.5.10.tgz#d9f70d8f805d3c8e017e1b15455be7d4ce9f3c97"
-  integrity sha512-0nucjzXThFey8TLvQSvMN5PPmwwjnWerM7nCffM6kKlZwiNtbjwOQc8P2w2R0UAgL6M+f6TeikceHP4WtMw+RA==
+"@galenjs/class-loader@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@galenjs/class-loader/-/class-loader-0.5.0.tgz#2862292bb2d596b199fdbf43578d7774b37ef65c"
+  integrity sha512-uOqPGPwWtuyTAPU0P1I58ueffuQRj2jib9uBswjtzE+E7/5wTmPoaloqY1ddsJY93CRoYsLE4NSSGKNSMfc2rg==
+  dependencies:
+    is-class "^0.0.9"
+    read-dir-filenames "^1.0.6"
+
+"@galenjs/factories@^0.5.16":
+  version "0.5.16"
+  resolved "https://registry.yarnpkg.com/@galenjs/factories/-/factories-0.5.16.tgz#4f3a02d193a3e302d5d1be561d5a5709bf834873"
+  integrity sha512-RyTOKeC0FwjO3YaXlm/nJggx8C3DnW/2ur+NW5/LnZjVH5cxkWCbDKLbNHJ/MuGDsiZqEEdoA2GPNu/TIIZmtQ==
 
 "@galenjs/influx-query-filter@^0.5.0":
   version "0.5.0"
   resolved "https://registry.npmjs.org/@galenjs/influx-query-filter/-/influx-query-filter-0.5.0.tgz#37c64c1dc9102a0106b2bb7053c19d032672c1e6"
   integrity sha512-u4quWTudJBq7OE61Wt3m8y4x1tRbjvbqXdj5I0u78W5dIyS+cYN+mU6iRN6aQr7F2HL0TBpoYuZcB+RJcfdYDQ==
 
-"@galenjs/koa-router@^0.5.11":
-  version "0.5.11"
-  resolved "https://registry.npmjs.org/@galenjs/koa-router/-/koa-router-0.5.11.tgz#12ffac94a893a5dcefb1298654ba8aef1ea811ee"
-  integrity sha512-9jj9aZWQL9OZU6t3L+Mg6A9EkDoUc32J7+BPEOlvhB9i69Wle9pi6tjROzqXxo7OCl87eFXiR4TYSQ3vcDxx6g==
+"@galenjs/koa-router@^0.5.16":
+  version "0.5.16"
+  resolved "https://registry.yarnpkg.com/@galenjs/koa-router/-/koa-router-0.5.16.tgz#b1e30c1defbf0b748779e38c193313660ef8ba23"
+  integrity sha512-SiL8P3EGPGroR4qBZiatZRRf43ZSEClRtqa6M8LiMfbZz+BOcXohzccuLuyd6CH+5CV52eQchii2WzNJM2WFFQ==
   dependencies:
-    "@galenjs/factories" "^0.5.10"
+    "@galenjs/factories" "^0.5.16"
     "@galenjs/influx-query-filter" "^0.5.0"
     "@galenjs/sequelize-query-filter" "^0.5.0"
     jsonschema "^1.4.0"
@@ -209,6 +217,11 @@ inherits@2.0.4:
   version "2.0.4"
   resolved "https://registry.npmjs.org/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
+
+is-class@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/is-class/-/is-class-0.0.9.tgz#3024c17b1cf8f6bdc1f3eca1bae507ea992b6d93"
+  integrity sha512-kUfRnejcRC9YLgblxoJ76dp9gZ3vMKTrDS5I6z2UVMOsHHSImNKCJocjQTkZr38PwiSZ9LVklaHEENaVYeFTXg==
 
 is-generator-function@^1.0.7:
   version "1.0.9"

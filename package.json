@@ -5,14 +5,14 @@
     "prepare": "husky install"
   },
   "devDependencies": {
-    "@commitlint/cli": "^11.0.0",
-    "@commitlint/config-conventional": "^11.0.0",
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
     "eslint": "^7.27.0",
     "eslint-config-standard-airbnb-base": "^1.0.3",
     "eslint-friendly-formatter": "^4.0.1",
     "eslint-plugin-json": "^3.0.0",
     "husky": "^6.0.0",
-    "lerna": "^3.22.1",
-    "lint-staged": "^10.5.4"
+    "lerna": "^4.0.0",
+    "lint-staged": "^11.0.0"
   }
 }

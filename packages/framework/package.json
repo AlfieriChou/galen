@@ -36,5 +36,8 @@
     "@galenjs/influx": "^0.5.0",
     "@galenjs/redis": "^0.5.14",
     "@galenjs/sequelize-models": "^0.5.14"
+  },
+  "devDependencies": {
+    "@galenjs/class-loader": "^0.5.0"
   }
 }

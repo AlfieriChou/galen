@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/framework",
-  "version": "0.5.16",
+  "version": "0.6.0",
   "description": "galenjs framework.",
   "keywords": [
     "framework"
@@ -27,8 +27,8 @@
     "url": "https://github.com/AlfieriChou/galen/issues"
   },
   "dependencies": {
-    "@galenjs/base": "^0.5.16",
-    "@galenjs/koa-router": "^0.5.16",
+    "@galenjs/base": "^0.6.0",
+    "@galenjs/koa-router": "^0.6.0",
     "koa": "^2.13.1"
   },
   "peerDependencies": {
@@ -38,6 +38,6 @@
     "@galenjs/sequelize-models": "^0.5.14"
   },
   "devDependencies": {
-    "@galenjs/class-loader": "^0.5.0"
+    "@galenjs/class-loader": "^0.6.0"
   }
 }

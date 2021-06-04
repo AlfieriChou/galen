@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/influx-query-filter",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "galenjs influx query filter.",
   "keywords": [
     "galenjs",

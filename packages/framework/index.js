@@ -1,5 +1,6 @@
 const Koa = require('koa')
 const fs = require('fs')
+const assert = require('assert')
 
 const loadModels = require('@galenjs/base')
 const buildRouter = require('@galenjs/koa-router')
@@ -73,19 +74,18 @@ module.exports = class Application {
     })
   }
 
-  async loadRoutes () {
+  async loadRoutes (remoteMethods, modelSchemas) {
     const router = await buildRouter({
-      remoteMethods: this.remoteMethods,
-      modelSchemas: this.modelSchemas
+      remoteMethods,
+      modelSchemas
     })
     this.app.use(router.routes())
     this.app.use(router.allowedMethods())
   }
 
-  async listen () {
-    return this.app.listen(this.config.port, () => {
-      // eslint-disable-next-line no-console
-      this.logger.info(`✅  The server is running at http://localhost:${this.config.port}`)
+  async listen (port = 4000) {
+    return this.app.listen(port, () => {
+      this.logger.info(`✅  The server is running at http://localhost:${port}`)
     })
   }
 
@@ -111,8 +111,10 @@ module.exports = class Application {
   }
 
   async start () {
-    await this.loadRoutes()
-    const server = await this.listen()
+    assert(this.remoteMethods, 'should init framework')
+    assert(this.modelSchemas, 'should init framework')
+    await this.loadRoutes(this.remoteMethods, this.modelSchemas)
+    const server = await this.listen(this.config.port)
     await this.softExit(server)
   }
 }

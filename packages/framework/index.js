@@ -82,6 +82,13 @@ module.exports = class Application {
     this.app.use(router.allowedMethods())
   }
 
+  async listen () {
+    return this.app.listen(this.config.port, () => {
+      // eslint-disable-next-line no-console
+      this.logger.info(`✅  The server is running at http://localhost:${this.config.port}`)
+    })
+  }
+
   async closed () {
     if (this.app.context.redis) {
       await this.app.context.redis.quit()
@@ -91,13 +98,8 @@ module.exports = class Application {
     }
   }
 
-  async listen () {
-    const server = this.app.listen(this.config.port, () => {
-      // eslint-disable-next-line no-console
-      this.logger.info(`✅  The server is running at http://localhost:${this.config.port}`)
-    })
-  
-    gracefulExit(server, async () => {
+  async softExit (server) {
+    await gracefulExit(server, async () => {
       if (this.pendingCount === 0) {
         await this.closed()
       } else {
@@ -106,5 +108,11 @@ module.exports = class Application {
         })
       }
     })
+  }
+
+  async start () {
+    await this.loadRoutes()
+    const server = await this.listen()
+    await this.softExit(server)
   }
 }

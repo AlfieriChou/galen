@@ -16,8 +16,7 @@ const bootstrap = async () => {
   const framework = new Framework(config)
   await framework.init()
   freamework.app.use(...middlewares)
-  await framework.loadRoutes()
-  await framework.listen()
+  await framework.start()
 }
 
 bootstrap()

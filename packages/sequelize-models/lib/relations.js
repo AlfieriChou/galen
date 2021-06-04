@@ -1,5 +1,5 @@
 const assert = require('assert')
-const validateSchema = require('./validateSchema')
+const validateSchema = require('@galenjs/factories/validateJsonSchema')
 
 module.exports = async ({ modelName, relations }, models) => {
   Object.entries(relations).reduce(async (promise, [key, value]) => {

@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
+const validateSchema = require('@galenjs/factories/validateJsonSchema')
 
-const validateSchema = require('./lib/validateSchema')
 const createModel = require('./lib/createModel')
 const buildRelations = require('./lib/relations')
 const migrateModel = require('./lib/migrate')
@@ -105,9 +105,9 @@ module.exports = async (schemas, {
     await [...instances.keys()]
       .reduce(async (promise, key) => {
         await promise
-        logger.info('[@galenjs/sequelize-models] ', key, 'start close')
+        logger.info('[@galenjs/sequelize-models] ', 'client ', `{${key}} `, 'start close')
         await instances.get(key).close()
-        logger.info('[@galenjs/sequelize-models] ', key, 'close done')
+        logger.info('[@galenjs/sequelize-models] ', 'client ', `{${key}} `, 'closed')
       }, Promise.resolve())
   }
   return db

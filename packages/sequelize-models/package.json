@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/sequelize-models",
-  "version": "0.5.7",
+  "version": "0.5.14",
   "description": "sequelize models.",
   "keywords": [
     "sequelize",
@@ -29,6 +29,7 @@
     "url": "https://github.com/AlfieriChou/galen/issues"
   },
   "dependencies": {
+    "@galenjs/factories": "^0.5.10",
     "jsonschema": "^1.4.0",
     "lodash": "^4.17.20",
     "sequelize": "^6.3.5"

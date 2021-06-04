@@ -1,7 +1,7 @@
 const KoaRouter = require('koa-router')
 const { Validator } = require('jsonschema')
 const _ = require('lodash')
-const { camelJsonKeys } = require('@galenjs/func/lodash')
+const { camelJsonKeys } = require('@galenjs/factories/lodash')
 
 const BaseController = require('./lib/baseController')
 

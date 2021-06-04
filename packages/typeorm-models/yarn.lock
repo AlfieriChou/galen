@@ -299,10 +299,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@galenjs/func@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.npmjs.org/@galenjs/func/-/func-0.5.0.tgz#a01ad89426749cc62fe2710895e47bb312dfcb36"
-  integrity sha512-kqSz8USY+5Z80TK+MK5cZCyRdYBdM8YzHgSrG00d52yUG2JUVAcUS5DO3+O36YBvLxz5gMr3nk7MWavIx8yjmA==
+"@galenjs/factories@^0.5.10":
+  version "0.5.10"
+  resolved "https://registry.yarnpkg.com/@galenjs/factories/-/factories-0.5.10.tgz#d9f70d8f805d3c8e017e1b15455be7d4ce9f3c97"
+  integrity sha512-0nucjzXThFey8TLvQSvMN5PPmwwjnWerM7nCffM6kKlZwiNtbjwOQc8P2w2R0UAgL6M+f6TeikceHP4WtMw+RA==
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"

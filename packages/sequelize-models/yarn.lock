@@ -279,6 +279,11 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@galenjs/factories@^0.5.10":
+  version "0.5.10"
+  resolved "https://registry.npmjs.org/@galenjs/factories/-/factories-0.5.10.tgz#d9f70d8f805d3c8e017e1b15455be7d4ce9f3c97"
+  integrity sha512-0nucjzXThFey8TLvQSvMN5PPmwwjnWerM7nCffM6kKlZwiNtbjwOQc8P2w2R0UAgL6M+f6TeikceHP4WtMw+RA==
+
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
   resolved "https://registry.npm.taobao.org/@istanbuljs/load-nyc-config/download/@istanbuljs/load-nyc-config-1.1.0.tgz#fd3db1d59ecf7cf121e80650bb86712f9b55eced"

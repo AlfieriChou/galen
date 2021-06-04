@@ -24,7 +24,7 @@ jobs:
         cd ../base
         yarn
         yarn run test
-        cd ../func
+        cd ../factories
         yarn
         yarn add jsonschema --peer
         yarn run test

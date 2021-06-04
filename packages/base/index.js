@@ -3,9 +3,9 @@ const _ = require('lodash')
 const path = require('path')
 const fs = require('fs')
 const yaml = require('js-yaml')
+const validateSchema = require('@galenjs/factories/validateJsonSchema')
 
 const buildCrudRemoteMethods = require('./lib/remoteMethods')
-const validateSchema = require('./lib/validateSchema')
 
 const buildModels = async (modelDirPath) => {
   const modelSchemas = {}

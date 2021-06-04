@@ -1,17 +1,13 @@
 {
-  "name": "@galenjs/base",
-  "version": "0.5.12",
-  "description": "galenjs base.",
+  "name": "@galenjs/factories",
+  "version": "0.5.10",
+  "description": "galenjs factories.",
   "keywords": [
-    "json",
-    "schema",
-    "json-schema",
-    "doc"
+    "function"
   ],
   "author": "AlfieriChou <alfierichou@gmail.com>",
   "homepage": "https://github.com/AlfieriChou/galen#readme",
-  "license": "MIT",
-  "main": "index.js",
+  "license": "ISC",
   "directories": {
     "test": "__tests__"
   },
@@ -30,15 +26,12 @@
   "bugs": {
     "url": "https://github.com/AlfieriChou/galen/issues"
   },
-  "dependencies": {
-    "@galenjs/factories": "^0.5.10",
-    "js-yaml": "^3.14.0",
-    "jsonschema": "^1.4.0",
-    "lodash": "^4.17.20",
-    "read-dir-filenames": "^1.0.6"
-  },
   "devDependencies": {
     "jest": "^26.6.3"
+  },
+  "peerDependencies": {
+    "jsonschema": "^1.4.0",
+    "lodash": "^4.17.20"
   },
   "gitHead": "85a39cad87c7303b15eea4366ba5279a67cf72dd"
 }

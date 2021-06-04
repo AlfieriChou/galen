@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const validateSchema = require('./validateSchema')
+const validateSchema = require('@galenjs/factories/validateJsonSchema')
 
 module.exports = async ({
   indexes, tableName

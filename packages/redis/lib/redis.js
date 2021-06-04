@@ -1,4 +1,5 @@
 const Redis = require('ioredis')
+const assert = require('assert')
 
 module.exports = class RedisService {
   constructor (options) {
@@ -24,9 +25,9 @@ module.exports = class RedisService {
     await [...this.redis.keys()]
       .reduce(async (promise, key) => {
         await promise
-        logger.info('[@galenjs/redis] ', key, 'start close')
+        logger.info('[@galenjs/redis] client ', `{${key}} `, 'start close')
         await this.redis.get(key).quit()
-        logger.info('[@galenjs/redis] ', key, 'close done')
+        logger.info('[@galenjs/redis] client ', `{${key}} `, 'closed')
       }, Promise.resolve())
   }
 
@@ -79,5 +80,45 @@ module.exports = class RedisService {
         .exec()
     }
     return this.select(name).hmset(key, obj)
+  }
+
+  async getList (name, key, start, end) {
+    assert(start >= 0, 'list start is required')
+    assert(end >= 0, 'list end is required')
+    return this.select(name).lrange(key, start, end)
+  }
+
+  async getListLength (name, key) {
+    return this.select(name).llen(key)
+  }
+
+  async setList (name, key, list, expire) {
+    assert(list.length > 0, 'list must be non-empty')
+    if (expire) {
+      return this.select(name).multi()
+        .lpush(key, ...list)
+        .expire(key, Math.floor(expire))
+        .exec()
+    }
+    return this.select(name).lpush(key, ...list)
+  }
+
+  async getMembers (name, key) {
+    return this.select(name).smembers(key)
+  }
+
+  async getMembersLength (name, key) {
+    return this.select(name).scard(key)
+  }
+
+  async setMembers (name, key, members, expire) {
+    assert(members.length > 0, 'members must be non-empty')
+    if (expire) {
+      return this.select(name).multi()
+        .sadd(key, ...members)
+        .expire(key, Math.floor(expire))
+        .exec()
+    }
+    return this.select(name).sadd(key, ...members)
   }
 }

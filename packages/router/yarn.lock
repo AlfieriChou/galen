@@ -2,20 +2,20 @@
 # yarn lockfile v1
 
 
-"@galenjs/func@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.npmjs.org/@galenjs/func/-/func-0.4.0.tgz#3f854266db19c4433deb016a27fbbad84af34583"
-  integrity sha512-Mk5BZ0MnV7c28CciLBxEDAJrzVUt581zdi+wBwqoFJ9M1Md4c770Qb15iN93sB7USnzYYNqoHpuw5Rsg5LHJQQ==
+"@galenjs/factories@^0.5.10":
+  version "0.5.10"
+  resolved "https://registry.yarnpkg.com/@galenjs/factories/-/factories-0.5.10.tgz#d9f70d8f805d3c8e017e1b15455be7d4ce9f3c97"
+  integrity sha512-0nucjzXThFey8TLvQSvMN5PPmwwjnWerM7nCffM6kKlZwiNtbjwOQc8P2w2R0UAgL6M+f6TeikceHP4WtMw+RA==
 
-"@galenjs/influx-query-filter@^0.4.2":
-  version "0.4.2"
-  resolved "https://registry.npmjs.org/@galenjs/influx-query-filter/-/influx-query-filter-0.4.2.tgz#5acac4a248c6f48d5e33e5e7f603f3168413dab0"
-  integrity sha512-zopzpyyi+uJhV0yYTDqd0idjm/Xdpzx4Y0YFySj2ettk1rVNP4MPeQhgv1+6yiaTloE6jtE5nTT1/mBVrf/gEg==
+"@galenjs/influx-query-filter@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@galenjs/influx-query-filter/-/influx-query-filter-0.5.0.tgz#37c64c1dc9102a0106b2bb7053c19d032672c1e6"
+  integrity sha512-u4quWTudJBq7OE61Wt3m8y4x1tRbjvbqXdj5I0u78W5dIyS+cYN+mU6iRN6aQr7F2HL0TBpoYuZcB+RJcfdYDQ==
 
-"@galenjs/sequelize-query-filter@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.npmjs.org/@galenjs/sequelize-query-filter/-/sequelize-query-filter-0.4.0.tgz#42bede72455c208b2f9e0456cba8a990c3c27245"
-  integrity sha512-1hWs90q8CNRKkhnLiCwW7WwodtZ07xWE6YfUFyoFLQJF/8OnGA2hccl9D4BKkbqB9tx4tzfU1NzujWUa9XrP1g==
+"@galenjs/sequelize-query-filter@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@galenjs/sequelize-query-filter/-/sequelize-query-filter-0.5.0.tgz#7028df89da79c967b5233b6953d0280db7229aa3"
+  integrity sha512-mIXL8m65D5AW/eJe1TlaktZ0xBwc5NVuV3fLV/X7ebZ02MnqHuK5gOd3e3dYXTrA2o6u3uvLml0eW0TYVTE6bQ==
   dependencies:
     lodash "^4.17.20"
     sequelize "^6.3.5"

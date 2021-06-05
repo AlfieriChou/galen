@@ -46,12 +46,12 @@ module.exports = class Application {
       this.ctx.influx = await createInfluxClient(modelSchemas, this.config.influx)
     }
     if (this.config.controllerPath) {
-      this.ctx.controller = fs.existsSync(controllerPath) ? classLoader(controllerPath) : {}
+      this.ctx.controller = fs.existsSync(this.config.controllerPath) ? classLoader(this.config.controllerPath) : {}
     }
     if (this.config.servicePath) {
-      this.ctx.service = fs.existsSync(servicePath) ? classLoader(servicePath) : {}
+      this.ctx.service = fs.existsSync(this.config.servicePath) ? classLoader(this.config.servicePath) : {}
     }
-    this.app.use(async (ctx) => {
+    this.app.use(async (ctx, next) => {
       this.pendingCount += 1
       if (ctx.request.method === 'OPTIONS') {
         ctx.response.status = 200

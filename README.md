@@ -22,7 +22,7 @@ galen是一个低代码平台，采用sequelize模型为主，后续将会完全
 * [koa-router](https://github.com/AlfieriChou/galen/tree/master/packages/koa-router)
 * typeorm模型-[typeorm-models](https://github.com/AlfieriChou/galen/tree/master/packages/typeorm-models)
 * amqp-[amqp](https://github.com/AlfieriChou/galen/tree/master/packages/amqp)
-* framework-[framework](https://github.com/AlfieriChou/galen/tree/master/packages/framework)
+* 框架-[framework](https://github.com/AlfieriChou/galen/tree/master/packages/framework)
 
 ### 使用案例
 

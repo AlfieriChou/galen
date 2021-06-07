@@ -1,6 +1,7 @@
 const Koa = require('koa')
 const fs = require('fs')
 const assert = require('assert')
+const _ = require('lodash')
 
 const loadModels = require('@galenjs/base')
 const buildRouter = require('@galenjs/koa-router')
@@ -26,7 +27,10 @@ module.exports = class Application {
     const app = new Koa()
     this.app = app
     this.ctx = app.context
+    this.ctx.controller = {}
+    this.ctx.service = {}
     const { remoteMethods, modelSchemas, schemas } = await loadModels({
+      plugins: this.config.plugins || [],
       workspace: this.config.workspace,
       modelPath: this.config.modelPath
     })
@@ -46,10 +50,32 @@ module.exports = class Application {
       this.ctx.influx = await createInfluxClient(modelSchemas, this.config.influx)
     }
     if (this.config.controllerPath) {
-      this.ctx.controller = fs.existsSync(this.config.controllerPath) ? classLoader(this.config.controllerPath) : {}
+      const controllerDirPath = path.join(workspace, `/${this.config.controllerPath}`)
+      if (fs.existsSync(controllerDirPath)) {
+        this.ctx.controller = _.merge(this.ctx.controller, classLoader(controllerDirPath))
+      }
+      if (this.config.plugins && this.config.plugins.length > 0) {
+        await Promise.all(plugins.map(async (pluginName) => {
+          const pluginControllerDirPath = path.join(workspace, `/plugins/${pluginName}/${this.config.controllerPath}`)
+          if (fs.existsSync(pluginControllerDirPath)) {
+            this.ctx.controller = _.merge(this.ctx.controller, classLoader(pluginControllerDirPath))
+          }
+        }))
+      }
     }
-    if (this.config.servicePath) {
-      this.ctx.service = fs.existsSync(this.config.servicePath) ? classLoader(this.config.servicePath) : {}
+    if (this.config.servicePath && fs.existsSync(this.config.servicePath)) {
+      const serviceDirPath = path.join(workspace, `/${this.config.servicePath}`)
+      if (fs.existsSync(serviceDirPath)) {
+        this.ctx.service = _.merge(this.ctx.controller, classLoader(serviceDirPath))
+      }
+      if (this.config.plugins && this.config.plugins.length > 0) {
+        await Promise.all(plugins.map(async (pluginName) => {
+          const pluginServiceDirPath = path.join(workspace, `/plugins/${pluginName}/${this.config.servicePath}`)
+          if (fs.existsSync(pluginServiceDirPath)) {
+            this.ctx.controller = _.merge(this.ctx.controller, classLoader(pluginServiceDirPath))
+          }
+        }))
+      }
     }
     this.app.use(async (ctx, next) => {
       this.pendingCount += 1

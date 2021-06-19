@@ -1,6 +1,4 @@
 const Koa = require('koa')
-const fs = require('fs')
-const path = require('path')
 const assert = require('assert')
 
 const loadModels = require('@galenjs/base')
@@ -9,11 +7,12 @@ const buildRouter = require('@galenjs/koa-router')
 const loadSequelizeModels = require('@galenjs/sequelize-models')
 const createRedisClients = require('@galenjs/redis')
 const createInfluxClient = require('@galenjs/influx')
-const classLoader = require('@galenjs/class-loader')
 /* eslint-disable */
 
 const gracefulExit = require('./lib/gracefulExit')
 const validateConfig = require('./lib/validateConfig')
+const loadController = require('./lib/loadController')
+const loadService = require('./lib/loadService')
 
 module.exports = class Application {
   constructor (config) {
@@ -27,8 +26,8 @@ module.exports = class Application {
     const app = new Koa()
     this.app = app
     this.ctx = app.context
-    this.ctx.controller = {}
-    this.ctx.service = {}
+    this.ctx.controller = loadController(this.config)
+    this.ctx.service = loadService(this.config)
     const { remoteMethods, modelSchemas, schemas } = await loadModels({
       plugins: this.config.plugins || [],
       workspace: this.config.workspace,
@@ -48,46 +47,6 @@ module.exports = class Application {
     }
     if (this.config.influx) {
       this.ctx.influx = await createInfluxClient(modelSchemas, this.config.influx)
-    }
-    if (this.config.controllerPath) {
-      const controllerDirPath = path.join(this.config.workspace, `/${this.config.controllerPath}`)
-      if (fs.existsSync(controllerDirPath)) {
-        this.ctx.controller = {
-          ...this.ctx.controller,
-          ...classLoader(controllerDirPath)
-        }
-      }
-      if (this.config.plugins && this.config.plugins.length > 0) {
-        await Promise.all(this.config.plugins.map(async (pluginName) => {
-          const pluginControllerDirPath = path.join(this.config.workspace, `/plugins/${pluginName}/${this.config.controllerPath}`)
-          if (fs.existsSync(pluginControllerDirPath)) {
-            this.ctx.controller = {
-              ...this.ctx.controller,
-              ...classLoader(pluginControllerDirPath)
-            }
-          }
-        }))
-      }
-    }
-    if (this.config.servicePath && fs.existsSync(this.config.servicePath)) {
-      const serviceDirPath = path.join(this.config.workspace, `/${this.config.servicePath}`)
-      if (fs.existsSync(serviceDirPath)) {
-        this.ctx.service = {
-          ...this.ctx.controller,
-          ...classLoader(serviceDirPath)
-        }
-      }
-      if (this.config.plugins && this.config.plugins.length > 0) {
-        await Promise.all(this.config.plugins.map(async (pluginName) => {
-          const pluginServiceDirPath = path.join(this.config.workspace, `/plugins/${pluginName}/${this.config.servicePath}`)
-          if (fs.existsSync(pluginServiceDirPath)) {
-            this.ctx.controller = {
-              ...this.ctx.controller,
-              ...classLoader(pluginServiceDirPath)
-            }
-          }
-        }))
-      }
     }
     this.app.use(async (ctx, next) => {
       this.pendingCount += 1

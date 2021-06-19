@@ -5,7 +5,18 @@ module.exports = async config => {
     type: 'object',
     properties: {
       port: { type: 'number' },
-      plugins: { type: 'array', items: { type: 'string' } },
+      plugin: {
+        type: 'object',
+        properties: {
+          mainPath: { type: 'string' },
+          plugins: {
+            type: 'array',
+            items: { type: 'string' },
+            minItems: 1
+          }
+        },
+        required: ['plugins']
+      },
       workspace: { type: 'string' },
       modelPath: { type: 'string' },
       sequelize: {

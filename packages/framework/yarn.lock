@@ -13,6 +13,14 @@
     lodash "^4.17.20"
     read-dir-filenames "^1.0.6"
 
+"@galenjs/class-loader@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.npmjs.org/@galenjs/class-loader/-/class-loader-0.6.0.tgz#3f106a27471c6fcfff757f4fb77dca42766ecf26"
+  integrity sha512-9wlUK3WygOWNOX+HEV8DXQCqJiISbiBVUW884d0NQqR5lEh544iQLTTTBXNrEsm9cs/DJFQTAdbFK3mSSE6TVQ==
+  dependencies:
+    is-class "^0.0.9"
+    read-dir-filenames "^1.0.6"
+
 "@galenjs/factories@^0.6.0":
   version "0.6.0"
   resolved "https://registry.npmjs.org/@galenjs/factories/-/factories-0.6.0.tgz#bc9a08495e1dd0c52c0eee6b9e63b4e8a93d50e9"
@@ -44,9 +52,9 @@
     sequelize "^6.3.5"
 
 "@types/node@*":
-  version "15.12.1"
-  resolved "https://registry.npmjs.org/@types/node/-/node-15.12.1.tgz#9b60797dee1895383a725f828a869c86c6caa5c2"
-  integrity sha512-zyxJM8I1c9q5sRMtVF+zdd13Jt6RU4r4qfhTd7lQubyThvLfx6yYekWSQjGCGV2Tkecgxnlpl/DNlb6Hg+dmEw==
+  version "15.12.4"
+  resolved "https://registry.npmjs.org/@types/node/-/node-15.12.4.tgz#e1cf817d70a1e118e81922c4ff6683ce9d422e26"
+  integrity sha512-zrNj1+yqYF4WskCMOHwN+w9iuD12+dGm0rQ35HLl9/Ouuq52cEtd0CH9qMgrdNmi5ejC1/V7vKEXYubB+65DkA==
 
 accepts@^1.3.5:
   version "1.3.7"
@@ -209,6 +217,11 @@ inherits@2.0.4:
   version "2.0.4"
   resolved "https://registry.npmjs.org/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
+
+is-class@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.npmjs.org/is-class/-/is-class-0.0.9.tgz#3024c17b1cf8f6bdc1f3eca1bae507ea992b6d93"
+  integrity sha512-kUfRnejcRC9YLgblxoJ76dp9gZ3vMKTrDS5I6z2UVMOsHHSImNKCJocjQTkZr38PwiSZ9LVklaHEENaVYeFTXg==
 
 is-generator-function@^1.0.7:
   version "1.0.9"

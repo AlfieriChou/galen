@@ -28,11 +28,11 @@
   },
   "dependencies": {
     "@galenjs/base": "^0.6.0",
+    "@galenjs/class-loader": "^0.6.0",
     "@galenjs/koa-router": "^0.6.0",
     "koa": "^2.13.1"
   },
   "peerDependencies": {
-    "@galenjs/class-loader": "^0.6.0",
     "@galenjs/factories": "^0.6.0",
     "@galenjs/influx": "^0.6.0",
     "@galenjs/redis": "^0.6.0",

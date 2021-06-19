@@ -26,8 +26,8 @@ module.exports = class Application {
     const app = new Koa()
     this.app = app
     this.ctx = app.context
-    this.ctx.controller = loadController(this.config)
-    this.ctx.service = loadService(this.config)
+    this.ctx.controller = await loadController(this.config)
+    this.ctx.service = await loadService(this.config)
     const { remoteMethods, modelSchemas, schemas } = await loadModels({
       plugins: this.config.plugin ? this.config.plugin.plugins : [],
       workspace: this.config.workspace,

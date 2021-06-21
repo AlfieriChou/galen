@@ -29,7 +29,7 @@ module.exports = async ({
     if (fs.existsSync(middlewareDirPath)) {
       middleware = {
         ...middleware,
-        ...loadMiddlewareDirToObj(middlewareDirPath)
+        ...(await loadMiddlewareDirToObj(middlewareDirPath))
       }
     }
     if (plugin) {
@@ -42,7 +42,7 @@ module.exports = async ({
         if (fs.existsSync(pluginMiddlewareDirPath)) {
           middleware = {
             ...middleware,
-            ...loadMiddlewareDirToObj(pluginMiddlewareDirPath)
+            ...(await loadMiddlewareDirToObj(pluginMiddlewareDirPath))
           }
         }
       }))

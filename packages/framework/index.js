@@ -19,15 +19,17 @@ const loadMiddleware = require('./lib/loadMiddleware')
 module.exports = class Application {
   constructor (config) {
     this.config = config
-    this.pendingCount = 0
     this.logger = console
   }
 
   async init () {
     await validateConfig(this.config)
     const app = new Koa()
+
     this.app = app
+    this.app.pendingCount = 0
     this.ctx = app.context
+    this.ctx.app = app
 
     const { remoteMethods, modelSchemas, schemas } = await loadModels({
       plugins: this.config.plugin ? this.config.plugin.plugins : [],
@@ -69,7 +71,7 @@ module.exports = class Application {
         )
         await next()
       },
-      ...loadMiddleware(this.config),
+      ...(await loadMiddleware(this.config)),
       router: () => compose([router.routes(), router.allowedMethods()])
     }
     
@@ -114,7 +116,7 @@ module.exports = class Application {
 
   async softExit (server) {
     await gracefulExit(server, async () => {
-      if (this.pendingCount === 0) {
+      if (this.app.pendingCount === 0) {
         await this.closed()
       } else {
         this.app.on('pendingCount0', async () => {

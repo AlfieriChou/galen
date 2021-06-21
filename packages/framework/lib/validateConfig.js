@@ -75,7 +75,16 @@ module.exports = async config => {
       },
       controllerPath: { type: 'string' },
       servicePath: { type: 'string' },
-      middlewarePath: { type: 'string' }
+      middlewarePath: { type: 'string' },
+      cors: {
+        type: 'object',
+        properties: {
+          origin: { type: 'string' },
+          maxAge: { type: 'number' },
+          allowMethods: { type: 'string' },
+          allowHeaders: { type: 'string' }
+        }
+      }
     },
     required: ['port', 'workspace', 'modelPath']
   })

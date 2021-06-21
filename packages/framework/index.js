@@ -49,10 +49,29 @@ module.exports = class Application {
     this.ctx.controller = await loadController(this.config)
     this.ctx.service = await loadService(this.config)
     this.middleware = {
+      cors: () => async (ctx, next) => {
+        ctx.set(
+          'Access-Control-Allow-Origin',
+          this.config.cors ? this.config.cors.origin : ctx.request.header.origin
+        )
+        ctx.set('Access-Control-Allow-Credentials', true)
+        ctx.set(
+          'Access-Control-Max-Age',
+          this.config.cors ? this.config.cors.maxAge : 86400000
+        )
+        ctx.set(
+          'Access-Control-Allow-Methods',
+          this.config.cors ? this.config.cors.allowMethods : 'OPTIONS, GET, PUT, POST, DELETE'
+        )
+        ctx.set(
+          'Access-Control-Allow-Headers',
+          this.config.cors ? this.config.cors.allowHeaders : 'x-requested-with, accept, origin, content-type'
+        )
+        await next()
+      },
       ...loadMiddleware(this.config),
       router: () => compose([router.routes(), router.allowedMethods()])
     }
-    this.coreMiddleware = Object.keys(this.middleware)
     
     if (this.config.sequelize) {
       this.ctx.models = await loadSequelizeModels(modelSchemas, this.config.sequelize)
@@ -63,27 +82,10 @@ module.exports = class Application {
     if (this.config.influx) {
       this.ctx.influx = await createInfluxClient(modelSchemas, this.config.influx)
     }
-    this.app.use(async (ctx, next) => {
-      this.pendingCount += 1
-      if (ctx.request.method === 'OPTIONS') {
-        ctx.response.status = 200
-      }
-      try {
-        await next()
-      } catch (err) {
-        this.logger.error('error: ', err)
-        ctx.status = err.status || 500
-        ctx.body = {
-          code: ctx.status,
-          message: err.message
-        }
-      } finally {
-        this.pendingCount -= 1
-        if (this.pendingCount === 0) {
-          ctx.app.emit('pendingCount0')
-        }
-      }
-    })
+  }
+
+  get coreMiddleware () {
+    return Object.keys(this.middleware)
   }
 
   async loadMiddleware (middlewareNames) {

@@ -41,17 +41,16 @@ module.exports = class Application {
     this.ctx.schemas = schemas
     this.schemas = schemas
 
+    const router = await buildRouter({
+      remoteMethods,
+      modelSchemas
+    })
+
     this.ctx.controller = await loadController(this.config)
     this.ctx.service = await loadService(this.config)
     this.middleware = {
       ...loadMiddleware(this.config),
-      router: async () => {
-        const router = await buildRouter({
-          remoteMethods,
-          modelSchemas
-        })
-        return compose([router.routes(), router.allowedMethods()])
-      }
+      router: () => compose([router.routes(), router.allowedMethods()])
     }
     this.coreMiddleware = Object.keys(this.middleware)
     
@@ -88,7 +87,9 @@ module.exports = class Application {
   }
 
   async loadMiddleware (middlewareNames) {
-    await middlewareNames.reduce(async (promise, middlewareName) => {
+    await (
+      middlewareNames || this.coreMiddleware
+    ).reduce(async (promise, middlewareName) => {
       await promise
       this.app.use(this.middleware[middlewareName]())
     }, Promise.resolve())
@@ -124,7 +125,6 @@ module.exports = class Application {
   async start () {
     assert(this.remoteMethods, 'should init framework')
     assert(this.modelSchemas, 'should init framework')
-    await this.loadRoutes(this.remoteMethods, this.modelSchemas)
     const server = await this.listen(this.config.port)
     await this.softExit(server)
   }

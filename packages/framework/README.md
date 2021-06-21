@@ -72,6 +72,16 @@ controllerPath: 'app/controller'
 servicePath: 'app/service'
 ```
 
+### middlewarePath
+
+中间件相对项目路径
+
+例如：
+
+```javascript
+middlewarePath: 'app/middleware'
+```
+
 ### sequelize
 
 sequelize数据模型配置，支持多实例配置

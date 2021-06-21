@@ -1,4 +1,5 @@
 const Koa = require('koa')
+const compose = require('koa-compose')
 const assert = require('assert')
 
 const loadModels = require('@galenjs/base')
@@ -13,6 +14,7 @@ const gracefulExit = require('./lib/gracefulExit')
 const validateConfig = require('./lib/validateConfig')
 const loadController = require('./lib/loadController')
 const loadService = require('./lib/loadService')
+const loadMiddleware = require('./lib/loadMiddleware')
 
 module.exports = class Application {
   constructor (config) {
@@ -26,8 +28,7 @@ module.exports = class Application {
     const app = new Koa()
     this.app = app
     this.ctx = app.context
-    this.ctx.controller = await loadController(this.config)
-    this.ctx.service = await loadService(this.config)
+
     const { remoteMethods, modelSchemas, schemas } = await loadModels({
       plugins: this.config.plugin ? this.config.plugin.plugins : [],
       workspace: this.config.workspace,
@@ -39,6 +40,21 @@ module.exports = class Application {
     this.modelSchemas = modelSchemas
     this.ctx.schemas = schemas
     this.schemas = schemas
+
+    this.ctx.controller = await loadController(this.config)
+    this.ctx.service = await loadService(this.config)
+    this.middleware = {
+      ...loadMiddleware(this.config),
+      router: async () => {
+        const router = await buildRouter({
+          remoteMethods,
+          modelSchemas
+        })
+        return compose([router.routes(), router.allowedMethods()])
+      }
+    }
+    this.coreMiddleware = Object.keys(this.middleware)
+    
     if (this.config.sequelize) {
       this.ctx.models = await loadSequelizeModels(modelSchemas, this.config.sequelize)
     }
@@ -71,13 +87,11 @@ module.exports = class Application {
     })
   }
 
-  async loadRoutes (remoteMethods, modelSchemas) {
-    const router = await buildRouter({
-      remoteMethods,
-      modelSchemas
-    })
-    this.app.use(router.routes())
-    this.app.use(router.allowedMethods())
+  async loadMiddleware (middlewareNames) {
+    await middlewareNames.reduce(async (promise, middlewareName) => {
+      await promise
+      this.app.use(this.middleware[middlewareName]())
+    }, Promise.resolve())
   }
 
   async listen (port = 4000) {

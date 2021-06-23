@@ -63,3 +63,11 @@ parseCsv(`id,name
 2,JRR Tolkien
 3,William Shakespeare`)
 ```
+
+## crypto
+
+```javascript
+const { hash } = require('@galenjs/factories/crypto')
+
+console.log(hash('test'))
+```

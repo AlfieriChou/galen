@@ -38,7 +38,8 @@ module.exports = async ({
         ([key, relation]) => {
           if (relation.type === 'belongsTo') {
             const relationModelDef = modelDefs[relation.model]
-            jsonSchema.properties[`${key}Id`] = _.pick(
+            const foreignKey = relation.foreignKey || `${key}Id`
+            jsonSchema.properties[foreignKey] = _.pick(
               (relationModelDef.properties.id || { type: 'integer' }),
               ['type', 'description']
             )
@@ -46,7 +47,7 @@ module.exports = async ({
               ...(modelDefs[modelName].indexes || []),
               [`${tableName}_${key}_id`]: [{
                 type: 'index',
-                fields: [`${key}Id`]
+                fields: [foreignKey]
               }]
             }
           }

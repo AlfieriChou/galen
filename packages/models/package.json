@@ -1,0 +1,34 @@
+{
+  "name": "@galenjs/models",
+  "version": "0.6.15",
+  "description": "galenjs models",
+  "keywords": [
+    "models"
+  ],
+  "author": "AlfieriChou <alfierichou@gmail.com>",
+  "homepage": "https://github.com/AlfieriChou/galen#readme",
+  "license": "MIT",
+  "main": "index.js",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlfieriChou/galen.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/AlfieriChou/galen/issues"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0",
+    "lodash": "^4.17.21",
+    "read-dir-filenames": "^1.0.6"
+  },
+  "peerDependencies": {
+    "@galenjs/factories": "^0.6.14"
+  }
+}

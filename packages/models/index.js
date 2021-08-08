@@ -24,7 +24,7 @@ const buildModelDefs = async modelDirPath => {
     }
     if (/^.*?\.(yaml)$/.test(filepath)) {
       try {
-        modelDef = yaml.safeLoad(fs.readFileSync(filepath, 'utf8'))
+        modelDef = await yaml.load(fs.readFileSync(filepath, 'utf8'))
       } catch (err) {
         throw new Error(`${filepath.split('/').slice(-1)[0]} load yaml file error`)
       }

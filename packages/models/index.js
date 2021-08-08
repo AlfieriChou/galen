@@ -193,14 +193,13 @@ module.exports = async ({
               (relationModelDef.properties.id || { type: 'integer' }),
               ['type', 'description']
             )
-            modelDefs[modelName].indexes = [
+            modelDefs[modelName].indexes = {
               ...(modelDefs[modelName].indexes || []),
-              {
-                [`${tableName}_${key}_id`]: [{
-                  type: 'index',
-                  fields: [`${key}Id`]
-                }]
+              [`${tableName}_${key}_id`]: [{
+                type: 'index',
+                fields: [`${key}Id`]
               }]
+            }
           }
         }
       )

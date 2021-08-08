@@ -20,6 +20,9 @@ describe('@galenjs base', () => {
     expect(modelDefs.UserRole.properties).toHaveProperty('roleId')
     expect(jsonSchemas.UserRole.properties).toHaveProperty('userId')
     expect(jsonSchemas.UserRole.properties).toHaveProperty('roleId')
+    // test relation add indexes
+    expect(modelDefs.UserRole.indexes).toHaveProperty('user_role_user_id')
+    expect(modelDefs.UserRole.indexes).toHaveProperty('user_role_role_id')
   })
 
   it('load json', async () => {

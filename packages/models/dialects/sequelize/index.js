@@ -36,6 +36,7 @@ exports.createModel = (dataSource, { modelDef, jsonSchema }, createModelFunc) =>
     parseModel(modelDef.properties),
     {
       sequelize: dataSource,
+      tableName: modelDef.tableName,
       modelName: modelDef.modelName,
       underscored: true,
       ...(modelDef.plugins || {})

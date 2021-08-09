@@ -7,11 +7,18 @@ const buildModelDefs = require('./lib/modelDefs')
 module.exports = async ({
   plugins = [],
   workspace,
-  modelPath
+  modelPath,
+  config = {}
 }) => {
   let remoteMethods = {}
   let modelDefs = {}
   const jsonSchemas = {}
+  const dataSources = {}
+
+  Object.entries(config).forEach(([dataSourceName, dataSourceConfig]) => {
+    // eslint-disable-next-line import/no-dynamic-require,global-require
+    dataSources[dataSourceName] = require(`./dialects/${dataSourceConfig.dataSource}`).createDataSource(dataSourceConfig.options)
+  })
 
   if (plugins.length > 0) {
     await Promise.all(plugins.map(async pluginName => {

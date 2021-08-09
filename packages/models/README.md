@@ -20,16 +20,14 @@ const bootstrap = async () => {
 bootstrap()
 ```
 
-## databaseName
+## dataSource
 
-背景: sequelize-models支持多实例
-
-模型数据库名称（默认为main）-仅支持sequelize models
+数据源
 
 例如
 
 ```yaml
-databaseName: 'main'
+dataSource: 'main'
 ```
 
 ## tags
@@ -66,9 +64,9 @@ modelName: 'User'
 
 ## dialect
 
-默认使用的是mysql
+默认使用的是sequelize
 
-- mysql-默认创建sequelize模型
+- sequelize
 - virtual-虚拟模型类型（不创建任何模型）
 - influx
 

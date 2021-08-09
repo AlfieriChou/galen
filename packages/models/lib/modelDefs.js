@@ -36,7 +36,7 @@ module.exports = async modelDirPath => {
         tags: { type: 'array', items: { type: 'string' } },
         tableName: { type: 'string' },
         modelName: { type: 'string' },
-        dialect: { type: 'string', enum: ['mysql', 'virtual', 'influx'] },
+        dialect: { type: 'string', enum: ['sequelize', 'virtual', 'influx'] },
         properties: { type: 'object' },
         relations: { type: 'object' },
         indexes: { type: 'object' },
@@ -132,13 +132,13 @@ module.exports = async modelDirPath => {
     if (!modelDef.tableName) {
       modelDef.tableName = _.snakeCase(filename)
     }
-    // support virtual mysql
+    // support virtual sequelize
     if (!modelDef.dialect) {
-      modelDef.dialect = 'mysql'
+      modelDef.dialect = 'sequelize'
     }
     const { modelName } = modelDef
     modelDefs[modelName] = {
-      properties: modelDef.dialect === 'mysql' ? {
+      properties: modelDef.dialect === 'sequelize' ? {
         id: {
           type: 'integer',
           autoIncrement: true,

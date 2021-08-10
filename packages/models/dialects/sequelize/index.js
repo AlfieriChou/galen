@@ -1,4 +1,6 @@
 const Sequelize = require('sequelize')
+const assert = require('assert')
+
 const createIndex = require('./lib/createIndex')
 const migrateTable = require('./lib/migrate')
 const createModel = require('./lib/createModel')
@@ -47,4 +49,25 @@ exports.migrate = async (dataSource, { modelDef, jsonSchema }) => {
   }
   await migrateTable(dataSource, { modelDef, jsonSchema })
   await createIndex(dataSource, modelDef)
+}
+
+exports.createRelations = async (models, { modelName, relations }) => {
+  await Object.entries(relations).reduce(async (promise, [key, value]) => {
+    await promise
+    const options = {
+      as: key
+    }
+    if (value.foreignKey) {
+      options.foreignKey = value.foreignKey
+    }
+    if (value.primaryKey) {
+      options.otherKey = value.primaryKey
+    }
+    if (['belongsToMany', 'hasMany'].includes(value.type)) {
+      assert(value.through, 'through is required!')
+      options.through = value.through
+    }
+    models[modelName][value.type](models[value.model], options)
+  }, Promise.resolve())
+  return models
 }

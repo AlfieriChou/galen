@@ -75,14 +75,15 @@ module.exports = async modelDirPath => {
         await validateSchema(value, {
           type: 'object',
           properties: {
-            type: { type: 'string', enum: ['belongsTo', 'hasOne', 'belongsToMany'] },
+            type: { type: 'string', enum: ['belongsTo', 'hasOne', 'hasMany', 'belongsToMany'] },
             model: { type: 'string' },
+            through: { type: 'string' },
             primaryKey: { type: 'string' },
-            foreignKey: { type: 'string' },
-            through: { type: 'string' }
+            foreignKey: { type: 'string' }
           },
           required: ['type', 'model']
-        })
+        }, { extendErr: '[@galenjs/models] modelDefs' })
+
         if (value.type === 'belongsTo') {
           const foreignKey = value.foreignKey || `${key}_id`
           modelDef.indexes = {

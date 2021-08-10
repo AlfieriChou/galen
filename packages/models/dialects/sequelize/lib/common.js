@@ -16,7 +16,7 @@ const sequelizeTypes = {
   array: DataTypes.ARRAY
 }
 
-module.exports = (properties, keyFn) => Object.entries(properties)
+const parseModelProperties = (properties, keyFn) => Object.entries(properties)
   .reduce((ret, [field, value]) => {
     const key = keyFn ? keyFn(field) : field
     const columnInfo = {
@@ -34,3 +34,7 @@ module.exports = (properties, keyFn) => Object.entries(properties)
       [key]: columnInfo
     }
   }, {})
+
+module.exports = {
+  sequelizeTypes, parseModelProperties
+}

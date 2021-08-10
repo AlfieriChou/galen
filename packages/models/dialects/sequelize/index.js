@@ -1,6 +1,8 @@
 const { Sequelize, Model } = require('sequelize')
 const createBaseModel = require('../../lib/baseModel')
-const parseModel = require('./lib/parseModel')
+const { parseModelProperties } = require('./lib/common')
+const createIndex = require('./lib/createIndex')
+const migrateTable = require('./lib/migrate')
 
 exports.createDataSource = options => {
   const {
@@ -33,7 +35,7 @@ exports.createModel = (dataSource, { modelDef, jsonSchema }, createModelFunc) =>
   const BaseModel = createBaseModel(Model, dataSource, { modelDef, jsonSchema })
   const model = createModelFunc ? createModelFunc(BaseModel) : BaseModel
   model.init(
-    parseModel(modelDef.properties),
+    parseModelProperties(modelDef.properties),
     {
       sequelize: dataSource,
       tableName: modelDef.tableName,
@@ -43,4 +45,12 @@ exports.createModel = (dataSource, { modelDef, jsonSchema }, createModelFunc) =>
     }
   )
   return model
+}
+
+exports.migrate = async (dataSource, { modelDef, jsonSchema }) => {
+  if (modelDef.stable) {
+    return
+  }
+  await migrateTable(dataSource, { modelDef, jsonSchema })
+  await createIndex(dataSource, modelDef)
 }

@@ -43,8 +43,34 @@ module.exports = async modelDirPath => {
         remoteMethods: { type: 'object' }
       }
     })
+
+    if (!modelDef.modelName) {
+      modelDef.modelName = _.upperFirst(filename)
+    }
+    if (!modelDef.tableName) {
+      modelDef.tableName = _.snakeCase(filename)
+    }
+    // only support virtual sequelize
+    if (!modelDef.dialect) {
+      modelDef.dialect = 'sequelize'
+    }
+
+    if (modelDef.indexes) {
+      await Object.entries(modelDef.indexes).reduce(async (promise, [, value]) => {
+        await promise
+        await validateSchema(value, {
+          type: 'object',
+          properties: {
+            type: { type: 'string', enum: ['index', 'unique'] },
+            fields: { type: 'array', items: { type: 'string' } }
+          },
+          required: ['type', 'fields']
+        })
+      }, Promise.resolve())
+    }
+
     if (modelDef.relations) {
-      await Object.entries(modelDef.relations).reduce(async (promise, [, value]) => {
+      await Object.entries(modelDef.relations).reduce(async (promise, [key, value]) => {
         await promise
         await validateSchema(value, {
           type: 'object',
@@ -57,19 +83,16 @@ module.exports = async modelDirPath => {
           },
           required: ['type', 'model']
         })
-      }, Promise.resolve())
-    }
-    if (modelDef.indexes) {
-      await Object.entries(modelDef.indexes).reduce(async (promise, [, value]) => {
-        await promise
-        await validateSchema(value, {
-          type: 'object',
-          properties: {
-            type: { type: 'string', enum: ['index', 'unique'] },
-            fields: { type: 'array', items: { type: 'string' } }
-          },
-          required: ['type', 'fields']
-        })
+        if (value.type === 'belongsTo') {
+          const foreignKey = value.foreignKey || `${key}_id`
+          modelDef.indexes = {
+            ...(modelDef.indexes || []),
+            [`${modelDef.tableName}_${foreignKey}`]: [{
+              type: 'index',
+              fields: [foreignKey]
+            }]
+          }
+        }
       }, Promise.resolve())
     }
     if (modelDef.properties) {
@@ -124,17 +147,6 @@ module.exports = async modelDirPath => {
           required: ['path', 'method']
         })
       }, Promise.resolve())
-    }
-
-    if (!modelDef.modelName) {
-      modelDef.modelName = _.upperFirst(filename)
-    }
-    if (!modelDef.tableName) {
-      modelDef.tableName = _.snakeCase(filename)
-    }
-    // support virtual sequelize
-    if (!modelDef.dialect) {
-      modelDef.dialect = 'sequelize'
     }
     const { modelName } = modelDef
     modelDefs[modelName] = {

@@ -31,7 +31,7 @@ module.exports = async ({
 
   Object.entries(modelDefs).forEach(([modelName, modelDef]) => {
     const {
-      properties, relations, tableName, description
+      properties, relations, description
     } = modelDef
     const jsonSchema = {
       type: 'object',
@@ -48,13 +48,6 @@ module.exports = async ({
               (relationModelDef.properties.id || { type: 'integer' }),
               ['type', 'description']
             )
-            modelDefs[modelName].indexes = {
-              ...(modelDefs[modelName].indexes || []),
-              [`${tableName}_${key}_id`]: [{
-                type: 'index',
-                fields: [foreignKey]
-              }]
-            }
           }
         }
       )
@@ -73,6 +66,7 @@ module.exports = async ({
       }), {})
     }
   })
+
   return {
     remoteMethods, modelDefs, jsonSchemas, dataSources
   }

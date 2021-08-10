@@ -14,6 +14,7 @@ module.exports = async ({
   let remoteMethods = {}
   let modelDefs = {}
   const jsonSchemas = {}
+  const models = {}
 
   const dataSources = await createDataSources(config)
 
@@ -29,45 +30,64 @@ module.exports = async ({
   const mainModelDefs = await buildModelDefs(modelDirPath)
   modelDefs = _.merge(modelDefs, mainModelDefs)
 
-  Object.entries(modelDefs).forEach(([modelName, modelDef]) => {
-    const {
-      properties, relations, description
-    } = modelDef
-    const jsonSchema = {
-      type: 'object',
-      properties: properties || {},
-      description: description || ''
-    }
-    if (relations) {
-      Object.entries(relations).forEach(
-        ([key, relation]) => {
-          if (relation.type === 'belongsTo') {
-            const relationModelDef = modelDefs[relation.model]
-            const foreignKey = relation.foreignKey || `${key}Id`
-            jsonSchema.properties[foreignKey] = _.pick(
-              (relationModelDef.properties.id || { type: 'integer' }),
-              ['type', 'description']
-            )
-          }
+  await Promise.all(
+    Object.entries(modelDefs)
+      .map(async ([modelName, modelDef]) => {
+        const {
+          properties, relations, description, dialect, dataSource
+        } = modelDef
+        const jsonSchema = {
+          type: 'object',
+          properties: properties || {},
+          description: description || ''
         }
-      )
-    }
-    jsonSchemas[modelName] = jsonSchema
-    remoteMethods = {
-      ...remoteMethods,
-      ...Object.entries(
-        buildRemoteMethods(
-          _.lowerFirst(modelName),
-          modelDef
-        )
-      ).reduce((acc, [key, value]) => ({
-        ...acc,
-        [`${_.lowerFirst(modelName)}-${key}`]: value
-      }), {})
-    }
-  })
+        if (relations) {
+          Object.entries(relations).forEach(
+            ([key, relation]) => {
+              if (relation.type === 'belongsTo') {
+                const relationModelDef = modelDefs[relation.model]
+                const foreignKey = relation.foreignKey || `${key}Id`
+                jsonSchema.properties[foreignKey] = _.pick(
+                  (relationModelDef.properties.id || { type: 'integer' }),
+                  ['type', 'description']
+                )
+              }
+            }
+          )
+        }
+        jsonSchemas[modelName] = jsonSchema
+        remoteMethods = {
+          ...remoteMethods,
+          ...Object.entries(
+            buildRemoteMethods(
+              _.lowerFirst(modelName),
+              modelDef
+            )
+          ).reduce((acc, [key, value]) => ({
+            ...acc,
+            [`${_.lowerFirst(modelName)}-${key}`]: value
+          }), {})
+        }
+        // eslint-disable-next-line import/no-dynamic-require, global-require
+        const { createModel, migrate } = require(`./dialects/${dialect}`)
+        if (dataSources[dataSource]) {
+          await migrate(
+            dataSources[dataSource],
+            {
+              modelDef, jsonSchema
+            }
+          )
+          models[modelName] = createModel(
+            dataSources[dataSource],
+            {
+              modelDef, jsonSchema
+            }
+          )
+        }
+      })
+  )
 
   return {
-    remoteMethods, modelDefs, jsonSchemas, dataSources
+    remoteMethods, modelDefs, jsonSchemas, dataSources, models
   }
 }

@@ -2,7 +2,7 @@ const _ = require('lodash')
 const validateSchema = require('@galenjs/factories/validateJsonSchema')
 
 module.exports = async (dataSource, {
-  indexes, tableName
+  indexes = {}, tableName
 }) => {
   const queryInterface = dataSource.getQueryInterface()
   const [existIndexes] = await dataSource.query(`show index from ${tableName};`)

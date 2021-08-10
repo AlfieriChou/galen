@@ -1,8 +1,8 @@
-const { Sequelize, Model } = require('sequelize')
-const createBaseModel = require('../../lib/baseModel')
-const { parseModelProperties } = require('./lib/common')
+const Sequelize = require('sequelize')
 const createIndex = require('./lib/createIndex')
 const migrateTable = require('./lib/migrate')
+const createModel = require('./lib/createModel')
+const createBaseModel = require('../../lib/baseModel')
 
 exports.createDataSource = options => {
   const {
@@ -32,18 +32,12 @@ exports.createDataSource = options => {
 }
 
 exports.createModel = (dataSource, { modelDef, jsonSchema }, createModelFunc) => {
+  const Model = createModel(
+    dataSource,
+    { modelDef }
+  )
   const BaseModel = createBaseModel(Model, dataSource, { modelDef, jsonSchema })
   const model = createModelFunc ? createModelFunc(BaseModel) : BaseModel
-  model.init(
-    parseModelProperties(modelDef.properties),
-    {
-      sequelize: dataSource,
-      tableName: modelDef.tableName,
-      modelName: modelDef.modelName,
-      underscored: true,
-      ...(modelDef.plugins || {})
-    }
-  )
   return model
 }
 

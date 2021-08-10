@@ -1,19 +1,19 @@
-const { DataTypes } = require('sequelize')
+const Sequelize = require('sequelize')
 
 const sequelizeTypes = {
-  integer: DataTypes.INTEGER,
-  float: DataTypes.FLOAT,
-  bigint: DataTypes.BIGINT,
-  text: DataTypes.TEXT,
-  decimal: DataTypes.DECIMAL,
-  uuid: DataTypes.UUID,
-  uuidv1: DataTypes.UUIDV1,
-  uuidv4: DataTypes.UUIDV4,
-  string: DataTypes.STRING,
-  date: DataTypes.DATE,
-  boolean: DataTypes.BOOLEAN,
-  json: DataTypes.JSON,
-  array: DataTypes.ARRAY
+  integer: Sequelize.INTEGER,
+  float: Sequelize.FLOAT,
+  bigint: Sequelize.BIGINT,
+  text: Sequelize.TEXT,
+  decimal: Sequelize.DECIMAL,
+  uuid: Sequelize.UUID,
+  uuidv1: Sequelize.UUIDV1,
+  uuidv4: Sequelize.UUIDV4,
+  string: Sequelize.STRING,
+  date: Sequelize.DATE,
+  boolean: Sequelize.BOOLEAN,
+  json: Sequelize.JSON,
+  array: Sequelize.ARRAY
 }
 
 const parseModelProperties = (properties, keyFn) => Object.entries(properties)

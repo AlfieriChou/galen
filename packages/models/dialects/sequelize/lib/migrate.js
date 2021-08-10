@@ -1,23 +1,27 @@
 const _ = require('lodash')
-const { parsedModelProperties, sequelizeTypes } = require('./common')
+const { parseModelProperties, sequelizeTypes } = require('./common')
 
 // TODO add cache
-const getTableNames = async sequelize => sequelize.showAllTables()
-const getTableInfo = async (tableName, sequelize) => sequelize.describeTable(tableName)
+const getTableNames = async queryInterface => queryInterface.showAllTables()
+const getTableInfo = async (tableName, queryInterface) => queryInterface.describeTable(tableName)
 
-module.exports = async (sequelize, {
+module.exports = async (dataSource, {
   modelDef: { tableName },
-  jsonSchema
+  jsonSchema: { properties }
   // eslint-disable-next-line consistent-return
 }) => {
-  const allTableNames = await getTableNames(sequelize)
+  const queryInterface = dataSource.getQueryInterface()
+  const allTableNames = await getTableNames(queryInterface)
   if (!allTableNames.includes(tableName)) {
-    return sequelize.createTable(tableName, parsedModelProperties(jsonSchema, _.snakeCase))
+    return queryInterface.createTable(
+      tableName,
+      parseModelProperties(properties, _.snakeCase)
+    )
   }
   // change table columns properties
-  const tableInfo = await getTableInfo(tableName, sequelize)
+  const tableInfo = await getTableInfo(tableName, queryInterface)
   // eslint-disable-next-line consistent-return
-  await Object.entries(jsonSchema).reduce(async (promise, [key, value]) => {
+  await Object.entries(properties).reduce(async (promise, [key, value]) => {
     await promise
     // no column create column
     const column = tableInfo[_.snakeCase(key)]
@@ -32,7 +36,7 @@ module.exports = async (sequelize, {
       if (value.description) {
         columnInfo.comment = value.description
       }
-      return sequelize.addColumn(tableName, _.snakeCase(key), columnInfo)
+      return queryInterface.addColumn(tableName, _.snakeCase(key), columnInfo)
     }
     // TODO modify field properties
   }, Promise.resolve())

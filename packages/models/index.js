@@ -34,11 +34,12 @@ module.exports = async ({
 
   Object.entries(modelDefs).forEach(([modelName, modelDef]) => {
     const {
-      properties, relations, tableName
+      properties, relations, tableName, description
     } = modelDef
     const jsonSchema = {
       type: 'object',
-      properties: properties || {}
+      properties: properties || {},
+      description: description || ''
     }
     if (relations) {
       Object.entries(relations).forEach(

@@ -3,6 +3,7 @@ const path = require('path')
 
 const buildRemoteMethods = require('./lib/remoteMethods')
 const buildModelDefs = require('./lib/modelDefs')
+const createDataSources = require('./lib/dataSource')
 
 module.exports = async ({
   plugins = [],
@@ -13,12 +14,8 @@ module.exports = async ({
   let remoteMethods = {}
   let modelDefs = {}
   const jsonSchemas = {}
-  const dataSources = {}
 
-  Object.entries(config).forEach(([dataSourceName, dataSourceConfig]) => {
-    // eslint-disable-next-line import/no-dynamic-require,global-require
-    dataSources[dataSourceName] = require(`./dialects/${dataSourceConfig.dataSource}`).createDataSource(dataSourceConfig.options)
-  })
+  const dataSources = await createDataSources(config)
 
   if (plugins.length > 0) {
     await Promise.all(plugins.map(async pluginName => {
@@ -77,6 +74,6 @@ module.exports = async ({
     }
   })
   return {
-    remoteMethods, modelDefs, jsonSchemas
+    remoteMethods, modelDefs, jsonSchemas, dataSources
   }
 }

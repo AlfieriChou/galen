@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/class-loader",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "class loader",
   "keywords": [
     "class",

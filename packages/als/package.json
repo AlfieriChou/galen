@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/als",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "async local storage",
   "keywords": [
     "AsyncLocalStorage",

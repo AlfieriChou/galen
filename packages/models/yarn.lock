@@ -302,15 +302,15 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@galenjs/factories@^0.6.14":
-  version "0.6.14"
-  resolved "https://registry.yarnpkg.com/@galenjs/factories/-/factories-0.6.14.tgz#3588634dd544b0fa2e9e8054f91c52ab885dad23"
-  integrity sha512-85cpKl5xILYR4h3ml1KC5i59//XQMJ73AQtKSzzVj0tpn9JoANadBPCk9CEr9JGxxPoYV+b2sWNcNRQxiWeThw==
+"@galenjs/factories@^0.7.1":
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/@galenjs/factories/-/factories-0.7.1.tgz#8ddd2da18e09cf1583416c95d2d2291c0c5e65e9"
+  integrity sha512-Gjkt8DwkOaVvONu/e8MB4t6c3ts36Dv2cPYjttdzKtnsm+n9w919CcpYqQsg/DqBY58O9Sh3jB9+0AQhPHuSXA==
 
-"@galenjs/sequelize-query-filter@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.npmjs.org/@galenjs/sequelize-query-filter/-/sequelize-query-filter-0.6.0.tgz#a371b8b99a15069795b0d3d1fb097aad9e16a654"
-  integrity sha512-mOQW+z+ENjEMnXsGnFB7lT2qu2CjOEfv7sFMxYPN1GXkPRXjRTvzA4QG3EhwRFhxwU0Fw2TBgTBUe5Q/eeDNkg==
+"@galenjs/sequelize-query-filter@^0.7.1":
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/@galenjs/sequelize-query-filter/-/sequelize-query-filter-0.7.1.tgz#a1c50722fec45d6de98d6f92ce8f1ebb067ebb1a"
+  integrity sha512-epk1L1GRxcuKZxpdQxnWOS2RbGPPdXTlPO7kmM7L4NO4WHw95mzLWkP2uw3SiYsXdxVlLeQjh4buD4R89XMhpA==
   dependencies:
     lodash "^4.17.20"
     sequelize "^6.3.5"

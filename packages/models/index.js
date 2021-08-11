@@ -90,6 +90,17 @@ module.exports = async ({
       })
   )
 
+  // sequelize存在需要将表信息创建完后才能建立关联关系的问题
+  await Object.entries(modelDefs).reduce(async (promise, [modelName, modelDef]) => {
+    await promise
+    if (modelDef.dialect === 'sequelize' && models[modelName]) {
+      // eslint-disable-next-line import/no-dynamic-require, global-require
+      const { createRelations } = require(`./dialects/${modelDef.dialect}`)
+      assert(createRelations, `${modelDef.dialect} required exports createRelations method`)
+      await createRelations(models, modelDef)
+    }
+  }, Promise.resolve())
+
   return {
     remoteMethods, modelDefs, jsonSchemas, dataSources, models
   }

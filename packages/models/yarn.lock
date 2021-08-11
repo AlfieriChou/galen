@@ -307,6 +307,14 @@
   resolved "https://registry.yarnpkg.com/@galenjs/factories/-/factories-0.6.14.tgz#3588634dd544b0fa2e9e8054f91c52ab885dad23"
   integrity sha512-85cpKl5xILYR4h3ml1KC5i59//XQMJ73AQtKSzzVj0tpn9JoANadBPCk9CEr9JGxxPoYV+b2sWNcNRQxiWeThw==
 
+"@galenjs/sequelize-query-filter@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.npmjs.org/@galenjs/sequelize-query-filter/-/sequelize-query-filter-0.6.0.tgz#a371b8b99a15069795b0d3d1fb097aad9e16a654"
+  integrity sha512-mOQW+z+ENjEMnXsGnFB7lT2qu2CjOEfv7sFMxYPN1GXkPRXjRTvzA4QG3EhwRFhxwU0Fw2TBgTBUe5Q/eeDNkg==
+  dependencies:
+    lodash "^4.17.20"
+    sequelize "^6.3.5"
+
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz#fd3db1d59ecf7cf121e80650bb86712f9b55eced"
@@ -2212,7 +2220,7 @@ sequelize-pool@^6.0.0:
   resolved "https://registry.npmjs.org/sequelize-pool/-/sequelize-pool-6.1.0.tgz#caaa0c1e324d3c2c3a399fed2c7998970925d668"
   integrity sha512-4YwEw3ZgK/tY/so+GfnSgXkdwIJJ1I32uZJztIEgZeAO6HMgj64OzySbWLgxj+tXhZCJnzRfkY9gINw8Ft8ZMg==
 
-sequelize@^6.6.5:
+sequelize@^6.3.5, sequelize@^6.6.5:
   version "6.6.5"
   resolved "https://registry.npmjs.org/sequelize/-/sequelize-6.6.5.tgz#6f618e99f3df1fc81f28709e8a3139cec3ef1f0c"
   integrity sha512-QyRrJrDRiwuiILqTMHUA1yWOPIL12KlfmgZ3hnzQwbMvp2vJ6fzu9bYJQB+qPMosck4mBUggY4Cjoc6Et8FBIQ==

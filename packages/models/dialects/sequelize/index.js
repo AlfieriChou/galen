@@ -5,6 +5,7 @@ const createIndex = require('./lib/createIndex')
 const migrateTable = require('./lib/migrate')
 const createModel = require('./lib/createModel')
 const createBaseModel = require('../../lib/baseModel')
+const createCrudModel = require('./lib/crudModel')
 
 exports.createDataSource = options => {
   const {
@@ -39,7 +40,8 @@ exports.createModel = (dataSource, { modelDef, jsonSchema }, createModelFunc) =>
     { modelDef }
   )
   const BaseModel = createBaseModel(Model, dataSource, { modelDef, jsonSchema })
-  const model = createModelFunc ? createModelFunc(BaseModel) : BaseModel
+  const CrudModel = createCrudModel(BaseModel)
+  const model = createModelFunc ? createModelFunc(CrudModel) : CrudModel
   return model
 }
 

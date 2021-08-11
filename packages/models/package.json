@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@galenjs/factories": "^0.6.14",
+    "@galenjs/sequelize-query-filter": "^0.6.0",
     "js-yaml": "^4.1.0",
     "jsonschema": "^1.4.0",
     "lodash": "^4.17.21",

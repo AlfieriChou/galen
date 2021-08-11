@@ -54,6 +54,9 @@ module.exports = async modelDirPath => {
     if (!modelDef.dialect) {
       modelDef.dialect = 'sequelize'
     }
+    if (!modelDef.dataSource) {
+      modelDef.dataSource = 'main'
+    }
 
     if (modelDef.indexes) {
       await Object.entries(modelDef.indexes).reduce(async (promise, [, value]) => {

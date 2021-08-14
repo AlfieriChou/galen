@@ -1,7 +1,7 @@
 const KoaRouter = require('koa-router')
 const { Validator } = require('jsonschema')
 const _ = require('lodash')
-const { camelJsonKeys } = require('@galenjs/factories/lodash')
+const { snakeJsonKeys } = require('@galenjs/factories/lodash')
 
 const v = new Validator()
 
@@ -58,7 +58,7 @@ module.exports = async ({ remoteMethods, prefix = '/v1' }) => {
             ctx.body = {
               code: 0,
               message: 'success',
-              data: camelJsonKeys(ret)
+              data: snakeJsonKeys(ret)
             }
           } else {
             ctx.body = {

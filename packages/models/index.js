@@ -5,30 +5,32 @@ const assert = require('assert')
 const buildRemoteMethods = require('./lib/remoteMethods')
 const buildModelDefs = require('./lib/modelDefs')
 const createDataSources = require('./lib/dataSource')
+const buildModel = require('./lib/mixinModel')
 
 module.exports = async ({
   plugins = [],
   workspace,
   modelPath,
+  modelDefPath,
   config = {}
 }) => {
   let remoteMethods = {}
   let modelDefs = {}
   const jsonSchemas = {}
-  const models = {}
+  let models = {}
 
   const dataSources = await createDataSources(config)
 
   if (plugins.length > 0) {
     await Promise.all(plugins.map(async pluginName => {
-      const pluginModelDirPath = path.join(workspace, `./plugins/${pluginName}/${modelPath}`)
-      const pluginModelDefs = await buildModelDefs(pluginModelDirPath)
+      const pluginModelDefDirPath = path.join(workspace, `./plugins/${pluginName}/${modelDefPath}`)
+      const pluginModelDefs = await buildModelDefs(pluginModelDefDirPath)
       modelDefs = _.merge(modelDefs, pluginModelDefs)
     }))
   }
 
-  const modelDirPath = path.join(workspace, `./${modelPath}`)
-  const mainModelDefs = await buildModelDefs(modelDirPath)
+  const modelDefDirPath = path.join(workspace, `./${modelDefPath}`)
+  const mainModelDefs = await buildModelDefs(modelDefDirPath)
   modelDefs = _.merge(modelDefs, mainModelDefs)
 
   await Promise.all(
@@ -100,6 +102,16 @@ module.exports = async ({
       await createRelations(models, modelDef)
     }
   }, Promise.resolve())
+
+  if (plugins.length > 0) {
+    await Promise.all(plugins.map(async pluginName => {
+      const pluginModelDirPath = path.join(workspace, `./plugins/${pluginName}/${modelPath}`)
+      models = await buildModel(pluginModelDirPath)
+    }))
+  }
+
+  const modelDirPath = path.join(workspace, `./${modelPath}`)
+  models = await buildModel(modelDirPath)
 
   return {
     remoteMethods, modelDefs, jsonSchemas, dataSources, models

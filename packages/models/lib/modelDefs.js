@@ -91,10 +91,10 @@ module.exports = async modelDirPath => {
           const foreignKey = value.foreignKey || `${key}_id`
           modelDef.indexes = {
             ...(modelDef.indexes || []),
-            [`${modelDef.tableName}_${foreignKey}`]: [{
+            [`${modelDef.tableName}_${foreignKey}`]: {
               type: 'index',
               fields: [foreignKey]
-            }]
+            }
           }
         }
       }, Promise.resolve())

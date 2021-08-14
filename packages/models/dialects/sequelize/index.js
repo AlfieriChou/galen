@@ -54,6 +54,9 @@ exports.migrate = async (dataSource, { modelDef, jsonSchema }) => {
 }
 
 exports.createRelations = async (models, { modelName, relations }) => {
+  if (!relations) {
+    return
+  }
   await Object.entries(relations).reduce(async (promise, [key, value]) => {
     await promise
     const options = {
@@ -71,5 +74,4 @@ exports.createRelations = async (models, { modelName, relations }) => {
     }
     models[modelName][value.type](models[value.model], options)
   }, Promise.resolve())
-  return models
 }

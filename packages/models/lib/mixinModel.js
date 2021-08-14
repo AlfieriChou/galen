@@ -1,8 +1,12 @@
 const readDirFilenames = require('read-dir-filenames')
 const path = require('path')
+const fs = require('fs')
 const _ = require('lodash')
 
 module.exports = async (dirPath, db) => {
+  if (!fs.existsSync(dirPath)) {
+    return db
+  }
   const filepaths = readDirFilenames(dirPath)
 
   const models = db

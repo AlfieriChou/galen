@@ -1,9 +1,9 @@
-const Sequelize = require('sequelize')
+const { Sequelize } = require('sequelize')
 const assert = require('assert')
 
 const createIndex = require('./lib/createIndex')
 const migrateTable = require('./lib/migrate')
-const createModel = require('./lib/createModel')
+const createDefaultModel = require('./lib/createModel')
 const createBaseModel = require('../../lib/baseModel')
 const createCrudModel = require('./lib/crudModel')
 
@@ -34,15 +34,14 @@ exports.createDataSource = options => {
   return new Sequelize(database, user, password, sequelizeOpts)
 }
 
-exports.createModel = (dataSource, { modelDef, jsonSchema }, createModelFunc) => {
-  const Model = createModel(
+exports.createModel = async (dataSource, { modelDef, jsonSchema }) => {
+  await createDefaultModel(
     dataSource,
     { modelDef }
   )
+  const Model = dataSource.models[modelDef.modelName]
   const BaseModel = createBaseModel(Model, dataSource, { modelDef, jsonSchema })
-  const CrudModel = createCrudModel(BaseModel)
-  const model = createModelFunc ? createModelFunc(CrudModel) : CrudModel
-  return model
+  return createCrudModel(BaseModel)
 }
 
 exports.migrate = async (dataSource, { modelDef, jsonSchema }) => {

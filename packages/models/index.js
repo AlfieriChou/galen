@@ -82,7 +82,7 @@ module.exports = async ({
               modelDef, jsonSchema
             }
           )
-          models[modelName] = createModel(
+          models[modelName] = await createModel(
             dataSources[dataSource],
             {
               modelDef, jsonSchema
@@ -106,12 +106,12 @@ module.exports = async ({
   if (plugins.length > 0) {
     await Promise.all(plugins.map(async pluginName => {
       const pluginModelDirPath = path.join(workspace, `./plugins/${pluginName}/${modelPath}`)
-      models = await buildModel(pluginModelDirPath)
+      models = await buildModel(pluginModelDirPath, models)
     }))
   }
 
   const modelDirPath = path.join(workspace, `./${modelPath}`)
-  models = await buildModel(modelDirPath)
+  models = await buildModel(modelDirPath, models)
 
   return {
     remoteMethods, modelDefs, jsonSchemas, dataSources, models

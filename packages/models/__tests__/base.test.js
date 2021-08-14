@@ -6,7 +6,7 @@ describe('@galenjs base', () => {
   it('load yaml', async () => {
     const { remoteMethods, modelDefs, jsonSchemas } = await loadModels({
       workspace: path.resolve(__dirname, '.'),
-      modelPath: 'yaml'
+      modelDefPath: 'yaml'
     })
     expect(typeof remoteMethods).toBe('object')
     expect(remoteMethods).toHaveProperty('user-index', 'user-create', 'user-show', 'user-update', 'user-destroy')
@@ -28,7 +28,7 @@ describe('@galenjs base', () => {
   it('load json', async () => {
     const { remoteMethods, modelDefs, jsonSchemas } = await loadModels({
       workspace: path.resolve(__dirname, '.'),
-      modelPath: 'json'
+      modelDefPath: 'json'
     })
     expect(typeof remoteMethods).toBe('object')
     expect(remoteMethods).toHaveProperty('user-index', 'user-create', 'user-show', 'user-update', 'user-destroy')
@@ -42,7 +42,7 @@ describe('@galenjs base', () => {
     const { remoteMethods, modelDefs, jsonSchemas } = await loadModels({
       plugins: ['base'],
       workspace: path.resolve(__dirname, '.'),
-      modelPath: 'json'
+      modelDefPath: 'json'
     })
     expect(typeof remoteMethods).toBe('object')
     expect(remoteMethods).toHaveProperty('user-index', 'user-create', 'user-show', 'user-update', 'user-destroy')

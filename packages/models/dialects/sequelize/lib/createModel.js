@@ -1,6 +1,6 @@
 const { parseModelProperties } = require('./common')
 
-module.exports = (dataSource, {
+module.exports = async (dataSource, {
   modelDef: {
     properties, modelName, tableName, plugins
   }

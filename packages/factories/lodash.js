@@ -1,31 +1,31 @@
 const _ = require('lodash')
 
-const camelJsonKeys = (obj) => {
-  if (Array.isArray(obj)) {
-    return obj.map(v => camelJsonKeys(v))
+const camelJsonKeys = value => {
+  if (Array.isArray(value)) {
+    return value.map(v => camelJsonKeys(v))
   }
-  if (obj !== null && obj.constructor === Object) {
-    return Object.keys(obj)
+  if (value && value instanceof Object) {
+    return Object.keys(value)
       .reduce((result, key) => ({
         ...result,
-        [_.camelCase(key)]: camelJsonKeys(obj[key])
+        [_.camelCase(key)]: camelJsonKeys(value[key])
       }), {})
   }
-  return obj
+  return value
 }
 
-const snakeJsonKeys = (obj) => {
-  if (Array.isArray(obj)) {
-    return obj.map(v => snakeJsonKeys(v))
+const snakeJsonKeys = value => {
+  if (Array.isArray(value)) {
+    return value.map(v => snakeJsonKeys(v))
   }
-  if (obj !== null && obj.constructor === Object) {
-    return Object.keys(obj)
+  if (value && value instanceof Object) {
+    return Object.keys(value)
       .reduce((result, key) => ({
         ...result,
-        [_.snakeCase(key)]: snakeJsonKeys(obj[key])
+        [_.snakeCase(key)]: snakeJsonKeys(value[key])
       }), {})
   }
-  return obj
+  return value
 }
 
 module.exports = {

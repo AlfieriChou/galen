@@ -55,6 +55,10 @@ module.exports = async ({ remoteMethods, prefix = '/v1' }) => {
         async ctx => {
           if (ctx.models[modelName] && ctx.models[modelName][handler]) {
             const ret = await ctx.models[modelName][handler](ctx)
+            if (apiInfo.responseType && apiInfo.responseType === 'origin') {
+              ctx.body = ret
+              return
+            }
             ctx.body = {
               code: 0,
               message: 'success',

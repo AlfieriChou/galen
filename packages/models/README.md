@@ -215,6 +215,23 @@ remoteMethods:
 
 接口路径，可以默认添加prefix
 
+### responseType
+
+数据返回类型
+
+1. origin - 不对结果进行处理
+
+2. normal - 返回标准开放API格式数据
+
+```javascript
+{
+  "code": 0,
+  "message": "",
+  "data": {}
+}
+```
+
+
 ### method
 
 接口方法，get,post,put,delete,patch,head

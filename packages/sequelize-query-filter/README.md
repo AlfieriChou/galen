@@ -77,6 +77,10 @@ order=[["createdAt", "desc"]]
 include=[{"model":"UserRole","include":[{"model":"Role"}]}]
 ```
 
+```javascript
+include=[{"model":"Role","as":"roles"}]
+```
+
 ## limit - default 20
 
 ```javascript

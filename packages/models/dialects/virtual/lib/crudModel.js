@@ -1,6 +1,6 @@
 module.exports = Model => {
   return class extends Model {
-    static async index (ctx) {
+    static async remoteFindPage (ctx) {
       const { request: { query } } = ctx
       return {
         data: query,
@@ -14,22 +14,22 @@ module.exports = Model => {
       }
     }
 
-    static async create (ctx) {
+    static async remoteCreate (ctx) {
       const { request: { body } } = ctx
       return { body }
     }
 
-    static async show (ctx) {
+    static async remoteShow (ctx) {
       const { params: { id } } = ctx
       return { id }
     }
 
-    static async update (ctx) {
+    static async remoteUpdate (ctx) {
       const { request: { body }, params: { id } } = ctx
       return { id, body }
     }
 
-    static async destroy (ctx) {
+    static async remoteDestroy (ctx) {
       const { params: { id } } = ctx
       return { id }
     }

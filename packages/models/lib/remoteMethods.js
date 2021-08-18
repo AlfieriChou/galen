@@ -5,7 +5,7 @@ const generateBaseRemoteMethods = (modelName, {
   properties,
   required = []
 }) => ({
-  index: {
+  remoteFindPage: {
     path: `/${modelName}`,
     method: 'get',
     tags: [`${modelName}`],
@@ -34,7 +34,7 @@ const generateBaseRemoteMethods = (modelName, {
       }
     }
   },
-  create: {
+  remoteCreate: {
     path: `/${modelName}`,
     method: 'post',
     tags: [`${modelName}`],
@@ -50,7 +50,7 @@ const generateBaseRemoteMethods = (modelName, {
       }
     }
   },
-  show: {
+  remoteShow: {
     path: `/${modelName}/:id`,
     method: 'get',
     tags: [`${modelName}`],
@@ -63,7 +63,7 @@ const generateBaseRemoteMethods = (modelName, {
       }
     }
   },
-  update: {
+  remoteUpdate: {
     path: `/${modelName}/:id`,
     method: 'put',
     tags: [`${modelName}`],
@@ -81,7 +81,7 @@ const generateBaseRemoteMethods = (modelName, {
       }
     }
   },
-  destroy: {
+  remoteDestroy: {
     path: `/${modelName}/:id`,
     method: 'delete',
     tags: [`${modelName}`],

@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/models-rest",
-  "version": "0.7.1",
+  "version": "0.7.5",
   "description": "galenjs models rest",
   "keywords": [
     "rest"

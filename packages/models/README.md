@@ -10,10 +10,26 @@ const path = require('path')
 
 const bootstrap = async () => {
   const {
-    remoteMethods, modelSchemas, schemas
+    remoteMethods, modelDefs, jsonSchemas, dataSources, models
   } = await loadModels({
     workspace: process.cwd(),
-    modelPath: 'model'
+    modelPath: './models',
+    modelDefPath: './modelDefs',
+    config: {
+      main: {
+        dataSource: 'sequelize',
+        options: {
+          host: '127.0.0.1',
+          user: 'root',
+          password: 'alfieri',
+          database: 'test'
+        }
+      },
+      virtual: {
+        dataSource: 'virtual',
+        options: {}
+      }
+    }
   })
 }
 

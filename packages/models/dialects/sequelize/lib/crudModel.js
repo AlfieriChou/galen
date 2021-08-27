@@ -63,7 +63,7 @@ module.exports = Model => {
 
     static async remoteUpdate (ctx) {
       const { request: { body }, params: { id } } = ctx
-      return this.update(body, { where: { id } })
+      return this.update(this.$parseJson(body), { where: { id } })
     }
 
     static async remoteDestroy (ctx) {

@@ -16,6 +16,21 @@ module.exports = Model => {
       return json
     }
 
+    static $parseJson (json) {
+      const { modelDef } = this
+      Object.keys(json).forEach(key => {
+        if (
+          modelDef.properties[key]
+          && modelDef.properties[key].type === 'date'
+          && json[key]
+        ) {
+          // eslint-disable-next-line no-param-reassign
+          json[key] = json[key] instanceof Date ? json[key] : new Date(json[key])
+        }
+      })
+      return json
+    }
+
     static async remoteFindPage (ctx) {
       const { request: { query } } = ctx
       const filter = sequelizeQueryFilter(query, ctx.models)
@@ -36,7 +51,7 @@ module.exports = Model => {
 
     static async remoteCreate (ctx) {
       const { request: { body } } = ctx
-      const inst = await this.create(body)
+      const inst = await this.create(this.$parseJson(body))
       return this.$formatJson(inst.dataValues)
     }
 

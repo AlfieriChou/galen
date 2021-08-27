@@ -8,7 +8,6 @@ module.exports = Model => {
         if (
           modelDef.properties[key]
           && modelDef.properties[key].type === 'date'
-          && json[key]
         ) {
           // eslint-disable-next-line no-param-reassign
           json[key] = json[key] ? json[key].getTime() : 0

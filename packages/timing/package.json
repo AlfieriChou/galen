@@ -1,0 +1,26 @@
+{
+  "name": "@galenjs/timing",
+  "version": "0.7.12",
+  "description": "galenjs timing.",
+  "keywords": [
+    "timing"
+  ],
+  "author": "AlfieriChou <alfierichou@gmail.com>",
+  "homepage": "https://github.com/AlfieriChou/galen#readme",
+  "license": "ISC",
+  "main": "index.js",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlfieriChou/galen.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/AlfieriChou/galen/issues"
+  }
+}

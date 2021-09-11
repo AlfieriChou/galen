@@ -125,6 +125,10 @@ module.exports = class RedisService {
   async execLimit ({
     name, key, times, expires
   }) {
+    assert(name, 'name must be non-empty')
+    assert(key, 'key must be non-empty')
+    assert(times, 'times must be non-empty')
+    assert(expires, 'expires must be non-empty')
     const incr = await this.incr(name, key, expires)
     if (incr > times) {
       throw new Error('exceed the limit')

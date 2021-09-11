@@ -71,3 +71,13 @@ const { hash } = require('@galenjs/factories/crypto')
 
 console.log(hash('test'))
 ```
+
+## customLimit
+
+```javascript
+const CustomLimit = require('@galenjs/factories/customLimit')
+
+const customLimit = new CustomLimit()
+const ret = await customLimit.execute(`${Date.now()}/1000`, () => 'helloWorld')
+console.log(ret)
+```

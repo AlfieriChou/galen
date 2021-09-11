@@ -121,4 +121,13 @@ module.exports = class RedisService {
     }
     return this.select(name).sadd(key, ...members)
   }
+
+  async execLimit ({
+    name, key, times, expires
+  }) {
+    const incr = await this.incr(name, key, expires)
+    if (incr > times) {
+      throw new Error('exceed the limit')
+    }
+  }
 }

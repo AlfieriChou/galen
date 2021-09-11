@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@galenjs/factories@^0.5.10":
-  version "0.5.10"
-  resolved "https://registry.yarnpkg.com/@galenjs/factories/-/factories-0.5.10.tgz#d9f70d8f805d3c8e017e1b15455be7d4ce9f3c97"
-  integrity sha512-0nucjzXThFey8TLvQSvMN5PPmwwjnWerM7nCffM6kKlZwiNtbjwOQc8P2w2R0UAgL6M+f6TeikceHP4WtMw+RA==
+"@galenjs/factories@^0.7.8":
+  version "0.7.8"
+  resolved "https://registry.npmjs.org/@galenjs/factories/-/factories-0.7.8.tgz#51aa80573efe75076e4f3a02557c1a641b78cd9d"
+  integrity sha512-pUvWRc6MLxlxFVTsFk/cdsr7NCR0lQy6b7Qqk2bgDC0mGBN1oWA/47H1ydPfTu74nC3+MCHqsvPZ4ufb8UMsNg==
 
 cluster-key-slot@^1.1.0:
   version "1.1.0"

@@ -12,6 +12,10 @@ module.exports = Model => {
           // eslint-disable-next-line no-param-reassign
           json[key] = json[key] ? json[key].getTime() : 0
         }
+        if (modelDef.properties[key].hidden) {
+          // eslint-disable-next-line no-param-reassign
+          delete json[key]
+        }
       })
       return json
     }

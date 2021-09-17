@@ -3,16 +3,24 @@ const sequelizeQueryFilter = require('@galenjs/sequelize-query-filter')
 module.exports = Model => {
   return class extends Model {
     static $formatJson (json) {
-      const { modelDef } = this
+      const { modelDef: properties = {} } = this
       Object.keys(json).forEach(key => {
+        const property = properties[key]
         if (
-          modelDef.properties[key]
-          && modelDef.properties[key].type === 'date'
+          property
+          && ['json', 'array'].includes(property.type)
+        ) {
+          // eslint-disable-next-line no-param-reassign
+          json[key] = JSON.parse(json[key])
+        }
+        if (
+          property
+          && property.type === 'date'
         ) {
           // eslint-disable-next-line no-param-reassign
           json[key] = json[key] ? json[key].getTime() : 0
         }
-        if (modelDef.properties[key].hidden) {
+        if (property.hidden) {
           // eslint-disable-next-line no-param-reassign
           delete json[key]
         }
@@ -21,12 +29,19 @@ module.exports = Model => {
     }
 
     static $parseJson (json) {
-      const { modelDef } = this
+      const { modelDef: { properties = {} } } = this
       Object.keys(json).forEach(key => {
+        const property = properties[key]
         if (
-          modelDef.properties[key]
-          && modelDef.properties[key].type === 'date'
-          && json[key]
+          property
+          && ['json', 'array'].includes(property.type)
+        ) {
+          // eslint-disable-next-line no-param-reassign
+          json[key] = JSON.stringify(json[key])
+        }
+        if (
+          property
+          && property.type === 'date'
         ) {
           // eslint-disable-next-line no-param-reassign
           json[key] = json[key] instanceof Date ? json[key] : new Date(json[key])

@@ -12,8 +12,8 @@ const sequelizeTypes = {
   string: Sequelize.STRING,
   date: Sequelize.DATE,
   boolean: Sequelize.BOOLEAN,
-  json: Sequelize.JSON,
-  array: Sequelize.ARRAY
+  json: Sequelize.TEXT('long'),
+  array: Sequelize.TEXT('long')
 }
 
 const parseModelProperties = (properties, keyFn) => Object.entries(properties)

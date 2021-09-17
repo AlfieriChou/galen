@@ -3,7 +3,7 @@ const sequelizeQueryFilter = require('@galenjs/sequelize-query-filter')
 module.exports = Model => {
   return class extends Model {
     static $formatJson (json) {
-      const { modelDef: properties = {} } = this
+      const { modelDef: { properties = {} } } = this
       Object.keys(json).forEach(key => {
         const property = properties[key]
         if (
@@ -20,7 +20,7 @@ module.exports = Model => {
           // eslint-disable-next-line no-param-reassign
           json[key] = json[key] ? json[key].getTime() : 0
         }
-        if (property.hidden) {
+        if (property && property.hidden) {
           // eslint-disable-next-line no-param-reassign
           delete json[key]
         }

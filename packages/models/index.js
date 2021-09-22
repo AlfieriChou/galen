@@ -8,7 +8,7 @@ const createDataSources = require('./lib/dataSource')
 const buildModel = require('./lib/mixinModel')
 
 module.exports = async ({
-  plugins = [],
+  plugin,
   workspace,
   modelPath,
   modelDefPath,
@@ -21,9 +21,10 @@ module.exports = async ({
 
   const dataSources = await createDataSources(config)
 
-  if (plugins.length > 0) {
+  if (plugin) {
+    const { mainPath, plugins } = plugin
     await Promise.all(plugins.map(async pluginName => {
-      const pluginModelDefDirPath = path.join(workspace, `./plugins/${pluginName}/${modelDefPath}`)
+      const pluginModelDefDirPath = path.join(workspace, `./${mainPath}/${pluginName}/${modelDefPath}`)
       const pluginModelDefs = await buildModelDefs(pluginModelDefDirPath)
       modelDefs = _.merge(modelDefs, pluginModelDefs)
     }))
@@ -103,9 +104,10 @@ module.exports = async ({
     }
   }, Promise.resolve())
 
-  if (plugins.length > 0) {
+  if (plugin) {
+    const { mainPath, plugins } = plugin
     await Promise.all(plugins.map(async pluginName => {
-      const pluginModelDirPath = path.join(workspace, `./plugins/${pluginName}/${modelPath}`)
+      const pluginModelDirPath = path.join(workspace, `./${mainPath}/${pluginName}/${modelPath}`)
       models = await buildModel(pluginModelDirPath, models)
     }))
   }

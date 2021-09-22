@@ -26,6 +26,7 @@ module.exports = async ({
       remoteMethods
     } = await createModels({
       workspace,
+      plugin,
       modelDefPath,
       modelPath,
       config: config.models

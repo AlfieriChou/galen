@@ -2,14 +2,12 @@ const CONTEXT_MODELS = Symbol('Context#models')
 const CONTEXT_MODEL_DEFS = Symbol('Context#modelDefs')
 const CONTEXT_JSON_SCHEMA = Symbol('Context#jsonSchemas')
 const CONTEXT_REMOTE_METHOD = Symbol('Context#remoteMethods')
-const CONTEXT_CONTROLLER = Symbol('Context#controller')
 const CONTEXT_SERVICE = Symbol('Context#service')
 const CONTEXT_MIDDLEWARE = Symbol('Context#middleware')
 
 const context = require('koa/lib/context')
 const createModels = require('@galenjs/models')
 
-const loadController = require('./loadController')
 const loadService = require('./loadService')
 const loadMiddleware = require('./loadMiddleware')
 
@@ -63,24 +61,6 @@ module.exports = async ({
             this[CONTEXT_REMOTE_METHOD] = remoteMethods
           }
           return this[CONTEXT_REMOTE_METHOD]
-        }
-      }
-    })
-  }
-
-  if (config.controllerPath) {
-    const controller = await loadController({
-      workspace,
-      controllerPath: config.controllerPath,
-      plugin
-    })
-    Object.defineProperties(context, {
-      controller: {
-        get () {
-          if (!this[CONTEXT_CONTROLLER]) {
-            this[CONTEXT_CONTROLLER] = controller
-          }
-          return this[CONTEXT_CONTROLLER]
         }
       }
     })

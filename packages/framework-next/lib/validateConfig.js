@@ -55,7 +55,6 @@ module.exports = async config => {
         },
         required: ['host', 'database']
       },
-      controllerPath: { type: 'string' },
       servicePath: { type: 'string' },
       middlewarePath: { type: 'string' },
       cors: {

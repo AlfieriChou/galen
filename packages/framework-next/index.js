@@ -13,9 +13,7 @@ module.exports = class Application {
   }
 
   async init () {
-    await bindToContext({
-      models: this.config.models
-    })
+    await bindToContext(this.config)
     await validateConfig(this.config)
     const app = new Koa()
 

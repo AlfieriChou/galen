@@ -14,7 +14,7 @@ const loadService = require('./loadService')
 const loadMiddleware = require('./loadMiddleware')
 
 module.exports = async ({
-  workspace = process.pwd(),
+  workspace = process.cwd(),
   modelDefPath = 'app/modelDef',
   modelPath = 'app/models',
   plugin = {},

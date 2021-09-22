@@ -2,6 +2,14 @@
 # yarn lockfile v1
 
 
+"@galenjs/class-loader@^0.7.1":
+  version "0.7.1"
+  resolved "https://registry.npmjs.org/@galenjs/class-loader/-/class-loader-0.7.1.tgz#8612f142f21df208c1f9695708cd273eb814fb8c"
+  integrity sha512-QKxZgP0IYgZY72X/n7dRcLourXAIKoKX4ubF5Ep5oXu/avkSyR1/uC60RxVnzetDF6Z9t5vJZ+Ksh9XI0ViDyA==
+  dependencies:
+    is-class "^0.0.9"
+    read-dir-filenames "^1.0.6"
+
 "@galenjs/factories@^0.7.14":
   version "0.7.14"
   resolved "https://registry.npmjs.org/@galenjs/factories/-/factories-0.7.14.tgz#f49d166265d1d6c5eab3f21a17b508ec09f5d642"
@@ -198,6 +206,11 @@ inherits@2.0.4:
   version "2.0.4"
   resolved "https://registry.npmjs.org/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
+
+is-class@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.npmjs.org/is-class/-/is-class-0.0.9.tgz#3024c17b1cf8f6bdc1f3eca1bae507ea992b6d93"
+  integrity sha512-kUfRnejcRC9YLgblxoJ76dp9gZ3vMKTrDS5I6z2UVMOsHHSImNKCJocjQTkZr38PwiSZ9LVklaHEENaVYeFTXg==
 
 is-generator-function@^1.0.7:
   version "1.0.10"

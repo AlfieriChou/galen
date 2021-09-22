@@ -12,7 +12,7 @@
 
 "@galenjs/factories@^0.7.14":
   version "0.7.14"
-  resolved "https://registry.npmjs.org/@galenjs/factories/-/factories-0.7.14.tgz#f49d166265d1d6c5eab3f21a17b508ec09f5d642"
+  resolved "https://registry.yarnpkg.com/@galenjs/factories/-/factories-0.7.14.tgz#f49d166265d1d6c5eab3f21a17b508ec09f5d642"
   integrity sha512-DUWPPJErqQZIBqu3ucoU3JcHbe6zE20+hX/6ShTqf+pWo9kU/fBcH3420QhI5AoV+k1d4j260wHxFYB2TI12Hw==
 
 "@galenjs/models-rest@^0.7.14":
@@ -247,7 +247,7 @@ koa-compose@^3.0.0:
 
 koa-compose@^4.1.0:
   version "4.1.0"
-  resolved "https://registry.npmjs.org/koa-compose/-/koa-compose-4.1.0.tgz#507306b9371901db41121c812e923d0d67d3e877"
+  resolved "https://registry.yarnpkg.com/koa-compose/-/koa-compose-4.1.0.tgz#507306b9371901db41121c812e923d0d67d3e877"
   integrity sha512-8ODW8TrDuMYvXRwra/Kh7/rJo9BtOfPc6qO8eAfC80CnCvSjSl0bkRM24X6/XBBEyj0v1nRUQ1LyOy3dbqOWXw==
 
 koa-convert@^1.2.0:

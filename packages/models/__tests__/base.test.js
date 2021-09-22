@@ -9,7 +9,7 @@ describe('@galenjs base', () => {
       modelDefPath: 'yaml'
     })
     expect(typeof remoteMethods).toBe('object')
-    expect(remoteMethods).toHaveProperty('user-index', 'user-create', 'user-show', 'user-update', 'user-destroy')
+    expect(remoteMethods).toHaveProperty('user-remoteFindPage', 'user-remoteCreate', 'user-remoteShow', 'user-remoteUpdate', 'user-remoteDestroy')
     expect(typeof modelDefs).toBe('object')
     expect(modelDefs).toHaveProperty('User')
     expect(typeof jsonSchemas).toBe('object')
@@ -31,7 +31,7 @@ describe('@galenjs base', () => {
       modelDefPath: 'json'
     })
     expect(typeof remoteMethods).toBe('object')
-    expect(remoteMethods).toHaveProperty('user-index', 'user-create', 'user-show', 'user-update', 'user-destroy')
+    expect(remoteMethods).toHaveProperty('user-remoteFindPage', 'user-remoteCreate', 'user-remoteShow', 'user-remoteUpdate', 'user-remoteDestroy')
     expect(typeof modelDefs).toBe('object')
     expect(modelDefs).toHaveProperty('User')
     expect(typeof jsonSchemas).toBe('object')
@@ -40,12 +40,15 @@ describe('@galenjs base', () => {
 
   it('load json plugins', async () => {
     const { remoteMethods, modelDefs, jsonSchemas } = await loadModels({
-      plugins: ['base'],
+      plugin: {
+        mainPath: 'plugins',
+        plugins: ['base']
+      },
       workspace: path.resolve(__dirname, '.'),
       modelDefPath: 'json'
     })
     expect(typeof remoteMethods).toBe('object')
-    expect(remoteMethods).toHaveProperty('user-index', 'user-create', 'user-show', 'user-update', 'user-destroy')
+    expect(remoteMethods).toHaveProperty('user-remoteFindPage', 'user-remoteCreate', 'user-remoteShow', 'user-remoteUpdate', 'user-remoteDestroy')
     expect(typeof modelDefs).toBe('object')
     expect(modelDefs).toHaveProperty('User')
     expect(typeof jsonSchemas).toBe('object')

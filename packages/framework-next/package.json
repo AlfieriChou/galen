@@ -1,0 +1,34 @@
+{
+  "name": "@galenjs/framework-next",
+  "version": "0.7.16",
+  "description": "Next generation framework.",
+  "keywords": [
+    "framework"
+  ],
+  "author": "AlfieriChou <alfierichou@gmail.com>",
+  "homepage": "https://github.com/AlfieriChou/galen#readme",
+  "license": "ISC",
+  "main": "index.js",
+  "directories": {
+    "test": "__tests__"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlfieriChou/galen.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/AlfieriChou/galen/issues"
+  },
+  "dependencies": {
+    "@galenjs/models": "^0.7.16",
+    "@galenjs/models-rest": "^0.7.14",
+    "koa": "^2.13.1"
+  }
+}

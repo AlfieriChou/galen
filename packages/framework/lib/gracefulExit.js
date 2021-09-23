@@ -1,6 +1,7 @@
+// TODO: exitTimeout from process.env or config
 const exitTimeout = 60 * 1000
 
-module.exports = async (server, cleanUp, logger) => {
+module.exports = async (server, cleanUp, logger = console) => {
   const close = () => {
     logger.info('on SIGTERM wait requests')
     server.close(async () => {

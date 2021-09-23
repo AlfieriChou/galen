@@ -4,9 +4,11 @@ const CONTEXT_JSON_SCHEMA = Symbol('Context#jsonSchemas')
 const CONTEXT_REMOTE_METHOD = Symbol('Context#remoteMethods')
 const CONTEXT_SERVICE = Symbol('Context#service')
 const CONTEXT_MIDDLEWARE = Symbol('Context#middleware')
+const CONTEXT_REDIS = Symbol('Context#redis')
 
 const context = require('koa/lib/context')
 const createModels = require('@galenjs/models')
+const createRedisClients = require('@galenjs/redis')
 
 const loadService = require('./loadService')
 const loadMiddleware = require('./loadMiddleware')
@@ -98,6 +100,20 @@ module.exports = async ({
             this[CONTEXT_MIDDLEWARE] = middleware
           }
           return this[CONTEXT_MIDDLEWARE]
+        }
+      }
+    })
+  }
+
+  if (this.config.redis) {
+    const redis = await createRedisClients(this.config.redis)
+    Object.defineProperties(context, {
+      service: {
+        get () {
+          if (!this[CONTEXT_REDIS]) {
+            this[CONTEXT_REDIS] = redis
+          }
+          return this[CONTEXT_REDIS]
         }
       }
     })

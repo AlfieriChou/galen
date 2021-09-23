@@ -2,8 +2,19 @@ const sequelizeQueryFilter = require('@galenjs/sequelize-query-filter')
 
 module.exports = Model => {
   return class extends Model {
-    static $formatJson (json) {
-      const { modelDef: { properties = {} } } = this
+    toJSON () {
+      const values = { ...this.get() }
+      if (typeof values === 'object') {
+        if (Array.isArray(values)) {
+          return values.map(value => this.$formatJson(value))
+        }
+        return this.$formatJson(values)
+      }
+      return values
+    }
+
+    $formatJson (json) {
+      const { modelDef: { properties = {} } } = Model
       Object.keys(json).forEach(key => {
         const property = properties[key]
         if (
@@ -58,7 +69,7 @@ module.exports = Model => {
         await this.findAll(filter)
       ])
       return {
-        list: list.map(inst => this.$formatJson(inst.dataValues)),
+        list: list.map(item => item.toJSON()),
         pageInfo: {
           totalNumber: total,
           page: (filter.offset + filter.limit) / filter.limit,
@@ -71,13 +82,13 @@ module.exports = Model => {
     static async remoteCreate (ctx) {
       const { request: { body } } = ctx
       const inst = await this.create(this.$parseJson(body))
-      return this.$formatJson(inst.dataValues)
+      return inst.toJSON()
     }
 
     static async remoteShow (ctx) {
       const { params: { id } } = ctx
       const inst = await this.findByPk(id)
-      return this.$formatJson(inst.dataValues)
+      return inst.toJSON()
     }
 
     static async remoteUpdate (ctx) {

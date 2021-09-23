@@ -75,7 +75,8 @@ module.exports = class Application {
     }
   }
 
-  async softExit (server) {
+  async start () {
+    const server = await this.listen(this.config.port)
     await gracefulExit(server, async () => {
       if (this.app.pendingCount === 0) {
         await this.closed()
@@ -84,11 +85,6 @@ module.exports = class Application {
           await this.closed()
         })
       }
-    })
-  }
-
-  async start () {
-    const server = await this.listen(this.config.port)
-    await this.softExit(server)
+    }, this.logger)
   }
 }

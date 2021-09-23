@@ -105,8 +105,8 @@ module.exports = async ({
     })
   }
 
-  if (this.config.redis) {
-    const redis = await createRedisClients(this.config.redis)
+  if (config.redis) {
+    const redis = await createRedisClients(config.redis)
     Object.defineProperties(context, {
       service: {
         get () {

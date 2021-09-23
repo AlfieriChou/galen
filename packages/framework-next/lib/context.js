@@ -108,7 +108,7 @@ module.exports = async ({
   if (config.redis) {
     const redis = await createRedisClients(config.redis)
     Object.defineProperties(context, {
-      service: {
+      redis: {
         get () {
           if (!this[CONTEXT_REDIS]) {
             this[CONTEXT_REDIS] = redis

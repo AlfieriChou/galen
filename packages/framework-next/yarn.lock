@@ -25,10 +25,10 @@
     koa-router "^10.0.0"
     lodash "^4.17.21"
 
-"@galenjs/models@^0.7.19":
-  version "0.7.19"
-  resolved "https://registry.npmjs.org/@galenjs/models/-/models-0.7.19.tgz#71e327647fd572f8416863467f38030e38786069"
-  integrity sha512-gqxh/tuubqNaDHLmQmepMsK0OipZi52MJBi8aF0e5EG4tVF4LX0FRZ0mUAIR3fKEEc2/yRLa2ni0Cl870ZiGew==
+"@galenjs/models@^0.7.20":
+  version "0.7.20"
+  resolved "https://registry.yarnpkg.com/@galenjs/models/-/models-0.7.20.tgz#bb680cf69560f317b2e6c45994b842b0b2b9ea3e"
+  integrity sha512-r2MZt/6z9rKW+HUDmHzqaag68nt7vPv47hO0JR5IwZ/9nDFclaTnEXe4z6KyXF0UqFowoChbOL71+ZI4sODceA==
   dependencies:
     "@galenjs/factories" "^0.7.14"
     "@galenjs/sequelize-query-filter" "^0.7.1"

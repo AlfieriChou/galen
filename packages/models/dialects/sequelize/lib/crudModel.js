@@ -9,7 +9,7 @@ module.exports = Model => {
         const property = properties[key]
         if (
           property
-          && ['json', 'array'].includes(property.type)
+          && ['object', 'json', 'array'].includes(property.type)
         ) {
           // eslint-disable-next-line no-param-reassign
           data[key] = JSON.stringify(data[key])
@@ -25,6 +25,7 @@ module.exports = Model => {
   }
 
   Model.beforeCreate(parseJsonData)
+  Model.beforeUpdate(parseJsonData)
 
   return class extends Model {
     toJSON () {
@@ -44,7 +45,7 @@ module.exports = Model => {
         const property = properties[key]
         if (
           property
-          && ['json', 'array'].includes(property.type)
+          && ['object', 'json', 'array'].includes(property.type)
         ) {
           // eslint-disable-next-line no-param-reassign
           data[key] = JSON.parse(data[key])
@@ -62,28 +63,6 @@ module.exports = Model => {
         }
       })
       return data
-    }
-
-    static $parseJson (json) {
-      const { modelDef: { properties = {} } } = this
-      Object.keys(json).forEach(key => {
-        const property = properties[key]
-        if (
-          property
-          && ['json', 'array'].includes(property.type)
-        ) {
-          // eslint-disable-next-line no-param-reassign
-          json[key] = JSON.stringify(json[key])
-        }
-        if (
-          property
-          && property.type === 'date'
-        ) {
-          // eslint-disable-next-line no-param-reassign
-          json[key] = json[key] instanceof Date ? json[key] : new Date(json[key])
-        }
-      })
-      return json
     }
 
     static async remoteFindPage (ctx) {
@@ -118,7 +97,7 @@ module.exports = Model => {
 
     static async remoteUpdate (ctx) {
       const { request: { body }, params: { id } } = ctx
-      return this.update(this.$parseJson(body), { where: { id } })
+      return this.update(body, { where: { id } })
     }
 
     static async remoteDestroy (ctx) {

@@ -111,7 +111,7 @@ module.exports = async modelDirPath => {
                 'integer', 'bigint', 'float', 'double',
                 'decimal', 'text', 'string', 'date',
                 'boolean', 'float', 'json', 'array',
-                'uuid', 'uuidv1', 'uuidv4'
+                'uuid', 'uuidv1', 'uuidv4', 'object'
               ]
             },
             autoIncrement: { type: 'boolean' },

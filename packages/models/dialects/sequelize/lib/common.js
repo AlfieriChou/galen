@@ -13,6 +13,7 @@ const sequelizeTypes = {
   date: Sequelize.DATE,
   boolean: Sequelize.BOOLEAN,
   json: Sequelize.TEXT('long'),
+  object: Sequelize.TEXT('long'),
   array: Sequelize.TEXT('long')
 }
 

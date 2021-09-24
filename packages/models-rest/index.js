@@ -21,13 +21,28 @@ const validate = async apiInfo => async (ctx, next) => {
     return next()
   }
   const { body, required = [] } = apiInfo.requestBody
-  const jsonSchema = { type: 'object', properties: body }
+  const jsonSchema = {
+    type: 'object',
+    properties: Object.entries(body).reduce((acc, [key, value]) => {
+      const property = value
+      if (['date', 'integer', 'decimal', 'float', 'double', 'bigint'].includes(value.type)) {
+        property.type = 'number'
+      }
+      if (['uuid', 'uuidv1', 'uuidv4', 'text'].includes(value.type)) {
+        property.type = 'string'
+      }
+      return {
+        ...acc,
+        [key]: property
+      }
+    }, {})
+  }
   jsonSchema.required = required
   const validateRet = await v.validate(ctx.request.body, jsonSchema)
   if (validateRet.errors.length > 0) {
     const errMsg = validateRet.errors.reduce((acc, error, index) => ([
       ...acc,
-      `${index + 1}: ${error.message}`
+      `${index + 1}: ${error.stack}`
     ]), []).join()
     ctx.throw(400, errMsg)
   }

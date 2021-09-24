@@ -29,7 +29,7 @@ module.exports = Model => {
 
   return class extends Model {
     toJSON () {
-      const values = { ...this.get() }
+      const values = { ...this.get({ plain: true }) }
       if (typeof values === 'object') {
         if (Array.isArray(values)) {
           return values.map(value => this.$formatJson(value))

@@ -31,6 +31,10 @@ const validate = async apiInfo => async (ctx, next) => {
       if (['uuid', 'uuidv1', 'uuidv4', 'text'].includes(value.type)) {
         property.type = 'string'
       }
+      // 兼容早期版本
+      if (['json'].includes(value.type)) {
+        property.type = 'object'
+      }
       return {
         ...acc,
         [key]: property

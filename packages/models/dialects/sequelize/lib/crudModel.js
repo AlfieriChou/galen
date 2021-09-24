@@ -1,6 +1,31 @@
 const sequelizeQueryFilter = require('@galenjs/sequelize-query-filter')
 
 module.exports = Model => {
+  const parseJsonData = async data => {
+    const { modelDef: { properties = {} } } = Model
+    Object
+      .keys(data)
+      .forEach(key => {
+        const property = properties[key]
+        if (
+          property
+          && ['json', 'array'].includes(property.type)
+        ) {
+          // eslint-disable-next-line no-param-reassign
+          data[key] = JSON.stringify(data[key])
+        }
+        if (
+          property
+          && property.type === 'date'
+        ) {
+          // eslint-disable-next-line no-param-reassign
+          data[key] = data[key] instanceof Date ? data[key] : new Date(data[key])
+        }
+      })
+  }
+
+  Model.beforeCreate(parseJsonData)
+
   return class extends Model {
     toJSON () {
       const values = { ...this.get() }
@@ -13,30 +38,30 @@ module.exports = Model => {
       return values
     }
 
-    $formatJson (json) {
+    $formatJson (data) {
       const { modelDef: { properties = {} } } = Model
-      Object.keys(json).forEach(key => {
+      Object.keys(data).forEach(key => {
         const property = properties[key]
         if (
           property
           && ['json', 'array'].includes(property.type)
         ) {
           // eslint-disable-next-line no-param-reassign
-          json[key] = JSON.parse(json[key])
+          data[key] = JSON.parse(data[key])
         }
         if (
           property
           && property.type === 'date'
         ) {
           // eslint-disable-next-line no-param-reassign
-          json[key] = json[key] ? json[key].getTime() : 0
+          data[key] = data[key] ? data[key].getTime() : 0
         }
         if (property && property.hidden) {
           // eslint-disable-next-line no-param-reassign
-          delete json[key]
+          delete data[key]
         }
       })
-      return json
+      return data
     }
 
     static $parseJson (json) {
@@ -81,7 +106,7 @@ module.exports = Model => {
 
     static async remoteCreate (ctx) {
       const { request: { body } } = ctx
-      const inst = await this.create(this.$parseJson(body))
+      const inst = await this.create(body)
       return inst.toJSON()
     }
 

@@ -38,7 +38,7 @@ galen是一个低代码平台，采用sequelize模型为主，后续将会完全
 
 - 基础模型-[models](https://github.com/AlfieriChou/galen/tree/master/packages/models)
 - 模型路由-[models-rest](https://github.com/AlfieriChou/galen/tree/master/packages/models-rest)
-- 框架-[models-rest](https://github.com/AlfieriChou/galen/tree/master/packages/framework-next)
+- 框架-[framework-next](https://github.com/AlfieriChou/galen/tree/master/packages/framework-next)
 
 ##### 使用案例
 

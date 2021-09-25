@@ -30,6 +30,28 @@ const parseModelProperties = (properties, keyFn) => Object.entries(properties)
     if (value.description) {
       columnInfo.comment = value.description
     }
+    if (value.type === 'date') {
+      columnInfo.get = function () {
+        const date = this.getDataValue(field)
+        return date ? date.getTime() : 0
+      }
+      columnInfo.set = function (date) {
+        this.setDataValue(field, date instanceof Date ? date : new Date(date))
+      }
+    }
+    if (['json', 'object', 'array'].includes(value.type)) {
+      columnInfo.get = function () {
+        return JSON.parse(this.getDataValue(field))
+      }
+      columnInfo.set = function (data) {
+        this.setDataValue(data, JSON.stringify(data))
+      }
+    }
+    if (value.hidden) {
+      columnInfo.get = function () {
+        return null
+      }
+    }
     return {
       ...ret,
       [key]: columnInfo

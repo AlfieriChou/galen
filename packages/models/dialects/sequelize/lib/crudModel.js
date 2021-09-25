@@ -1,68 +1,10 @@
 const sequelizeQueryFilter = require('@galenjs/sequelize-query-filter')
 
 module.exports = Model => {
-  const parseJsonData = async data => {
-    const { modelDef: { properties = {} } } = Model
-    Object
-      .keys(data)
-      .forEach(key => {
-        const property = properties[key]
-        if (
-          property
-          && ['object', 'json', 'array'].includes(property.type)
-        ) {
-          // eslint-disable-next-line no-param-reassign
-          data[key] = JSON.stringify(data[key])
-        }
-        if (
-          property
-          && property.type === 'date'
-        ) {
-          // eslint-disable-next-line no-param-reassign
-          data[key] = data[key] instanceof Date ? data[key] : new Date(data[key])
-        }
-      })
-  }
-
-  Model.beforeCreate(parseJsonData)
-  Model.beforeUpdate(parseJsonData)
-
   return class extends Model {
     toJSON () {
       const values = { ...this.get({ plain: true }) }
-      if (typeof values === 'object') {
-        if (Array.isArray(values)) {
-          return values.map(value => this.$formatJson(value))
-        }
-        return this.$formatJson(values)
-      }
       return values
-    }
-
-    $formatJson (data) {
-      const { modelDef: { properties = {} } } = Model
-      Object.keys(data).forEach(key => {
-        const property = properties[key]
-        if (
-          property
-          && ['object', 'json', 'array'].includes(property.type)
-        ) {
-          // eslint-disable-next-line no-param-reassign
-          data[key] = JSON.parse(data[key])
-        }
-        if (
-          property
-          && property.type === 'date'
-        ) {
-          // eslint-disable-next-line no-param-reassign
-          data[key] = data[key] ? data[key].getTime() : 0
-        }
-        if (property && property.hidden) {
-          // eslint-disable-next-line no-param-reassign
-          delete data[key]
-        }
-      })
-      return data
     }
 
     static async remoteFindPage (ctx) {

@@ -47,11 +47,6 @@ const parseModelProperties = (properties, keyFn) => Object.entries(properties)
         this.setDataValue(data, JSON.stringify(data))
       }
     }
-    if (value.hidden) {
-      columnInfo.get = function () {
-        return null
-      }
-    }
     return {
       ...ret,
       [key]: columnInfo

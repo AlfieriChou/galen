@@ -4,7 +4,25 @@ module.exports = Model => {
   return class extends Model {
     toJSON () {
       const values = { ...this.get({ plain: true }) }
+      if (typeof values === 'object') {
+        if (Array.isArray(values)) {
+          return values.map(value => this.$formatJson(value))
+        }
+        return this.$formatJson(values)
+      }
       return values
+    }
+
+    $formatJson (data) {
+      const { modelDef: { properties = {} } } = Model
+      Object.keys(data).forEach(key => {
+        const property = properties[key]
+        if (property && property.hidden) {
+          // eslint-disable-next-line no-param-reassign
+          delete data[key]
+        }
+      })
+      return data
     }
 
     static async remoteFindPage (ctx) {

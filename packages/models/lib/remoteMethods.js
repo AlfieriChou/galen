@@ -8,6 +8,7 @@ const generateBaseRemoteMethods = (modelName, {
   remoteFindPage: {
     path: `/${modelName}`,
     method: 'get',
+    roles: ['$everyone'],
     tags: [`${modelName}`],
     summary: `获取${description}列表`,
     query: {
@@ -37,6 +38,7 @@ const generateBaseRemoteMethods = (modelName, {
   remoteCreate: {
     path: `/${modelName}`,
     method: 'post',
+    roles: ['$everyone'],
     tags: [`${modelName}`],
     summary: `创建${description}`,
     requestBody: {
@@ -53,6 +55,7 @@ const generateBaseRemoteMethods = (modelName, {
   remoteShow: {
     path: `/${modelName}/:id`,
     method: 'get',
+    roles: ['$everyone'],
     tags: [`${modelName}`],
     summary: `获取${description}详情`,
     params: _.pick(properties, ['id']),
@@ -66,6 +69,7 @@ const generateBaseRemoteMethods = (modelName, {
   remoteUpdate: {
     path: `/${modelName}/:id`,
     method: 'put',
+    roles: ['$everyone'],
     tags: [`${modelName}`],
     summary: `修改${description}信息`,
     params: _.pick(properties, ['id']),
@@ -84,6 +88,7 @@ const generateBaseRemoteMethods = (modelName, {
   remoteDestroy: {
     path: `/${modelName}/:id`,
     method: 'delete',
+    roles: ['$everyone'],
     tags: [`${modelName}`],
     summary: `删除${description}`,
     params: _.pick(properties, ['id']),

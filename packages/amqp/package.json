@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/amqp",
-  "version": "0.7.14",
+  "version": "0.7.27",
   "description": "galenjs amqp.",
   "keywords": [
     "amqp"
@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@galenjs/class-loader": "^0.7.1",
-    "@galenjs/factories": "^0.7.14",
+    "@galenjs/factories": "^0.7.27",
     "amqplib": "^0.7.1",
     "jsonschema": "^1.4.0",
     "shortid": "^2.2.16"

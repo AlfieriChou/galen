@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/typeorm-models",
-  "version": "0.7.14",
+  "version": "0.7.27",
   "description": "generate typeorm entities by json.",
   "keywords": [
     "typeorm",
@@ -30,7 +30,7 @@
     "url": "https://github.com/AlfieriChou/galen/issues"
   },
   "dependencies": {
-    "@galenjs/factories": "^0.7.14",
+    "@galenjs/factories": "^0.7.27",
     "jsonschema": "^1.4.0",
     "lodash": "^4.17.20",
     "typeorm": "^0.2.31"

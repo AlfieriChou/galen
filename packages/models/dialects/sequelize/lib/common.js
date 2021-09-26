@@ -41,10 +41,14 @@ const parseModelProperties = (properties, keyFn) => Object.entries(properties)
     }
     if (['json', 'object', 'array'].includes(value.type)) {
       columnInfo.get = function () {
-        return JSON.parse(this.getDataValue(field))
+        return this.getDataValue(field) ? JSON.parse(
+          this.getDataValue(field)
+        ) : this.getDataValue(field)
       }
       columnInfo.set = function (data) {
-        this.setDataValue(data, JSON.stringify(data))
+        if (data) {
+          this.setDataValue(data, JSON.stringify(data))
+        }
       }
     }
     return {

@@ -4,8 +4,24 @@
 
 ## Usage
 
-```
-const schedule = require('schedule');
+```javascript
+// index.js
+const Schedule = require('./')
 
-// TODO: DEMONSTRATE API
+const schedule = new Schedule({
+  workspace: process.cwd(),
+  schedulePath: 'schedule',
+  plugin: { plugins: [] }
+})
+schedule.init()
+setTimeout(() => schedule.softExit(), 200000)
+
+// test.js
+exports.schedule = {
+  time: '0 * * * * *'
+}
+
+exports.task = () => {
+  console.log('Time:', Date.now())
+}
 ```

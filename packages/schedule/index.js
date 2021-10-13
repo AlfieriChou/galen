@@ -70,13 +70,16 @@ module.exports = class Schedule {
     await Object.entries(this.schedule)
       .reduce(async (promise, [key, { schedule, task }]) => {
         await promise
-        this.jobs[key] = new CronJob(
+        this.logger.info(`[@galenjs/schedule] start ${key} schedule`)
+        const job = new CronJob(
           schedule.time,
           async () => {
             await task(ctx)
           }
         )
-        this.jobs[key].start()
+        this.jobs[key] = job
+        job.start()
+        this.logger.info(`[@galenjs/schedule] start ${key} schedule done`)
       }, Promise.resolve())
   }
 
@@ -84,9 +87,9 @@ module.exports = class Schedule {
     await Object.entries(this.jobs)
       .reduce(async (promise, [key, job]) => {
         await promise
-        this.logger.info(`[@galenjs/redis] wait close ${key} schedule`)
+        this.logger.info(`[@galenjs/schedule] wait close ${key} schedule`)
         await job.stop()
-        this.logger.info(`[@galenjs/redis] closed ${key} schedule`)
+        this.logger.info(`[@galenjs/schedule] closed ${key} schedule`)
       }, Promise.resolve())
   }
 }

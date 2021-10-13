@@ -1,0 +1,30 @@
+{
+  "name": "@galenjs/schedule",
+  "version": "0.7.28",
+  "description": "galenjs schedule.",
+  "keywords": [
+    "schedule"
+  ],
+  "author": "zhoudeyou <alfierichou@gmail.com>",
+  "homepage": "https://github.com/AlfieriChou/galen#readme",
+  "license": "ISC",
+  "main": "index.js",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlfieriChou/galen.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/AlfieriChou/galen/issues"
+  },
+  "dependencies": {
+    "cron": "^1.8.2",
+    "read-dir-filenames": "^1.0.6"
+  }
+}

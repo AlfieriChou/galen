@@ -1,6 +1,7 @@
 const Koa = require('koa')
 const compose = require('koa-compose')
 const createModelsRest = require('@galenjs/models-rest')
+const Schedule = require('@galenjs/schedule')
 
 const bindToContext = require('./lib/context')
 const gracefulExit = require('./lib/gracefulExit')
@@ -15,6 +16,15 @@ module.exports = class Application {
   async init () {
     await validateConfig(this.config)
     await bindToContext(this.config)
+
+    if (this.config.schedulePath) {
+      this.schedule = new Schedule({
+        schedulePath: this.config.schedulePath,
+        workspace: this.config.workspace || process.cwd(),
+        plugin: this.config.plugin || { plugins: [] }
+      })
+    }
+
     const app = new Koa()
 
     this.app = app
@@ -73,10 +83,16 @@ module.exports = class Application {
     if (this.app.context.redis) {
       await this.app.context.redis.quit()
     }
+    if (this.schedule) {
+      await this.schedule.softExit()
+    }
   }
 
   async start () {
     const server = await this.listen(this.config.port)
+    if (this.schedule) {
+      await this.schedule.init(this.app.context)
+    }
     await gracefulExit(server, async () => {
       if (this.app.pendingCount === 0) {
         await this.closed()

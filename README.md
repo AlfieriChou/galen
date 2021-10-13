@@ -20,6 +20,7 @@ galen是一个低代码平台，采用sequelize模型为主，后续将会完全
 - swagger文档-[swagger](https://github.com/AlfieriChou/galen/tree/master/packages/swagger)
 - amqp-[amqp](https://github.com/AlfieriChou/galen/tree/master/packages/amqp)
 - timing-[timing](https://github.com/AlfieriChou/galen/tree/master/packages/timing)
+- 定时任务-[schedule](https://github.com/AlfieriChou/galen/tree/master/packages/schedule)
 
 #### v1
 

@@ -66,12 +66,16 @@ module.exports = class Schedule {
     this.logger = logger
   }
 
-  async init () {
+  async init (ctx = {}) {
     await Object.entries(this.schedule)
       .reduce(async (promise, [key, { schedule, task }]) => {
         await promise
-        // TODO: task support context
-        this.jobs[key] = new CronJob(schedule.time, task)
+        this.jobs[key] = new CronJob(
+          schedule.time,
+          async () => {
+            await task(ctx)
+          }
+        )
         this.jobs[key].start()
       }, Promise.resolve())
   }

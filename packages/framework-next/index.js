@@ -13,9 +13,16 @@ module.exports = class Application {
     this.logger = console
   }
 
-  async init () {
+  async beforeInit () {
     await validateConfig(this.config)
     await bindToContext(this.config)
+  }
+
+  // eslint-disable-next-line no-empty-function
+  async afterInit () {}
+
+  async init () {
+    await this.beforeInit()
 
     if (this.config.schedulePath) {
       this.schedule = new Schedule({
@@ -58,6 +65,8 @@ module.exports = class Application {
       ...this.app.context.middleware,
       router: () => compose([router.routes(), router.allowedMethods()])
     }
+
+    await this.afterInit()
   }
 
   get coreMiddleware () {
@@ -79,13 +88,23 @@ module.exports = class Application {
     })
   }
 
+  // eslint-disable-next-line no-empty-function
+  async beforeClose () {}
+
+  // eslint-disable-next-line no-empty-function
+  async afterClose () {}
+
   async closed () {
+    await this.beforeClose()
+
     if (this.app.context.redis) {
       await this.app.context.redis.quit()
     }
     if (this.schedule) {
       await this.schedule.softExit()
     }
+
+    await this.afterClose()
   }
 
   async start () {

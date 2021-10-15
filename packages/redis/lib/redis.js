@@ -31,6 +31,17 @@ module.exports = class RedisService {
       }, Promise.resolve())
   }
 
+  async softExit (log) {
+    const logger = log || console
+    await [...this.redis.keys()]
+      .reduce(async (promise, key) => {
+        await promise
+        logger.info('[@galenjs/redis] client ', `{${key}} `, 'start close')
+        await this.redis.get(key).quit()
+        logger.info('[@galenjs/redis] client ', `{${key}} `, 'closed')
+      }, Promise.resolve())
+  }
+
   select (name) {
     return this.redis.get(name)
   }
@@ -61,6 +72,26 @@ module.exports = class RedisService {
   async incr (name, key, expire) {
     if (expire) {
       return this.select(name).multi().incr(key)
+        .expire(key, Math.floor(expire))
+        .exec()
+        .then(([[, count]]) => count)
+    }
+    return this.select(name).incr(key)
+  }
+
+  async decrby (name, key, expire) {
+    if (expire) {
+      return this.select(name).multi().decrby(key)
+        .expire(key, Math.floor(expire))
+        .exec()
+        .then(([[, count]]) => count)
+    }
+    return this.select(name).decr(key)
+  }
+
+  async incrby (name, key, expire) {
+    if (expire) {
+      return this.select(name).multi().incrby(key)
         .expire(key, Math.floor(expire))
         .exec()
         .then(([[, count]]) => count)

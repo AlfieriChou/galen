@@ -79,24 +79,24 @@ module.exports = class RedisService {
     return this.select(name).incr(key)
   }
 
-  async decrby (name, key, expire) {
+  async decrby (name, key, value, expire) {
     if (expire) {
-      return this.select(name).multi().decrby(key)
+      return this.select(name).multi().decrby(key, value)
         .expire(key, Math.floor(expire))
         .exec()
         .then(([[, count]]) => count)
     }
-    return this.select(name).decr(key)
+    return this.select(name).decrby(key, value)
   }
 
-  async incrby (name, key, expire) {
+  async incrby (name, key, value, expire) {
     if (expire) {
-      return this.select(name).multi().incrby(key)
+      return this.select(name).multi().incrby(key, value)
         .expire(key, Math.floor(expire))
         .exec()
         .then(([[, count]]) => count)
     }
-    return this.select(name).incr(key)
+    return this.select(name).incrby(key, value)
   }
 
   async getJson (name, key) {

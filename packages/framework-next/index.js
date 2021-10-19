@@ -1,7 +1,6 @@
 const Koa = require('koa')
 const compose = require('koa-compose')
 const createModelsRest = require('@galenjs/models-rest')
-const Schedule = require('@galenjs/schedule')
 
 const bindToContext = require('./lib/context')
 const gracefulExit = require('./lib/gracefulExit')
@@ -16,6 +15,9 @@ module.exports = class Application {
   async beforeInit () {
     await validateConfig(this.config)
     await bindToContext(this.config)
+    const app = new Koa()
+    this.app = app
+    this.app.pendingCount = 0
   }
 
   // eslint-disable-next-line no-empty-function
@@ -24,21 +26,9 @@ module.exports = class Application {
   async init () {
     await this.beforeInit()
 
-    if (this.config.schedulePath) {
-      this.schedule = new Schedule({
-        schedulePath: this.config.schedulePath,
-        workspace: this.config.workspace || process.cwd(),
-        plugin: this.config.plugin || { plugins: [] }
-      })
-    }
-
-    const app = new Koa()
-
-    this.app = app
-    this.app.pendingCount = 0
     const router = await createModelsRest({
-      remoteMethods: app.context.remoteMethods,
-      prefix: '/v2'
+      remoteMethods: this.app.context.remoteMethods,
+      prefix: this.config.apiPrefix || '/v2'
     })
 
     this.middleware = {
@@ -96,14 +86,9 @@ module.exports = class Application {
 
   async closed () {
     await this.beforeClose()
-
     if (this.app.context.redis) {
       await this.app.context.redis.quit()
     }
-    if (this.schedule) {
-      await this.schedule.softExit()
-    }
-
     await this.afterClose()
   }
 

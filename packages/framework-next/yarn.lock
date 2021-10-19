@@ -38,10 +38,10 @@
     read-dir-filenames "^1.0.6"
     sequelize "^6.6.5"
 
-"@galenjs/redis@^0.7.27":
-  version "0.7.27"
-  resolved "https://registry.npmjs.org/@galenjs/redis/-/redis-0.7.27.tgz#78727279d6d40acac45ca1f8233263dac6bb787b"
-  integrity sha512-8YacLAl3HT+OzLf5/PsxtLuxk/tAaeLs7PM1kTRq6qbHWOEfetdD3GdCbrV4Oi3yTHvpYvMp3HRA4lPaLSgePQ==
+"@galenjs/redis@^0.7.32":
+  version "0.7.32"
+  resolved "https://registry.npmjs.org/@galenjs/redis/-/redis-0.7.32.tgz#baaab7047372a9a7f62a8e0cd1f083fd8bc33878"
+  integrity sha512-iceigD8Q2ewf9gb4bJfirmFPAfgRFQqhuj4m79P3H6QRjFt1o6fNsO9528T7yPP1DR0u/BIIEIHGchsD5FNzEw==
   dependencies:
     "@galenjs/factories" "^0.7.27"
     ioredis "^4.19.4"
@@ -62,6 +62,11 @@
   dependencies:
     lodash "^4.17.20"
     sequelize "^6.3.5"
+
+"@galenjs/timing@^0.7.13":
+  version "0.7.13"
+  resolved "https://registry.npmjs.org/@galenjs/timing/-/timing-0.7.13.tgz#43ec35c1935971ee57c4d4a70df7ecb3e3728e2a"
+  integrity sha512-QT/Ssht5MiO9DkC9YrbowoD68iHs5rz0V1B2o4IDDzf6di3ouhNtQ/9edUdYqJzMjPI+Pqp6VeP8VHpY1Aq0pA==
 
 "@types/node@*":
   version "16.9.6"

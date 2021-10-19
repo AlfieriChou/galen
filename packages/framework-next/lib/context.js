@@ -5,10 +5,12 @@ const CONTEXT_REMOTE_METHOD = Symbol('Context#remoteMethods')
 const CONTEXT_SERVICE = Symbol('Context#service')
 const CONTEXT_MIDDLEWARE = Symbol('Context#middleware')
 const CONTEXT_REDIS = Symbol('Context#redis')
+const CONTEXT_TIMING = Symbol('Context#timing')
 
 const context = require('koa/lib/context')
 const createModels = require('@galenjs/models')
 const createRedisClients = require('@galenjs/redis')
+const Timing = require('@galenjs/timing')
 
 const loadService = require('./loadService')
 const loadMiddleware = require('./loadMiddleware')
@@ -20,6 +22,28 @@ module.exports = async ({
   plugin = {},
   ...config
 }) => {
+  Object.defineProperties(context, {
+    timing: {
+      get () {
+        if (!this[CONTEXT_TIMING]) {
+          this[CONTEXT_TIMING] = new Timing()
+        }
+        this[CONTEXT_TIMING].start('Total')
+        return this[CONTEXT_TIMING]
+      }
+    },
+    serverTiming: {
+      get () {
+        const timing = this[CONTEXT_TIMING]
+        if (!timing) {
+          return ''
+        }
+        timing.end()
+        return timing.toJSON()
+      }
+    }
+  })
+
   if (config.models) {
     const {
       models,

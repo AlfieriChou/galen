@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/schedule",
-  "version": "0.7.29",
+  "version": "0.8.0",
   "description": "galenjs schedule.",
   "keywords": [
     "schedule"

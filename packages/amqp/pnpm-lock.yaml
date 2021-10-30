@@ -1,0 +1,185 @@
+lockfileVersion: 5.3
+
+specifiers:
+  '@galenjs/class-loader': ^0.7.1
+  '@galenjs/factories': ^0.7.27
+  amqplib: ^0.7.1
+  jsonschema: ^1.4.0
+  shortid: ^2.2.16
+
+dependencies:
+  '@galenjs/class-loader': registry.npmmirror.com/@galenjs/class-loader/0.7.1
+  '@galenjs/factories': registry.npmmirror.com/@galenjs/factories/0.7.27_jsonschema@1.4.0
+  amqplib: registry.npmmirror.com/amqplib/0.7.1
+  jsonschema: registry.nlark.com/jsonschema/1.4.0
+  shortid: registry.nlark.com/shortid/2.2.16
+
+packages:
+
+  /safe-buffer/5.1.2:
+    resolution: {integrity: sha1-mR7GnSluAxN0fVm9/St0XDX4go0=, tarball: safe-buffer/download/safe-buffer-5.1.2.tgz}
+    dev: false
+
+  /safe-buffer/5.2.1:
+    resolution: {integrity: sha1-Hq+fqb2x/dTsdfWPnNtOa3gn7sY=, tarball: safe-buffer/download/safe-buffer-5.2.1.tgz}
+    dev: false
+
+  registry.nlark.com/bitsyntax/0.1.0:
+    resolution: {integrity: sha1-sMWazvA1Bd5aLtYqL3Y8Vq4dYgU=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/bitsyntax/download/bitsyntax-0.1.0.tgz}
+    name: bitsyntax
+    version: 0.1.0
+    engines: {node: '>=0.8'}
+    dependencies:
+      buffer-more-ints: registry.nlark.com/buffer-more-ints/1.0.0
+      debug: registry.nlark.com/debug/2.6.9
+      safe-buffer: 5.1.2
+    dev: false
+
+  registry.nlark.com/bluebird/3.7.2:
+    resolution: {integrity: sha1-nyKcFb4nJFT/qXOs4NvueaGww28=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/bluebird/download/bluebird-3.7.2.tgz}
+    name: bluebird
+    version: 3.7.2
+    dev: false
+
+  registry.nlark.com/buffer-more-ints/1.0.0:
+    resolution: {integrity: sha1-70+OLd261CntOCipxV1E8FxhFCI=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/buffer-more-ints/download/buffer-more-ints-1.0.0.tgz}
+    name: buffer-more-ints
+    version: 1.0.0
+    dev: false
+
+  registry.nlark.com/core-util-is/1.0.3:
+    resolution: {integrity: sha1-pgQtNjTCsn6TKPg3uWX6yDgI24U=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/core-util-is/download/core-util-is-1.0.3.tgz}
+    name: core-util-is
+    version: 1.0.3
+    dev: false
+
+  registry.nlark.com/debug/2.6.9:
+    resolution: {integrity: sha1-XRKFFd8TT/Mn6QpMk/Tgd6U2NB8=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/debug/download/debug-2.6.9.tgz}
+    name: debug
+    version: 2.6.9
+    dependencies:
+      ms: registry.npmmirror.com/ms/2.0.0
+    dev: false
+
+  registry.nlark.com/inherits/2.0.4:
+    resolution: {integrity: sha1-D6LGT5MpF8NDOg3tVTY6rjdBa3w=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/inherits/download/inherits-2.0.4.tgz}
+    name: inherits
+    version: 2.0.4
+    dev: false
+
+  registry.nlark.com/is-class/0.0.9:
+    resolution: {integrity: sha1-MCTBexz49r3B8+yhuuUH6pkrbZM=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/is-class/download/is-class-0.0.9.tgz}
+    name: is-class
+    version: 0.0.9
+    dev: false
+
+  registry.nlark.com/isarray/0.0.1:
+    resolution: {integrity: sha1-ihis/Kmo9Bd+Cav8YDiTmwXR7t8=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/isarray/download/isarray-0.0.1.tgz}
+    name: isarray
+    version: 0.0.1
+    dev: false
+
+  registry.nlark.com/jsonschema/1.4.0:
+    resolution: {integrity: sha1-Gvo0xLwiGQ2OQicewXrIs0BPh7I=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/jsonschema/download/jsonschema-1.4.0.tgz}
+    name: jsonschema
+    version: 1.4.0
+    dev: false
+
+  registry.nlark.com/querystringify/2.2.0:
+    resolution: {integrity: sha1-M0WUG0FTy50ILY7uTNogFqmu9/Y=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/querystringify/download/querystringify-2.2.0.tgz}
+    name: querystringify
+    version: 2.2.0
+    dev: false
+
+  registry.nlark.com/readable-stream/1.1.14:
+    resolution: {integrity: sha1-fPTFTvZI44EwhMY23SB54WbAgdk=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/readable-stream/download/readable-stream-1.1.14.tgz}
+    name: readable-stream
+    version: 1.1.14
+    dependencies:
+      core-util-is: registry.nlark.com/core-util-is/1.0.3
+      inherits: registry.nlark.com/inherits/2.0.4
+      isarray: registry.nlark.com/isarray/0.0.1
+      string_decoder: registry.nlark.com/string_decoder/0.10.31
+    dev: false
+
+  registry.nlark.com/requires-port/1.0.0:
+    resolution: {integrity: sha1-kl0mAdOaxIXgkc8NpcbmlNw9yv8=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/requires-port/download/requires-port-1.0.0.tgz}
+    name: requires-port
+    version: 1.0.0
+    dev: false
+
+  registry.nlark.com/shortid/2.2.16:
+    resolution: {integrity: sha1-t0K48MuWQG/Tkcdr/Bimelf+Vgg=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/shortid/download/shortid-2.2.16.tgz}
+    name: shortid
+    version: 2.2.16
+    dependencies:
+      nanoid: registry.npmmirror.com/nanoid/2.1.11
+    dev: false
+
+  registry.nlark.com/string_decoder/0.10.31:
+    resolution: {integrity: sha1-YuIDvEF2bGwoyfyEMB2rHFMQ+pQ=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/string_decoder/download/string_decoder-0.10.31.tgz}
+    name: string_decoder
+    version: 0.10.31
+    dev: false
+
+  registry.nlark.com/url-parse/1.5.3:
+    resolution: {integrity: sha1-ccEwPTj7Zjmt4YPCmSyMwGht+GI=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/url-parse/download/url-parse-1.5.3.tgz}
+    name: url-parse
+    version: 1.5.3
+    dependencies:
+      querystringify: registry.nlark.com/querystringify/2.2.0
+      requires-port: registry.nlark.com/requires-port/1.0.0
+    dev: false
+
+  registry.npmmirror.com/@galenjs/class-loader/0.7.1:
+    resolution: {integrity: sha1-hhLxQvId8gjB+WlXCM0nPrgU+4w=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@galenjs/class-loader/download/@galenjs/class-loader-0.7.1.tgz}
+    name: '@galenjs/class-loader'
+    version: 0.7.1
+    dependencies:
+      is-class: registry.nlark.com/is-class/0.0.9
+      read-dir-filenames: registry.npmmirror.com/read-dir-filenames/1.0.6
+    dev: false
+
+  registry.npmmirror.com/@galenjs/factories/0.7.27_jsonschema@1.4.0:
+    resolution: {integrity: sha1-1vm6PUNgqM+3YbbpYAG/hzKmrQE=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@galenjs/factories/download/@galenjs/factories-0.7.27.tgz}
+    id: registry.npmmirror.com/@galenjs/factories/0.7.27
+    name: '@galenjs/factories'
+    version: 0.7.27
+    peerDependencies:
+      jsonschema: ^1.4.0
+      lodash: ^4.17.20
+    dependencies:
+      jsonschema: registry.nlark.com/jsonschema/1.4.0
+    dev: false
+
+  registry.npmmirror.com/amqplib/0.7.1:
+    resolution: {integrity: sha1-GsYJNMvdtEW9ycZIMQoNIypTs68=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/amqplib/download/amqplib-0.7.1.tgz}
+    name: amqplib
+    version: 0.7.1
+    engines: {node: '>=0.8 <=15'}
+    dependencies:
+      bitsyntax: registry.nlark.com/bitsyntax/0.1.0
+      bluebird: registry.nlark.com/bluebird/3.7.2
+      buffer-more-ints: registry.nlark.com/buffer-more-ints/1.0.0
+      readable-stream: registry.nlark.com/readable-stream/1.1.14
+      safe-buffer: 5.2.1
+      url-parse: registry.nlark.com/url-parse/1.5.3
+    dev: false
+
+  registry.npmmirror.com/ms/2.0.0:
+    resolution: {integrity: sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/ms/download/ms-2.0.0.tgz}
+    name: ms
+    version: 2.0.0
+    dev: false
+
+  registry.npmmirror.com/nanoid/2.1.11:
+    resolution: {integrity: sha1-7CS4p1jVkVYVMbQXagHjq08PAoA=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/nanoid/download/nanoid-2.1.11.tgz}
+    name: nanoid
+    version: 2.1.11
+    dev: false
+
+  registry.npmmirror.com/read-dir-filenames/1.0.6:
+    resolution: {integrity: sha1-oCVGJWrkaRlArErjlVWzFI+PNZg=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/read-dir-filenames/download/read-dir-filenames-1.0.6.tgz}
+    name: read-dir-filenames
+    version: 1.0.6
+    dev: false

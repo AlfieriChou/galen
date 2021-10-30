@@ -1,0 +1,33 @@
+lockfileVersion: 5.3
+
+specifiers:
+  cron: ^1.8.2
+  read-dir-filenames: ^1.0.6
+
+dependencies:
+  cron: 1.8.2
+  read-dir-filenames: registry.npmmirror.com/read-dir-filenames/1.0.6
+
+packages:
+
+  /cron/1.8.2:
+    resolution: {integrity: sha1-SsXjxVuowWPYTzQHvelGMtqDcM4=, tarball: cron/download/cron-1.8.2.tgz}
+    dependencies:
+      moment-timezone: 0.5.33
+    dev: false
+
+  /moment-timezone/0.5.33:
+    resolution: {integrity: sha1-slL9a7V/NBybWaWrYajlGnO70iw=, tarball: moment-timezone/download/moment-timezone-0.5.33.tgz}
+    dependencies:
+      moment: 2.29.1
+    dev: false
+
+  /moment/2.29.1:
+    resolution: {integrity: sha1-sr52n6MZQL6e7qZGnAdeNQBvo9M=, tarball: moment/download/moment-2.29.1.tgz}
+    dev: false
+
+  registry.npmmirror.com/read-dir-filenames/1.0.6:
+    resolution: {integrity: sha1-oCVGJWrkaRlArErjlVWzFI+PNZg=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/read-dir-filenames/download/read-dir-filenames-1.0.6.tgz}
+    name: read-dir-filenames
+    version: 1.0.6
+    dev: false

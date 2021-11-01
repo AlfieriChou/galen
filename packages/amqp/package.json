@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/amqp",
-  "version": "0.8.0",
+  "version": "1.0.0",
   "description": "galenjs amqp.",
   "keywords": [
     "amqp"
@@ -27,8 +27,8 @@
     "url": "https://github.com/AlfieriChou/galen/issues"
   },
   "dependencies": {
-    "@galenjs/class-loader": "^0.8.0",
-    "@galenjs/factories": "^0.8.0",
+    "@galenjs/class-loader": "^1.0.0",
+    "@galenjs/factories": "^1.0.0",
     "amqplib": "^0.7.1",
     "jsonschema": "^1.4.0",
     "shortid": "^2.2.16"

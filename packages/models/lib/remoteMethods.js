@@ -52,6 +52,35 @@ const generateBaseRemoteMethods = (modelName, {
       }
     }
   },
+  remoteBatchCreate: {
+    path: `/${modelName}/batchCreate`,
+    method: 'post',
+    roles: ['$everyone'],
+    tags: [`${modelName}`],
+    summary: `批量创建${description}`,
+    requestBody: {
+      body: {
+        data: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: _.omit(properties, ['id', 'createdAt', 'updatedAt', 'deletedAt']),
+            required
+          }
+        }
+      },
+      required: ['data']
+    },
+    output: {
+      200: {
+        type: 'array',
+        result: {
+          type: 'object',
+          properties
+        }
+      }
+    }
+  },
   remoteShow: {
     path: `/${modelName}/:id`,
     method: 'get',

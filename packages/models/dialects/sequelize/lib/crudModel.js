@@ -49,6 +49,12 @@ module.exports = Model => {
       return inst.toJSON()
     }
 
+    static async remoteBatchCreate (ctx) {
+      const { request: { body } } = ctx
+      const ret = await this.bulkCreate(body.data)
+      return ret.map(item => item.toJSON())
+    }
+
     static async remoteShow (ctx) {
       const { params: { id } } = ctx
       const inst = await this.findByPk(id)

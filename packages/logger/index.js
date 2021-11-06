@@ -5,13 +5,25 @@ const createTransports = (logDir, transportConfig, als) => {
   const printfFormatter = winston.format.combine(
     winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
     winston.format(info => {
-      // eslint-disable-next-line no-param-reassign
-      info.requestId = als ? als.get().requestId : 'system'
+      if (als) {
+        const { requestId, method, originalUrl } = als.get()
+        return {
+          ...info,
+          requestId: requestId || 'system',
+          method,
+          originalUrl
+        }
+      }
       return info
     })(),
-    // TODO: add method url runtime
     winston.format.printf(info => {
       let logStrFormat = `[-${info.timestamp}/${info.requestId}/${info.level}]`
+      if (info.method) {
+        logStrFormat += ` ${info.method}`
+      }
+      if (info.originalUrl) {
+        logStrFormat += ` ${info.originalUrl}`
+      }
       if (info.message) {
         logStrFormat += ` ${info.message}`
       }

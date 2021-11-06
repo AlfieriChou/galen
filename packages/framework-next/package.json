@@ -31,7 +31,6 @@
     "@galenjs/models": "^1.0.1",
     "@galenjs/models-rest": "^1.0.0",
     "@galenjs/redis": "^1.0.0",
-    "@galenjs/schedule": "^1.0.2",
     "koa": "^2.13.1",
     "koa-compose": "^4.1.0",
     "read-dir-filenames": "^1.0.6"

@@ -1,9 +1,9 @@
 {
-  "name": "@galenjs/schedule",
-  "version": "1.0.0",
-  "description": "galenjs schedule.",
+  "name": "@galenjs/logger",
+  "version": "1.0.1",
+  "description": "galenjs logger",
   "keywords": [
-    "schedule"
+    "logger"
   ],
   "author": "AlfieriChou <alfierichou@gmail.com>",
   "homepage": "https://github.com/AlfieriChou/galen#readme",
@@ -24,7 +24,7 @@
     "url": "https://github.com/AlfieriChou/galen/issues"
   },
   "dependencies": {
-    "cron": "^1.8.2",
-    "read-dir-filenames": "^1.0.6"
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.5"
   }
 }

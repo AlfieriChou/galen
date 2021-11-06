@@ -21,6 +21,7 @@ galen是一个低代码平台，采用sequelize模型为主，后续将会完全
 - amqp-[amqp](https://github.com/AlfieriChou/galen/tree/master/packages/amqp)
 - timing-[timing](https://github.com/AlfieriChou/galen/tree/master/packages/timing)
 - 定时任务-[schedule](https://github.com/AlfieriChou/galen/tree/master/packages/schedule)
+- 日志--[logger](https://github.com/AlfieriChou/galen/tree/master/packages/logger)
 
 #### v1
 

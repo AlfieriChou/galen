@@ -3,7 +3,7 @@ require('winston-daily-rotate-file')
 
 const createTransports = (logDir, transportConfig, als) => {
   const printfFormatter = winston.format.combine(
-    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss,SSS' }),
     winston.format(info => {
       if (als) {
         const { requestId, method, originalUrl } = als.get()

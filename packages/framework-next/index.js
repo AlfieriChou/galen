@@ -1,6 +1,9 @@
 const Koa = require('koa')
 const compose = require('koa-compose')
 const createModelsRest = require('@galenjs/models-rest')
+const als = require('@galenjs/als')
+const createLogger = require('@galenjs/logger')
+const shortId = require('shortid')
 
 const bindToContext = require('./lib/context')
 const gracefulExit = require('./lib/gracefulExit')
@@ -10,6 +13,7 @@ module.exports = class Application {
   constructor (config) {
     this.config = config
     this.logger = console
+    this.als = als
   }
 
   async beforeInit () {
@@ -18,6 +22,20 @@ module.exports = class Application {
     const app = new Koa()
     this.app = app
     this.app.pendingCount = 0
+    if (this.config.loggerOptions) {
+      this.logger = createLogger(this.config.loggerOptions, this.als)
+    }
+    this.app.coreLogger = this.logger
+    this.app.context.logger = this.logger
+    this.app.use(async (ctx, next) => {
+      await this.als.run({
+        requestId: ctx.headers['X-Request-Id'] || shortId.generate(),
+        method: ctx.method,
+        originalUrl: ctx.originalUrl
+      }, async () => {
+        await next()
+      })
+    })
   }
 
   // eslint-disable-next-line no-empty-function

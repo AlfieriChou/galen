@@ -27,13 +27,16 @@
     "url": "https://github.com/AlfieriChou/galen/issues"
   },
   "dependencies": {
+    "@galenjs/als": "^1.0.0",
     "@galenjs/class-loader": "^1.0.0",
+    "@galenjs/logger": "^1.0.5",
     "@galenjs/models": "^1.0.1",
     "@galenjs/models-rest": "^1.0.0",
     "@galenjs/redis": "^1.0.0",
     "koa": "^2.13.1",
     "koa-compose": "^4.1.0",
-    "read-dir-filenames": "^1.0.6"
+    "read-dir-filenames": "^1.0.6",
+    "shortid": "^2.2.16"
   },
   "peerDependencies": {
     "@galenjs/factories": "^0.7.14"

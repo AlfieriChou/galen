@@ -27,6 +27,8 @@ module.exports = class Application {
     }
     this.app.coreLogger = this.logger
     this.app.context.logger = this.logger
+    this.app.als = this.als
+    this.app.context.als = this.als
     this.app.use(async (ctx, next) => {
       await this.als.run({
         requestId: ctx.headers['X-Request-Id'] || shortId.generate(),

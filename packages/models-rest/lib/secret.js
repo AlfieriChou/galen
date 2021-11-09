@@ -4,7 +4,8 @@ const util = require('util')
 const { format } = require('date-fns')
 
 const generateKeyPair = util.promisify(crypto.generateKeyPair)
-const ONE_DAY = 24 * 60 * 60 * 1000
+const ONE_DAY_SECOND = 24 * 60 * 60
+const ONE_DAY = ONE_DAY_SECOND * 1000
 
 module.exports = class Secret {
   async generateRSAKeyPair () {
@@ -41,14 +42,14 @@ module.exports = class Secret {
   }
 
   async setRSAKeys ({
-    clientId, keys, expires = ONE_DAY / 1000
+    clientId, keys, expires = ONE_DAY_SECOND
   }, ctx) {
     return ctx.redis.setJson('main', `RSA-keys:${clientId}`, keys, expires)
   }
 
   async getClientId (ctx) {
     const dateStr = format(Date.now(), 'yyyyMMdd')
-    const seq = await ctx.redis.incr('main', `clientIdSeq:${dateStr}`, 60 * 60 * 24 * 2)
+    const seq = await ctx.redis.incr('main', `clientIdSeq:${dateStr}`, 2 * ONE_DAY_SECOND)
     return `${
       dateStr
     }${

@@ -217,6 +217,24 @@ remoteMethods:
 
 接口路径，可以默认添加prefix
 
+### secretType
+
+加密类型: client
+
+此处只实现了客户端拿服务端公钥加密数据，然后，服务端解密数据
+
+传值案例:
+
+```json
+{
+  "iv": "pcp+MVj4zfCMNjB77le9oA==",
+  "encryptedKey": "AICNw7abzCeSVR+0esubZA74iYJPHXG4Bk0SKcEJ9q5dcKLQIwbqSx0YlEHss/Q99Bh95DyMYv8VRhHIwIx/6P1LHpaOTTSOtl6Viay4R2j6Zucvoiu7oKnWs0PVRiiojhLSGNxmlGjT553gNfwpglwnkYrcmKyj/A5I5QoW6IqcURGhP/W5wrWgEqMIIJebpLrgyh+keZ3EOx6GC/68Q+EallDFpERSLulg99gTcbZaHquonKHWQFLF1QRS0U0BF70rN2Wm4AwhoLzX1y89R1/8zMxPpSxXlGOJr38CDmQbHr+2H1Az37YK3l54+WrrHQnxBkb+/6hleHKUI1Y8nw==",
+  "encryptedData": "AynFEIrRXWYnDY6miD8rrGBYGXou4JNeJqrvD8WFKHuBBGwoaJeUKJ9WWcAHPBMB",
+  "secretType": 1,
+  "clientId": "20211109000000523"
+}
+```
+
 ### method
 
 接口方法，get,post,put,delete,patch,head

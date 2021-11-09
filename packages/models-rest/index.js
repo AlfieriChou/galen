@@ -2,8 +2,10 @@ const KoaRouter = require('koa-router')
 const { Validator } = require('jsonschema')
 const _ = require('lodash')
 const { snakeJsonKeys } = require('@galenjs/factories/lodash')
+const Secret = require('./lib/secret')
 
 const v = new Validator()
+const secret = new Secret()
 
 const checkRoles = async apiInfo => async (ctx, next) => {
   if (!apiInfo.roles) {
@@ -53,6 +55,34 @@ const validate = async apiInfo => async (ctx, next) => {
   return next()
 }
 
+const decryptedData = async () => async (ctx, next) => {
+  const { secretType } = ctx.remoteMethod
+  // TODO: 支持双向加密
+  if (secretType && secretType === 'client') {
+    ctx.assert(ctx.request.body.clientId)
+    ctx.assert(ctx.request.body.iv)
+    ctx.assert(ctx.request.body.encryptedKey)
+    ctx.assert(ctx.request.body.encryptedData)
+    const {
+      iv, encryptedKey, encryptedData, clientId
+    } = ctx.request.body
+    const rsaKeys = await secret.getRSAKeys(clientId, ctx)
+    if (!rsaKeys || !rsaKeys.privateKey) {
+      ctx.throw(403, 'LOAD_PRIVATE_KEY_ERROR')
+    }
+    try {
+      const data = decryptedData(encryptedData, {
+        privateKey: rsaKeys.privateKey, encryptedKey, iv
+      })
+      ctx.request.body = data
+    } catch (err) {
+      ctx.logger.error('decrypted.error', err)
+      ctx.throw(403, 'DECRYPTED_DATA_ERROR')
+    }
+  }
+  return next()
+}
+
 module.exports = async ({ remoteMethods, prefix = '/v1' }) => {
   const api = KoaRouter()
   api.prefix(prefix)
@@ -68,11 +98,15 @@ module.exports = async ({ remoteMethods, prefix = '/v1' }) => {
 
       api[apiInfo.method](
         apiInfo.path,
+        (ctx, next) => {
+          ctx.remoteMethod = apiInfo
+          return next()
+        },
         await checkRoles(apiInfo),
         await validate(apiInfo),
+        await decryptedData(),
         // eslint-disable-next-line consistent-return
         async ctx => {
-          ctx.remoteMethod = apiInfo
           if (ctx.models[modelName] && ctx.models[modelName][handler]) {
             const ret = await ctx.models[modelName][handler](ctx)
             if (apiInfo.responseType && apiInfo.responseType === 'origin') {
@@ -93,6 +127,10 @@ module.exports = async ({ remoteMethods, prefix = '/v1' }) => {
         }
       )
     }, Promise.resolve())
+
+  api.get('/generateRSA', async ctx => {
+    ctx.body = await secret.generateRSAPublicKey(ctx)
+  })
 
   return api
 }

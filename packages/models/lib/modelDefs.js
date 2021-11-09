@@ -7,6 +7,9 @@ const validateSchema = require('@galenjs/factories/validateJsonSchema')
 
 module.exports = async modelDirPath => {
   const modelDefs = {}
+  if (!fs.existsSync(modelDirPath)) {
+    return {}
+  }
   const filepaths = readDirFilenames(modelDirPath)
 
   // eslint-disable-next-line array-callback-return

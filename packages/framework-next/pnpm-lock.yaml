@@ -3,24 +3,26 @@ lockfileVersion: 5.3
 specifiers:
   '@galenjs/als': ^1.0.0
   '@galenjs/class-loader': ^1.0.0
-  '@galenjs/logger': ^1.0.5
+  '@galenjs/logger': ^1.0.7
   '@galenjs/models': ^1.0.1
   '@galenjs/models-rest': ^1.0.0
   '@galenjs/redis': ^1.0.0
   koa: ^2.13.1
   koa-compose: ^4.1.0
+  lodash: ^4.17.21
   read-dir-filenames: ^1.0.6
   shortid: ^2.2.16
 
 dependencies:
   '@galenjs/als': 1.0.0
   '@galenjs/class-loader': 1.0.0
-  '@galenjs/logger': 1.0.5
+  '@galenjs/logger': 1.0.7
   '@galenjs/models': 1.0.1
   '@galenjs/models-rest': 1.0.0
-  '@galenjs/redis': 1.0.0
+  '@galenjs/redis': 1.0.0_lodash@4.17.21
   koa: 2.13.4
   koa-compose: 4.1.0
+  lodash: 4.17.21
   read-dir-filenames: 1.0.6
   shortid: 2.2.16
 
@@ -45,15 +47,6 @@ packages:
       read-dir-filenames: 1.0.6
     dev: false
 
-  /@galenjs/factories/1.0.0_jsonschema@1.4.0:
-    resolution: {integrity: sha512-OZvMKEWRGZJNYhVuNH+BAnj6pzzinqIsLECpDlV1sahGTaLkIPou76tPDY0ifF9+zAlamCNfN9g7ehwiBX3bnw==}
-    peerDependencies:
-      jsonschema: ^1.4.0
-      lodash: ^4.17.20
-    dependencies:
-      jsonschema: 1.4.0
-    dev: false
-
   /@galenjs/factories/1.0.0_jsonschema@1.4.0+lodash@4.17.21:
     resolution: {integrity: sha512-OZvMKEWRGZJNYhVuNH+BAnj6pzzinqIsLECpDlV1sahGTaLkIPou76tPDY0ifF9+zAlamCNfN9g7ehwiBX3bnw==}
     peerDependencies:
@@ -64,8 +57,8 @@ packages:
       lodash: 4.17.21
     dev: false
 
-  /@galenjs/logger/1.0.5:
-    resolution: {integrity: sha512-7PigKX+aBpwGpb16CiSTiQWtpLpuSqzJT0zxrOOBWhZSHNqo8oEBuvR0ReJ3ujfHMHQ4QWuyonbnNsZ579IgnA==}
+  /@galenjs/logger/1.0.7:
+    resolution: {integrity: sha512-/Ic75cQqsgBcA02x9APWxG0+CzKl1E7bCxbrnvOx9NGy3rw1MiEBiipb9/7WODj1YfcteNh+KQRBoIQhhitfew==}
     dependencies:
       winston: 3.3.3
       winston-daily-rotate-file: 4.5.5_winston@3.3.3
@@ -102,10 +95,10 @@ packages:
       - tedious
     dev: false
 
-  /@galenjs/redis/1.0.0:
+  /@galenjs/redis/1.0.0_lodash@4.17.21:
     resolution: {integrity: sha512-Xe93Rj+ArSatV/Ub6cjFoExt1NNwo/rFfQbioc2eGXsbuz5QcZFCGvgiuSSfrpjHu+EyIl1gtSVEvnWYpDUwgQ==}
     dependencies:
-      '@galenjs/factories': 1.0.0_jsonschema@1.4.0
+      '@galenjs/factories': 1.0.0_jsonschema@1.4.0+lodash@4.17.21
       ioredis: 4.28.0
       jsonschema: 1.4.0
     transitivePeerDependencies:

@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const readDirFilenames = require('read-dir-filenames')
+const _ = require('lodash')
 
 const loadMiddlewareDirToObj = async dirPath => {
   const middlewarePaths = readDirFilenames(dirPath, {
@@ -20,17 +21,14 @@ const loadMiddlewareDirToObj = async dirPath => {
 module.exports = async ({
   workspace, middlewarePath, plugin
 }) => {
-  let middleware = {}
+  const middleware = {}
   if (middlewarePath) {
     const middlewareDirPath = path.join(
       workspace,
       `/${middlewarePath}`
     )
     if (fs.existsSync(middlewareDirPath)) {
-      middleware = {
-        ...middleware,
-        ...(await loadMiddlewareDirToObj(middlewareDirPath))
-      }
+      _.merge(middleware, await loadMiddlewareDirToObj(middlewareDirPath))
     }
     if (plugin) {
       await Promise.all(plugin.plugins.map(async pluginName => {
@@ -40,10 +38,7 @@ module.exports = async ({
           `/${pluginMainPath}/${pluginName}/${middlewarePath}`
         )
         if (fs.existsSync(pluginMiddlewareDirPath)) {
-          middleware = {
-            ...middleware,
-            ...(await loadMiddlewareDirToObj(pluginMiddlewareDirPath))
-          }
+          _.merge(middleware, await loadMiddlewareDirToObj(pluginMiddlewareDirPath))
         }
       }))
     }

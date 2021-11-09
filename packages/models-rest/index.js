@@ -72,6 +72,7 @@ module.exports = async ({ remoteMethods, prefix = '/v1' }) => {
         await validate(apiInfo),
         // eslint-disable-next-line consistent-return
         async ctx => {
+          ctx.remoteMethod = apiInfo
           if (ctx.models[modelName] && ctx.models[modelName][handler]) {
             const ret = await ctx.models[modelName][handler](ctx)
             if (apiInfo.responseType && apiInfo.responseType === 'origin') {

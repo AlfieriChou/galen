@@ -71,7 +71,7 @@ const decryptedData = async () => async (ctx, next) => {
       ctx.throw(403, 'LOAD_PRIVATE_KEY_ERROR')
     }
     try {
-      const data = decryptedData(encryptedData, {
+      const data = await secret.decryptedData(encryptedData, {
         privateKey: rsaKeys.privateKey, encryptedKey, iv
       })
       ctx.request.body = data
@@ -102,9 +102,9 @@ module.exports = async ({ remoteMethods, prefix = '/v1' }) => {
           ctx.remoteMethod = apiInfo
           return next()
         },
+        await decryptedData(),
         await checkRoles(apiInfo),
         await validate(apiInfo),
-        await decryptedData(),
         // eslint-disable-next-line consistent-return
         async ctx => {
           if (ctx.models[modelName] && ctx.models[modelName][handler]) {

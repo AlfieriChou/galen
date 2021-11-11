@@ -3,6 +3,7 @@ const path = require('path')
 const readDirFilenames = require('read-dir-filenames')
 const assert = require('assert')
 const { CronJob } = require('cron')
+const shortId = require('shortid')
 
 const loadScheduleDirToObj = dirPath => {
   const schedulePaths = readDirFilenames(dirPath, {
@@ -56,14 +57,24 @@ const loadSchedule = ({
 module.exports = class Schedule {
   constructor (options) {
     const {
-      workspace, schedulePath, plugin, logger = console
+      workspace, schedulePath, plugin, app = {}
     } = options
     assert(workspace, 'workspace must be non-empty')
     assert(schedulePath, 'schedulePath must be non-empty')
     assert(plugin, 'plugin must be non-empty')
     this.schedule = loadSchedule(options)
     this.jobs = {}
-    this.logger = logger
+    this.app = app
+    this.logger = this.app.coreLogger || console
+  }
+
+  async runTask ({
+    taskName, taskId, taskFunc
+  }, ctx) {
+    const startedAt = Date.now()
+    this.logger.info(`${taskName} start: `, taskId)
+    await taskFunc(ctx)
+    this.logger.info(`${taskName} done: `, taskId, Date.now() - startedAt)
   }
 
   async init (ctx = {}) {
@@ -74,7 +85,21 @@ module.exports = class Schedule {
         const job = new CronJob(
           schedule.time,
           async () => {
-            await task(ctx)
+            const taskId = shortId.generate()
+            const runTaskContext = {
+              taskId,
+              taskName: key,
+              taskFunc: task
+            }
+
+            if (this.app.als) {
+              await this.aap.als.run(runTaskContext, async () => {
+                await this.runTask(runTaskContext, ctx)
+              })
+              return
+            }
+
+            await this.runTask(runTaskContext, ctx)
           }
         )
         this.jobs[key] = job

@@ -3,10 +3,12 @@ lockfileVersion: 5.3
 specifiers:
   cron: ^1.8.2
   read-dir-filenames: ^1.0.6
+  shortid: ^2.2.16
 
 dependencies:
   cron: 1.8.2
   read-dir-filenames: registry.npmmirror.com/read-dir-filenames/1.0.6
+  shortid: 2.2.16
 
 packages:
 
@@ -24,6 +26,16 @@ packages:
 
   /moment/2.29.1:
     resolution: {integrity: sha1-sr52n6MZQL6e7qZGnAdeNQBvo9M=, tarball: moment/download/moment-2.29.1.tgz}
+    dev: false
+
+  /nanoid/2.1.11:
+    resolution: {integrity: sha512-s/snB+WGm6uwi0WjsZdaVcuf3KJXlfGl2LcxgwkEwJF0D/BWzVWAZW/XY4bFaiR7s0Jk3FPvlnepg1H1b1UwlA==}
+    dev: false
+
+  /shortid/2.2.16:
+    resolution: {integrity: sha512-Ugt+GIZqvGXCIItnsL+lvFJOiN7RYqlGy7QE41O3YC1xbNSeDGIRO7xg2JJXIAj1cAGnOeC1r7/T9pgrtQbv4g==}
+    dependencies:
+      nanoid: 2.1.11
     dev: false
 
   registry.npmmirror.com/read-dir-filenames/1.0.6:

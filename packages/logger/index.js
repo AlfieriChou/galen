@@ -6,12 +6,16 @@ const createTransports = (logDir, transportConfig, als) => {
     winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss,SSS' }),
     winston.format(info => {
       if (als && als.get()) {
-        const { requestId, method, originalUrl } = als.get()
+        const {
+          requestId, method, originalUrl, taskId, taskName
+        } = als.get()
         return {
           ...info,
           requestId,
           method,
-          originalUrl
+          originalUrl,
+          taskId,
+          taskName
         }
       }
       return info
@@ -23,6 +27,12 @@ const createTransports = (logDir, transportConfig, als) => {
       }
       if (info.originalUrl) {
         logStrFormat += ` ${info.originalUrl}`
+      }
+      if (info.taskId) {
+        logStrFormat += ` ${info.taskId}`
+      }
+      if (info.taskName) {
+        logStrFormat += ` ${info.taskName}`
       }
       if (info.message) {
         logStrFormat += ` ${info.message}`

@@ -68,16 +68,8 @@ module.exports = class Schedule {
     this.logger = this.app.coreLogger || console
   }
 
-  async runTask ({
-    taskName, taskId, taskFunc
-  }, ctx) {
-    const startedAt = Date.now()
-    this.logger.info(`${taskName} start: `, taskId)
-    await taskFunc(ctx)
-    this.logger.info(`${taskName} done: `, taskId, Date.now() - startedAt)
-  }
-
   async init (ctx = {}) {
+    const { als } = this.app
     await Object.entries(this.schedule)
       .reduce(async (promise, [key, { schedule, task }]) => {
         await promise
@@ -88,18 +80,17 @@ module.exports = class Schedule {
             const taskId = shortId.generate()
             const runTaskContext = {
               taskId,
-              taskName: key,
-              taskFunc: task
+              taskName: key
             }
 
-            if (this.app.als) {
-              await this.aap.als.run(runTaskContext, async () => {
-                await this.runTask(runTaskContext, ctx)
+            if (als) {
+              await als.run(runTaskContext, async () => {
+                await task(ctx)
               })
               return
             }
 
-            await this.runTask(runTaskContext, ctx)
+            await task(ctx)
           }
         )
         this.jobs[key] = job

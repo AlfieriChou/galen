@@ -21,26 +21,26 @@ const createTransports = (logDir, transportConfig, als) => {
       return info
     })(),
     winston.format.printf(info => {
-      let logStrFormat = `[-${info.timestamp}/${info.requestId || 'system'}/${info.level}]`
+      let logStr = `[${info.timestamp}/${info.requestId || (info.taskId ? 'schedule' : 'system')}/${info.level}]`
       if (info.method) {
-        logStrFormat += ` ${info.method}`
+        logStr += ` ${info.method}`
       }
       if (info.originalUrl) {
-        logStrFormat += ` ${info.originalUrl}`
+        logStr += ` ${info.originalUrl}`
       }
       if (info.taskId) {
-        logStrFormat += ` ${info.taskId}`
+        logStr += ` ${info.taskId}`
       }
       if (info.taskName) {
-        logStrFormat += ` ${info.taskName}`
+        logStr += ` ${info.taskName}`
       }
       if (info.message) {
-        logStrFormat += ` ${info.message}`
+        logStr += ` ${info.message}`
       }
       if (info.stack) {
-        logStrFormat += ` ${info.stack}`
+        logStr += ` ${info.stack}`
       }
-      return logStrFormat
+      return logStr
     })
   )
   if (process.env.NODE_ENV !== 'production') {

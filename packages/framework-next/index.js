@@ -107,7 +107,7 @@ module.exports = class Application {
   async closed () {
     await this.beforeClose()
     if (this.app.context.redis) {
-      await this.app.context.redis.quit()
+      await this.app.context.redis.quit(this.logger)
     }
     await this.afterClose()
   }

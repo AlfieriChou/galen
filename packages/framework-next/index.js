@@ -101,9 +101,6 @@ module.exports = class Application {
 
   async start () {
     const server = await this.listen(this.config.port)
-    if (this.schedule) {
-      await this.schedule.init(this.app.context)
-    }
     await gracefulExit(server, async () => {
       if (this.app.pendingCount === 0) {
         await this.closed()

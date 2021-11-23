@@ -7,7 +7,8 @@ module.exports = class KoaApplication extends Application {
     super()
     this.pendingCount = 0
     this.config = config
-    this.projectRootPath = config.projectRootPath || process.cwd()
+    this.workspace = config.workspace || process.cwd()
+    this.plugins = config.plugins || []
     this.als = als
     this.context.als = als
     this.coreLogger = config.loggerOptions ? createLogger(config.loggerOptions, als) : console

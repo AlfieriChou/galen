@@ -15,7 +15,7 @@ const bootstrap = async () => {
     workspace: process.cwd(),
     modelPath: './models',
     modelDefPath: './modelDefs',
-    config: {
+    datasources: {
       main: {
         dataSource: 'sequelize',
         options: {

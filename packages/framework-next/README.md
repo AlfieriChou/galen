@@ -26,12 +26,15 @@
 
 * middlewarePath - 中间件配置路径
 * servicePath - 项目公用方法路径 （可使用context中的service属性）
-* plugin - 插件系统配置
+* plugins - 插件系统配置
 
 ```javascript
 {
-  mainPath: 'plugins',
-  plugins: ['doc', 'base']
+  ...
+  plugins: [{
+    name: 'doc',
+    path: path.join(process.cwd(), 'plugins/doc')
+  }]
 }
 ```
 

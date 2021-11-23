@@ -7,39 +7,37 @@ specifiers:
 
 dependencies:
   cron: 1.8.2
-  read-dir-filenames: registry.npmmirror.com/read-dir-filenames/1.0.6
+  read-dir-filenames: 1.0.6
   shortid: 2.2.16
 
 packages:
 
   /cron/1.8.2:
-    resolution: {integrity: sha1-SsXjxVuowWPYTzQHvelGMtqDcM4=, tarball: cron/download/cron-1.8.2.tgz}
+    resolution: {integrity: sha512-Gk2c4y6xKEO8FSAUTklqtfSr7oTq0CiPQeLBG5Fl0qoXpZyMcj1SG59YL+hqq04bu6/IuEA7lMkYDAplQNKkyg==}
     dependencies:
-      moment-timezone: 0.5.33
+      moment-timezone: 0.5.34
     dev: false
 
-  /moment-timezone/0.5.33:
-    resolution: {integrity: sha1-slL9a7V/NBybWaWrYajlGnO70iw=, tarball: moment-timezone/download/moment-timezone-0.5.33.tgz}
+  /moment-timezone/0.5.34:
+    resolution: {integrity: sha512-3zAEHh2hKUs3EXLESx/wsgw6IQdusOT8Bxm3D9UrHPQR7zlMmzwybC8zHEM1tQ4LJwP7fcxrWr8tuBg05fFCbg==}
     dependencies:
       moment: 2.29.1
     dev: false
 
   /moment/2.29.1:
-    resolution: {integrity: sha1-sr52n6MZQL6e7qZGnAdeNQBvo9M=, tarball: moment/download/moment-2.29.1.tgz}
+    resolution: {integrity: sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==}
     dev: false
 
   /nanoid/2.1.11:
     resolution: {integrity: sha512-s/snB+WGm6uwi0WjsZdaVcuf3KJXlfGl2LcxgwkEwJF0D/BWzVWAZW/XY4bFaiR7s0Jk3FPvlnepg1H1b1UwlA==}
     dev: false
 
+  /read-dir-filenames/1.0.6:
+    resolution: {integrity: sha512-AhVznShG7+H8fEzD8tfkILCXcUM/MBP7bvs+GVMFPyYnNxA1ItMfa3tdc0Vqaee5+l5t6udj9tm3KZ5fTD3JuQ==}
+    dev: false
+
   /shortid/2.2.16:
     resolution: {integrity: sha512-Ugt+GIZqvGXCIItnsL+lvFJOiN7RYqlGy7QE41O3YC1xbNSeDGIRO7xg2JJXIAj1cAGnOeC1r7/T9pgrtQbv4g==}
     dependencies:
       nanoid: 2.1.11
-    dev: false
-
-  registry.npmmirror.com/read-dir-filenames/1.0.6:
-    resolution: {integrity: sha1-oCVGJWrkaRlArErjlVWzFI+PNZg=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/read-dir-filenames/download/read-dir-filenames-1.0.6.tgz}
-    name: read-dir-filenames
-    version: 1.0.6
     dev: false

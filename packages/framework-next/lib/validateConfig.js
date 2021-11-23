@@ -5,17 +5,16 @@ module.exports = async config => {
     type: 'object',
     properties: {
       port: { type: 'number' },
-      plugin: {
-        type: 'object',
-        properties: {
-          mainPath: { type: 'string' },
-          plugins: {
-            type: 'array',
-            items: { type: 'string' },
-            minItems: 1
-          }
-        },
-        required: ['plugins']
+      plugins: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            path: { type: 'string' },
+            name: { type: 'string' }
+          },
+          required: ['path', 'name']
+        }
       },
       workspace: { type: 'string' },
       modelDefPath: { type: 'string' },

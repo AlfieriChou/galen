@@ -17,7 +17,7 @@ module.exports = async ({
   workspace = process.cwd(),
   modelDefPath = 'app/modelDef',
   modelPath = 'app/models',
-  plugin = {},
+  plugins = [],
   ...config
 }) => {
   if (config.models) {
@@ -28,10 +28,10 @@ module.exports = async ({
       remoteMethods
     } = await createModels({
       workspace,
-      plugin,
+      plugins,
       modelDefPath,
       modelPath,
-      config: config.models
+      datasources: config.models
     })
     Object.defineProperties(context, {
       models: {
@@ -73,7 +73,7 @@ module.exports = async ({
     const service = await loadService({
       workspace,
       servicePath: config.servicePath,
-      plugin
+      plugins
     })
     Object.defineProperties(context, {
       service: {
@@ -91,7 +91,7 @@ module.exports = async ({
     const middleware = await loadMiddleware({
       workspace,
       middlewarePath: config.middlewarePath,
-      plugin
+      plugins
     })
     Object.defineProperties(context, {
       middleware: {

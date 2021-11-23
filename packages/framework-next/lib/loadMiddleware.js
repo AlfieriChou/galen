@@ -19,24 +19,17 @@ const loadMiddlewareDirToObj = async dirPath => {
 }
 
 module.exports = async ({
-  workspace, middlewarePath, plugin
+  workspace, middlewarePath, plugins
 }) => {
   const middleware = {}
   if (middlewarePath) {
-    const middlewareDirPath = path.join(
-      workspace,
-      `/${middlewarePath}`
-    )
+    const middlewareDirPath = path.join(workspace, `${middlewarePath}`)
     if (fs.existsSync(middlewareDirPath)) {
       _.merge(middleware, await loadMiddlewareDirToObj(middlewareDirPath))
     }
-    if (plugin) {
-      await Promise.all(plugin.plugins.map(async pluginName => {
-        const pluginMainPath = plugin.mainPath || 'plugins'
-        const pluginMiddlewareDirPath = path.join(
-          workspace,
-          `/${pluginMainPath}/${pluginName}/${middlewarePath}`
-        )
+    if (plugins && plugins.length) {
+      await Promise.all(plugins.map(async plugin => {
+        const pluginMiddlewareDirPath = path.join(plugin.path, `${middlewarePath}`)
         if (fs.existsSync(pluginMiddlewareDirPath)) {
           _.merge(middleware, await loadMiddlewareDirToObj(pluginMiddlewareDirPath))
         }

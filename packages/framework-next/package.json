@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/framework-next",
-  "version": "1.0.14",
+  "version": "1.0.15-alpha.2",
   "description": "Next generation framework.",
   "keywords": [
     "framework"
@@ -29,8 +29,8 @@
   "dependencies": {
     "@galenjs/als": "^1.0.0",
     "@galenjs/class-loader": "^1.0.0",
-    "@galenjs/logger": "^1.0.14",
-    "@galenjs/models": "^1.0.8",
+    "@galenjs/logger": "^1.0.15-alpha.0",
+    "@galenjs/models": "^1.0.15-alpha.0",
     "@galenjs/models-rest": "^1.0.11",
     "@galenjs/redis": "^1.0.0",
     "koa": "^2.13.1",

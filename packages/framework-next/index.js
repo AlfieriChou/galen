@@ -1,36 +1,23 @@
-const Koa = require('koa')
 const compose = require('koa-compose')
 const createModelsRest = require('@galenjs/models-rest')
-const als = require('@galenjs/als')
-const createLogger = require('@galenjs/logger')
 const shortId = require('shortid')
 
 const bindToContext = require('./lib/context')
 const gracefulExit = require('./lib/gracefulExit')
 const validateConfig = require('./lib/validateConfig')
+const KoaApplication = require('./lib/application')
 
 module.exports = class Application {
   constructor (config) {
     this.config = config
-    this.logger = console
-    this.als = als
   }
 
   async beforeInit () {
     await validateConfig(this.config)
     await bindToContext(this.config)
-    const app = new Koa()
-    this.app = app
-    this.app.pendingCount = 0
-    if (this.config.loggerOptions) {
-      this.logger = createLogger(this.config.loggerOptions, this.als)
-    }
-    this.app.coreLogger = this.logger
-    this.app.context.logger = this.logger
-    this.app.als = this.als
-    this.app.context.als = this.als
+    this.app = new KoaApplication(this.config)
     this.app.use(async (ctx, next) => {
-      await this.als.run({
+      await this.app.als.run({
         requestId: ctx.headers['X-Request-Id'] || shortId.generate(),
         method: ctx.method,
         originalUrl: ctx.originalUrl
@@ -94,7 +81,7 @@ module.exports = class Application {
 
   async listen (port = 4000) {
     return this.app.listen(port, () => {
-      this.logger.info(`✅  The server is running at http://localhost:${port}`)
+      this.app.coreLogger.info(`✅  The server is running at http://localhost:${port}`)
     })
   }
 
@@ -107,16 +94,13 @@ module.exports = class Application {
   async closed () {
     await this.beforeClose()
     if (this.app.context.redis) {
-      await this.app.context.redis.quit(this.logger)
+      await this.app.context.redis.quit(this.app.coreLogger)
     }
     await this.afterClose()
   }
 
   async start () {
     const server = await this.listen(this.config.port)
-    if (this.schedule) {
-      await this.schedule.init(this.app.context)
-    }
     await gracefulExit(server, async () => {
       if (this.app.pendingCount === 0) {
         await this.closed()
@@ -125,6 +109,6 @@ module.exports = class Application {
           await this.closed()
         })
       }
-    }, this.logger)
+    }, this.app.coreLogger)
   }
 }

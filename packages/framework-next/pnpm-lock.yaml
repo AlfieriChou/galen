@@ -3,9 +3,9 @@ lockfileVersion: 5.3
 specifiers:
   '@galenjs/als': ^1.0.0
   '@galenjs/class-loader': ^1.0.0
-  '@galenjs/logger': ^1.0.7
-  '@galenjs/models': ^1.0.1
-  '@galenjs/models-rest': ^1.0.0
+  '@galenjs/logger': ^1.0.14
+  '@galenjs/models': ^1.0.8
+  '@galenjs/models-rest': ^1.0.11
   '@galenjs/redis': ^1.0.0
   koa: ^2.13.1
   koa-compose: ^4.1.0
@@ -16,9 +16,9 @@ specifiers:
 dependencies:
   '@galenjs/als': 1.0.0
   '@galenjs/class-loader': 1.0.0
-  '@galenjs/logger': 1.0.7
-  '@galenjs/models': 1.0.1
-  '@galenjs/models-rest': 1.0.0
+  '@galenjs/logger': 1.0.14
+  '@galenjs/models': 1.0.8
+  '@galenjs/models-rest': 1.0.11
   '@galenjs/redis': 1.0.0_lodash@4.17.21
   koa: 2.13.4
   koa-compose: 4.1.0
@@ -57,17 +57,18 @@ packages:
       lodash: 4.17.21
     dev: false
 
-  /@galenjs/logger/1.0.7:
-    resolution: {integrity: sha512-/Ic75cQqsgBcA02x9APWxG0+CzKl1E7bCxbrnvOx9NGy3rw1MiEBiipb9/7WODj1YfcteNh+KQRBoIQhhitfew==}
+  /@galenjs/logger/1.0.14:
+    resolution: {integrity: sha512-j1teXLg31o35DdlYjgBaAXiTWcDi/PxPAIUPm5UVouoAVvhEiBDnwzZyQvb5QCpJUtTSPkUoMjMrzcHwP2cMEg==}
     dependencies:
       winston: 3.3.3
       winston-daily-rotate-file: 4.5.5_winston@3.3.3
     dev: false
 
-  /@galenjs/models-rest/1.0.0:
-    resolution: {integrity: sha512-f0hsdtg71KHk44k5C8gwLUEVX9j1Td0PLGgJW24GaASg6DKGu77tzgPhDUhqObjqwZuRSRIBoQaTPcn0ml79kQ==}
+  /@galenjs/models-rest/1.0.11:
+    resolution: {integrity: sha512-N1KeJRaTEylCyk0+EZyCfzTPxm5UHfxldbeF8l2Lx1QnT8rHkEK5c/Ar4k5vLR1gchnmLf1Dhgt0muU82KIAnA==}
     dependencies:
       '@galenjs/factories': 1.0.0_jsonschema@1.4.0+lodash@4.17.21
+      date-fns: 2.26.0
       jsonschema: 1.4.0
       koa-router: 10.1.1
       lodash: 4.17.21
@@ -75,8 +76,8 @@ packages:
       - supports-color
     dev: false
 
-  /@galenjs/models/1.0.1:
-    resolution: {integrity: sha512-Sd1Z4460K/IuWXy11pkhbVWK6FukFlU8iwg83i+hdylddNYUrgmj4bXbbxEHS9/Rf7wu2S4GnLac7tED7+dmig==}
+  /@galenjs/models/1.0.8:
+    resolution: {integrity: sha512-kb76rFLybcKWgF0je3shoBSbl5xaE+F4VwJqgdRJkr8adDIVu2HZeYu5eWWaRLniiAlU+e5wPlP4KTfg1Fv3aQ==}
     dependencies:
       '@galenjs/factories': 1.0.0_jsonschema@1.4.0+lodash@4.17.21
       '@galenjs/sequelize-query-filter': 1.0.0
@@ -225,6 +226,11 @@ packages:
 
   /core-util-is/1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
+    dev: false
+
+  /date-fns/2.26.0:
+    resolution: {integrity: sha512-VQI812dRi3cusdY/fhoBKvc6l2W8BPWU1FNVnFH9Nttjx4AFBRzfSVb/Eyc7jBT6e9sg1XtAGsYpBQ6c/jygbg==}
+    engines: {node: '>=0.11'}
     dev: false
 
   /debug/4.3.2:

@@ -27,7 +27,7 @@ const loadScheduleDir = scheduleDirPath => {
 }
 
 const loadSchedule = ({
-  workspace, schedulePath, plugin
+  workspace, schedulePath, plugins
 }) => {
   let schedule = {}
   if (schedulePath) {
@@ -38,15 +38,11 @@ const loadSchedule = ({
         `/${schedulePath}`
       )))
     }
-    if (plugin) {
-      plugin.plugins.forEach(pluginName => {
-        const pluginMainPath = plugin.mainPath || 'plugins'
+    if (plugins) {
+      plugins.forEach(plugin => {
         schedule = {
           ...schedule,
-          ...(loadScheduleDir(path.join(
-            workspace,
-            `/${pluginMainPath}/${pluginName}/${schedulePath}`
-          )))
+          ...(loadScheduleDir(path.join(plugin.path, `${schedulePath}`)))
         }
       })
     }
@@ -57,11 +53,11 @@ const loadSchedule = ({
 module.exports = class Schedule {
   constructor (options) {
     const {
-      workspace, schedulePath, plugin, app = {}
+      workspace, schedulePath, plugins, app = {}
     } = options
     assert(workspace, 'workspace must be non-empty')
     assert(schedulePath, 'schedulePath must be non-empty')
-    assert(plugin, 'plugin must be non-empty')
+    assert(plugins, 'plugins must be non-empty')
     this.schedule = loadSchedule(options)
     this.jobs = {}
     this.app = app

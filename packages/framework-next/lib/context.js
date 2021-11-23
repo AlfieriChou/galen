@@ -31,7 +31,7 @@ module.exports = async ({
       plugins,
       modelDefPath,
       modelPath,
-      config: config.models
+      datasources: config.models
     })
     Object.defineProperties(context, {
       models: {

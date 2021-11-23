@@ -8,25 +8,26 @@ const createDataSources = require('./lib/dataSource')
 const buildModel = require('./lib/mixinModel')
 
 module.exports = async ({
-  plugin,
+  plugins,
   workspace,
   modelPath,
   modelDefPath,
-  config = {}
+  datasources = {}
 }) => {
   let remoteMethods = {}
   let modelDefs = {}
   const jsonSchemas = {}
   let models = {}
 
-  const dataSources = await createDataSources(config)
+  const dataSources = await createDataSources(datasources)
 
-  if (plugin) {
-    const { mainPath, plugins } = plugin
-    await Promise.all(plugins.map(async pluginName => {
-      const pluginModelDefDirPath = path.join(workspace, `./${mainPath}/${pluginName}/${modelDefPath}`)
+  if (plugins && plugins.length) {
+    await Promise.all(plugins.map(async plugin => {
+      const pluginModelDefDirPath = path.join(plugin.path, `${modelDefPath}`)
       const pluginModelDefs = await buildModelDefs(pluginModelDefDirPath)
       modelDefs = _.merge(modelDefs, pluginModelDefs)
+      const pluginModelDirPath = path.join(plugin.path, `${modelPath}`)
+      models = await buildModel(pluginModelDirPath, models)
     }))
   }
 
@@ -104,10 +105,9 @@ module.exports = async ({
     }
   }, Promise.resolve())
 
-  if (plugin) {
-    const { mainPath, plugins } = plugin
-    await Promise.all(plugins.map(async pluginName => {
-      const pluginModelDirPath = path.join(workspace, `./${mainPath}/${pluginName}/${modelPath}`)
+  if (plugins && plugins.length) {
+    await Promise.all(plugins.map(async plugin => {
+      const pluginModelDirPath = path.join(plugin.path, `${modelPath}`)
       models = await buildModel(pluginModelDirPath, models)
     }))
   }

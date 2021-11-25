@@ -11,7 +11,8 @@ const Schedule = require('./')
 const schedule = new Schedule({
   workspace: process.cwd(),
   schedulePath: 'schedule',
-  plugins: []
+  plugins: [],
+  app: this.app
 })
 schedule.init()
 setTimeout(() => schedule.softExit(), 200000)

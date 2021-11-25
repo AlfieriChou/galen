@@ -55,10 +55,12 @@ module.exports = class Schedule {
     const {
       workspace, schedulePath, plugins, app = {}
     } = options
-    assert(workspace, 'workspace must be non-empty')
     assert(schedulePath, 'schedulePath must be non-empty')
-    assert(plugins, 'plugins must be non-empty')
-    this.schedule = loadSchedule(options)
+    this.schedule = loadSchedule({
+      workspace: workspace || app.workspace,
+      schedulePath,
+      plugins: plugins || app.plugins
+    })
     this.jobs = {}
     this.app = app
     this.logger = this.app.coreLogger || console

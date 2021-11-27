@@ -13,16 +13,22 @@ exports.parseCsv = csv => {
 }
 
 exports.writeCsv = ({
-  filePath, header, data = [], fields = []
+  filePath, header, data = [], fields = [], writeLineLength = 1
 }) => {
   const existFile = fs.existsSync(filePath)
   const endsWithLine = '\r\n'
   if (!existFile) {
-    fs.writeFileSync(filePath, `${header}${endsWithLine}`)
+    fs.writeFileSync(filePath, `\ufeff${header}${endsWithLine}`)
   }
-  // TODO: write multi line
-  data.forEach(item => {
-    const newLine = fields.reduce((acc, field) => ([...acc, item[field]]), [])
-    fs.appendFileSync(filePath, `${newLine}${endsWithLine}`)
-  })
+  let index = 0
+  while (index < data.length) {
+    const lines = data.slice(index, index + writeLineLength)
+    fs.appendFileSync(
+      filePath,
+      `${lines.map(
+        line => fields.reduce((acc, field) => ([...acc, line[field]]), [])
+      ).join(endsWithLine)}${endsWithLine}`
+    )
+    index += writeLineLength
+  }
 }

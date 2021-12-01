@@ -7,7 +7,11 @@ const authorsCsv = `id,name
 
 describe('csv', () => {
   it('parseCsv', async () => {
-    const data = parseCsv(authorsCsv)
+    const data = parseCsv({
+      data: authorsCsv,
+      endsWithLine: '\n',
+      delimiter: ','
+    })
     expect(data.length).toBe(3)
     expect(data).toMatchObject([{
       id: '1',

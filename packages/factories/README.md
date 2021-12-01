@@ -56,19 +56,30 @@ await validateSchema({ field: 1 }, {
 ## parseCsv
 
 ```javascript
-const { parseCsv, writeCsv } = require('@galenjs/factories/csv')
+const { parseCsv } = require('@galenjs/factories/csv')
 
-parseCsv(`id,name
+parseCsv({
+  data: `id,name
 1,Harper Lee
 2,JRR Tolkien
-3,William Shakespeare`)
+3,William Shakespeare`,
+  endsWithLine: '\n',
+  delimiter: ','
+})
+```
+
+## writeCsv
+
+```javascript
+const { writeCsv } = require('@galenjs/factories/csv')
 
 writeCsv({
   filePath: 'test.csv',
   header: 'id,name',
   data: [{ id: 1, name: "Harper Lee" }],
   fields: ['id', 'name'],
-  writeLineLength: 1
+  writeLineLength: 1,
+  endsWithLine: '\r\n'
 })
 ```
 

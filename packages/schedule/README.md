@@ -1,8 +1,16 @@
 # `schedule`
 
-> TODO: description
+> galenjs schedule
 
 ## Usage
+
+### install
+
+```bash
+pnpm install @galenjs/schedule
+```
+
+### example
 
 ```javascript
 // index.js

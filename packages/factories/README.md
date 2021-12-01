@@ -4,11 +4,10 @@
 
 ## lodash
 
+### camelJsonKeys
+
 ```javascript
-const {
-  camelJsonKeys,
-  snakeJsonKeys
-} = require('@galenjs/factories/lodash')
+const { camelJsonKeys } = require('@galenjs/factories/lodash')
 
 camelJsonKeys({
   field_one: {
@@ -19,6 +18,12 @@ camelJsonKeys({
     field_five: 'test'
   }]
 })
+```
+
+### snakeJsonKeys
+
+```javascript
+const { snakeJsonKeys } = require('@galenjs/factories/lodash')
 
 snakeJsonKeys({
   fieldOne: {
@@ -53,7 +58,9 @@ await validateSchema({ field: 1 }, {
 })
 ```
 
-## parseCsv
+## csv
+
+### parseCsv
 
 ```javascript
 const { parseCsv } = require('@galenjs/factories/csv')
@@ -68,7 +75,7 @@ parseCsv({
 })
 ```
 
-## writeCsv
+### writeCsv
 
 ```javascript
 const { writeCsv } = require('@galenjs/factories/csv')
@@ -85,10 +92,33 @@ writeCsv({
 
 ## crypto
 
+### hash
+
 ```javascript
 const { hash } = require('@galenjs/factories/crypto')
 
 console.log(hash('test'))
+```
+
+### encrypted
+
+```javascript
+const { encrypted } = require('@galenjs/factories/crypto')
+
+const tt = 'abc'
+const iv = crypto.randomBytes(16).toString('base64')
+const key = crypto.randomBytes(16).toString('base64')
+encrypted(tt, { key, iv })
+```
+
+### decrypted
+
+```javascript
+const { decrypted } = require('@galenjs/factories/crypto')
+
+const iv = crypto.randomBytes(16).toString('base64')
+const key = crypto.randomBytes(16).toString('base64')
+const decryptedData = decrypted(encryptedData, { key, iv })
 ```
 
 ## customLimit

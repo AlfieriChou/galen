@@ -3,17 +3,18 @@ const fs = require('fs')
 exports.parseCsv = ({
   data,
   endsWithLine = '\r\n',
-  delimiter = ','
+  delimiter = ',',
+  header,
+  fields
 }) => {
   const lines = data.split(endsWithLine)
-  const header = lines.shift().split(delimiter)
-  return lines.map(line => {
-    const bits = line.split(delimiter)
-    const obj = {}
-    // eslint-disable-next-line no-return-assign
-    header.forEach((h, i) => obj[h] = bits[i])
-    return obj
-  })
+  const splitHeaderArr = (header || lines.shift()).split(delimiter)
+  return lines.map(line => line
+    .split(delimiter)
+    .reduce((ret, value, index) => ({
+      ...ret,
+      [(fields || splitHeaderArr)[index]]: value
+    }), {}))
 }
 
 exports.writeCsv = ({

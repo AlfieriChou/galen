@@ -7,7 +7,9 @@ const createTransports = (logDir, transportConfig, als) => {
     winston.format(info => {
       if (als && als.get()) {
         const {
-          requestId, method, originalUrl, taskId, taskName
+          requestId, method, originalUrl,
+          taskId, taskName,
+          msgId, tag, topic
         } = als.get()
         return {
           ...info,
@@ -15,11 +17,15 @@ const createTransports = (logDir, transportConfig, als) => {
           method,
           originalUrl,
           taskId,
-          taskName
+          taskName,
+          msgId,
+          tag,
+          topic
         }
       }
       return info
     })(),
+    // TODO: custom format
     winston.format.printf(info => {
       let logStr = `[${info.timestamp}/${info.requestId || (info.taskId ? 'schedule' : 'system')}/${info.level}]`
       if (info.method) {
@@ -28,12 +34,26 @@ const createTransports = (logDir, transportConfig, als) => {
       if (info.originalUrl) {
         logStr += ` ${info.originalUrl}`
       }
+
+      // schedule
       if (info.taskId) {
         logStr += ` ${info.taskId}`
       }
       if (info.taskName) {
         logStr += ` ${info.taskName}`
       }
+
+      // mq
+      if (info.msgId) {
+        logStr += ` ${info.msgId}`
+      }
+      if (info.tag) {
+        logStr += ` ${info.tag}`
+      }
+      if (info.topic) {
+        logStr += ` ${info.topic}`
+      }
+
       if (info.message) {
         logStr += ` ${info.message}`
       }

@@ -60,13 +60,13 @@ module.exports = class Amqp {
         await promise
         await this.channel.assertQueue(key)
         this.timers[key] = setInterval(async () => {
+          if (this.isSoftExit) {
+            return
+          }
           new Array(pullBatchSize)
             .fill()
             // eslint-disable-next-line no-unused-vars
             .forEach(async _item => {
-              if (this.isSoftExit) {
-                return
-              }
               await this.consumer(key, async msg => {
                 await this.amqpService[key].onMsg(msg, ctx)
               })

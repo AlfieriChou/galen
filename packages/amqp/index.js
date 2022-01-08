@@ -7,10 +7,11 @@ const classLoader = require('@galenjs/class-loader')
 module.exports = class Amqp {
   constructor ({
     config,
-    logger
+    logger,
+    app = {}
   }) {
     assert(logger, '[amqp] logger is required')
-    validateSchema(config, {
+    validateSchema(config || app.config, {
       type: 'object',
       properties: {
         url: { type: 'string' },
@@ -19,13 +20,16 @@ module.exports = class Amqp {
       },
       required: ['url', 'sub', 'consumerPath']
     })
-    this.config = config
+    this.config = config || app.config
+    this.app = app
     this.timers = {}
     this.amqpService = {}
-    this.logger = logger
+    this.logger = logger || this.app.coreLogger
+    this.isSoftExit = false
   }
 
-  async quit () {
+  async softExit () {
+    this.isSoftExit = true
     Object.entries(this.timers)
       .forEach(([, interval]) => clearInterval(interval))
     await this.client.close()
@@ -34,7 +38,7 @@ module.exports = class Amqp {
   async consumer (channelName, run) {
     await this.channel.consume(
       channelName,
-      async (message) => {
+      async message => {
         // TODO: 填充消息ID
         this.logger.info('[amqp] consumer: ', channelName)
         await run(message)
@@ -58,8 +62,12 @@ module.exports = class Amqp {
         this.timers[key] = setInterval(async () => {
           new Array(pullBatchSize)
             .fill()
-            .forEach(async (_item) => {
-              await this.consumer(key, async (msg) => {
+            // eslint-disable-next-line no-unused-vars
+            .forEach(async _item => {
+              if (this.isSoftExit) {
+                return
+              }
+              await this.consumer(key, async msg => {
                 await this.amqpService[key].onMsg(msg, ctx)
               })
             })
@@ -72,7 +80,7 @@ module.exports = class Amqp {
       id: shortId.generate(),
       message
     })
-    const ret = await this.channel.sendToQueue(
+    const ret = this.channel.sendToQueue(
       channelName,
       Buffer.from(msg),
       options

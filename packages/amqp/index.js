@@ -101,12 +101,10 @@ module.exports = class Amqp {
       id: shortId.generate(),
       message
     })
-    const ret = this.channel.sendToQueue(
+    return this.channel.sendToQueue(
       channelName,
       Buffer.from(msg),
       options
     )
-    this.logger.info('[amqp] send msg: ', channelName, msg, ret)
-    return ret
   }
 }

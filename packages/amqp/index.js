@@ -23,6 +23,7 @@ module.exports = class Amqp {
     this.config = config || app.config
     this.app = app
     this.timers = {}
+    this.runTimers = {}
     this.amqpService = {}
     this.logger = logger || this.app.coreLogger
     this.isSoftExit = false
@@ -30,6 +31,7 @@ module.exports = class Amqp {
 
   async softExit () {
     this.isSoftExit = true
+    // TODO: check message consumer done clearInterval
     Object.entries(this.timers)
       .forEach(([, interval]) => clearInterval(interval))
     await this.client.close()
@@ -63,14 +65,21 @@ module.exports = class Amqp {
           if (this.isSoftExit) {
             return
           }
-          new Array(pullBatchSize)
+          // run timer
+          if (this.runTimers[key]) {
+            return
+          }
+          this.runTimers[key] = true
+          await new Array(pullBatchSize)
             .fill()
             // eslint-disable-next-line no-unused-vars
-            .forEach(async _item => {
+            .reduce(async (consumerMsgPromise, _item) => {
+              await consumerMsgPromise
               await this.consumer(key, async msg => {
                 await this.amqpService[key].onMsg(msg, ctx)
               })
-            })
+            }, Promise.resolve())
+          this.runTimers[key] = false
         }, pullInterval)
       }, Promise.resolve())
   }

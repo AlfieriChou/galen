@@ -76,6 +76,7 @@ module.exports = class Amqp {
             // eslint-disable-next-line no-unused-vars
             .reduce(async (consumerMsgPromise, _item) => {
               await consumerMsgPromise
+              // TODO: control cluster concurrency
               await this.consumer(key, async msg => {
                 await this.amqpService[key].onMsg(msg, ctx)
               })

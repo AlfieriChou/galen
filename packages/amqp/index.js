@@ -38,13 +38,23 @@ module.exports = class Amqp {
   }
 
   async consumer (channelName, run) {
+    const { als } = this.app
     await this.channel.consume(
       channelName,
       async message => {
-        // TODO: 填充消息ID
-        this.logger.info('[amqp] consumer: ', channelName)
-        await run(message)
-        this.logger.info('[amqp] consumer done: ', channelName)
+        const { fields } = message
+        this.logger.info('[amqp] consumer: ', channelName, fields.consumerTag)
+        if (als) {
+          await als.run({
+            msgId: fields.consumerTag,
+            topic: channelName
+          }, async () => {
+            await run(message)
+          })
+        } else {
+          await run(message)
+        }
+        this.logger.info('[amqp] consumer done: ', channelName, fields.consumerTag)
         this.channel.ack(message)
       }
     )

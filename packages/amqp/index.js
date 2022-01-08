@@ -61,6 +61,7 @@ module.exports = class Amqp {
       }]) => {
         await promise
         await this.channel.assertQueue(key)
+        this.runTimers[key] = false
         this.timers[key] = setInterval(async () => {
           if (this.isSoftExit) {
             return

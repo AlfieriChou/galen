@@ -29,12 +29,24 @@ module.exports = class Amqp {
     this.isSoftExit = false
   }
 
+  async closed () {
+    await Object.entries(this.timers)
+      .reduce(async (promise, [, interval]) => {
+        await promise
+        clearInterval(interval)
+      }, Promise.resolve())
+    await this.client.close()
+  }
+
   async softExit () {
     this.isSoftExit = true
-    // TODO: check message consumer done clearInterval
-    Object.entries(this.timers)
-      .forEach(([, interval]) => clearInterval(interval))
-    await this.client.close()
+    if (this.app) {
+      this.app.on('pendingCount0', async () => {
+        await this.closed()
+      })
+    } else {
+      this.closed()
+    }
   }
 
   async consumer (channelName, run) {

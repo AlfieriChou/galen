@@ -45,7 +45,7 @@ module.exports = class Amqp {
         await this.closed()
       })
     } else {
-      this.closed()
+      await this.closed()
     }
   }
 

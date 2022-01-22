@@ -36,7 +36,7 @@ module.exports = class Amqp {
   async closed (closedCheckCount = 1) {
     const notDestroyedIntervals = Object.entries(this.timers)
     // eslint-disable-next-line no-underscore-dangle
-      .filter(t => !t._destroyed)
+      .filter(([, interval]) => !interval._destroyed)
     if (
       !notDestroyedIntervals.length
       || closedCheckCount > (this.config.closedCheckCount || 5)

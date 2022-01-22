@@ -4,6 +4,8 @@ const assert = require('assert')
 const validateSchema = require('@galenjs/factories/validateJsonSchema')
 const classLoader = require('@galenjs/class-loader')
 
+const sleep = (timeout = 3000) => new Promise(resolve => setTimeout(resolve, timeout))
+
 module.exports = class Amqp {
   constructor ({
     config,
@@ -16,6 +18,8 @@ module.exports = class Amqp {
       properties: {
         url: { type: 'string' },
         consumerPath: { type: 'string' },
+        closedWaitSecond: { type: 'number' }, // default 3
+        closedCheckCount: { type: 'number' }, // default 5
         sub: { type: 'object' }
       },
       required: ['url', 'sub', 'consumerPath']
@@ -29,18 +33,24 @@ module.exports = class Amqp {
     this.isSoftExit = false
   }
 
-  async closed () {
-    await Object.entries(this.timers)
-      .reduce(async (promise, [, interval]) => {
-        await promise
-        clearInterval(interval)
-      }, Promise.resolve())
-    await this.client.close()
+  async closed (closedCheckCount = 1) {
+    const notDestroyedIntervals = Object.entries(this.timers)
+    // eslint-disable-next-line no-underscore-dangle
+      .filter(t => !t._destroyed)
+    if (
+      !notDestroyedIntervals.length
+      || closedCheckCount > (this.config.closedCheckCount || 5)
+    ) {
+      await this.client.close()
+      return
+    }
+    await sleep()
+    await this.closed(closedCheckCount + 1)
   }
 
   async softExit () {
     this.isSoftExit = true
-    if (this.app) {
+    if (this.app && this.app.on) {
       this.app.on('pendingCount0', async () => {
         await this.closed()
       })
@@ -86,6 +96,9 @@ module.exports = class Amqp {
         this.runTimers[key] = false
         this.timers[key] = setInterval(async () => {
           if (this.isSoftExit) {
+            if (!this.runTimers[key]) {
+              clearInterval(this.timers[key])
+            }
             return
           }
           // run timer

@@ -44,7 +44,7 @@ module.exports = class Amqp {
       await this.client.close()
       return
     }
-    await sleep()
+    await sleep((this.config.closedWaitSecond || 3) * 1000)
     await this.closed(closedCheckCount + 1)
   }
 

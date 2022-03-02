@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/framework",
-  "version": "1.0.0",
+  "version": "1.0.17",
   "description": "galenjs framework.",
   "keywords": [
     "framework"
@@ -27,9 +27,9 @@
     "url": "https://github.com/AlfieriChou/galen/issues"
   },
   "dependencies": {
-    "@galenjs/base": "^1.0.0",
+    "@galenjs/base": "^1.0.17",
     "@galenjs/class-loader": "^1.0.0",
-    "@galenjs/koa-router": "^1.0.0",
+    "@galenjs/koa-router": "^1.0.17",
     "koa": "^2.13.1",
     "koa-compose": "^4.1.0",
     "read-dir-filenames": "^1.0.6"

@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/framework-next",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "Next generation framework.",
   "keywords": [
     "framework"
@@ -31,7 +31,7 @@
     "@galenjs/class-loader": "^1.0.0",
     "@galenjs/logger": "^1.0.17",
     "@galenjs/models": "^1.0.17",
-    "@galenjs/models-rest": "^1.0.17",
+    "@galenjs/models-rest": "^1.0.18",
     "@galenjs/redis": "^1.0.17",
     "koa": "^2.13.1",
     "koa-compose": "^4.1.0",

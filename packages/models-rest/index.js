@@ -8,7 +8,7 @@ const v = new Validator()
 const secret = new Secret()
 
 const checkRoles = async apiInfo => async (ctx, next) => {
-  if (!apiInfo.roles) {
+  if (!apiInfo.roles || !ctx.roles) {
     return next()
   }
   const intersectionRoles = _.intersection(apiInfo.roles, ctx.roles)

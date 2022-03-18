@@ -64,11 +64,13 @@ module.exports = class Amqp {
     await this.channel.consume(
       channelName,
       async message => {
-        const { fields } = message
+        const { fields, content } = message
+        const { msgId } = JSON.parse(content.toString())
         this.logger.info('[amqp] consumer: ', channelName, fields.consumerTag)
         if (als) {
           await als.run({
-            msgId: fields.consumerTag,
+            msgId,
+            msgTag: fields.consumerTag,
             topic: channelName
           }, async () => {
             await run(message)
@@ -121,10 +123,10 @@ module.exports = class Amqp {
       }, Promise.resolve())
   }
 
-  async send (channelName, message, options = {}) {
+  async send (channelName, body, options = {}) {
     const msg = JSON.stringify({
       id: shortId.generate(),
-      message
+      body
     })
     return this.channel.sendToQueue(
       channelName,

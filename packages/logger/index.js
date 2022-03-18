@@ -39,14 +39,16 @@ const createTransports = (logDir, transportConfig, als) => {
       if (info.taskId) {
         logStr += ` ${info.taskId}`
       }
+
+      if (info.msgId) {
+        logStr += ` ${info.msgId}`
+      }
+
       if (info.taskName) {
         logStr += ` ${info.taskName}`
       }
 
       // mq
-      if (info.msgId) {
-        logStr += ` ${info.msgId}`
-      }
       if (info.tag) {
         logStr += ` ${info.tag}`
       }

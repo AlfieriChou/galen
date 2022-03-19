@@ -60,31 +60,25 @@ module.exports = class Amqp {
   }
 
   async consumer (channelName, run) {
-    const { als } = this.app
     await this.channel.consume(
       channelName,
       async message => {
         const { fields, content } = message
-        const { msgId } = JSON.parse(content.toString())
-        this.logger.info('[amqp] consumer: ', channelName, fields.consumerTag)
-        if (als) {
-          await als.run({
-            msgId,
-            msgTag: fields.consumerTag,
-            topic: channelName
-          }, async () => {
-            await run(message)
-          })
-        } else {
+        const { id } = JSON.parse(content.toString())
+        this.logger.info('[amqp] consumer: ', id, channelName, fields.consumerTag)
+        try {
           await run(message)
+        } catch (err) {
+          this.logger.info('[amqp] consumer error: ', id, err)
+        } finally {
+          this.logger.info('[amqp] consumer done: ', id, channelName, fields.consumerTag)
+          this.channel.ack(message)
         }
-        this.logger.info('[amqp] consumer done: ', channelName, fields.consumerTag)
-        this.channel.ack(message)
       }
     )
   }
 
-  async setup (ctx) {
+  async setup () {
     this.client = await amqp.connect(this.config.url)
     this.channel = await this.client.createChannel()
     this.amqpService = classLoader(this.config.consumerPath)
@@ -115,7 +109,21 @@ module.exports = class Amqp {
               await consumerMsgPromise
               // TODO: control cluster concurrency
               await this.consumer(key, async msg => {
-                await this.amqpService[key].onMsg(msg, ctx)
+                const { als } = this.app
+                const ctx = this.app.context
+                if (als) {
+                  const { fields, content } = msg
+                  const { id } = JSON.parse(content.toString())
+                  await als.run({
+                    msgId: id,
+                    tag: fields.consumerTag,
+                    topic: key
+                  }, async () => {
+                    await this.amqpService[key].onMsg(msg, ctx)
+                  })
+                } else {
+                  await this.amqpService[key].onMsg(msg, ctx)
+                }
               })
             }, Promise.resolve())
           this.runTimers[key] = false

@@ -69,7 +69,7 @@ module.exports = class Amqp {
         try {
           await run(message)
         } catch (err) {
-          this.logger.info('[amqp] consumer error: ', id, err)
+          this.logger.info('[amqp] consumer error: ', id, channelName, fields.consumerTag, err)
         } finally {
           this.logger.info('[amqp] consumer done: ', id, channelName, fields.consumerTag)
           this.channel.ack(message)

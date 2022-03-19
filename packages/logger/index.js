@@ -29,13 +29,17 @@ const createTransports = (logDir, transportConfig, als) => {
     winston.format.printf(info => {
       let logStr = `[${
         info.timestamp
-      }/${
-        info.taskId ? 'schedule' : 'system'
-      }/${
-        info.requestId || info.taskId || info.msgId
-      }/${
-        info.level
-      }]`
+      }/`
+      if (info.requestId) {
+        logStr += `request/${info.requestId}/`
+      } else if (info.taskId) {
+        logStr += `schedule/${info.taskId}/`
+      } else if (info.msgId) {
+        logStr += `amqp/${info.msgId}/`
+      } else {
+        logStr += 'system/'
+      }
+      logStr += `${info.level}]`
       if (info.method) {
         logStr += ` ${info.method}`
       }

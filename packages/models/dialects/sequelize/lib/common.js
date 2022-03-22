@@ -47,7 +47,7 @@ const parseModelProperties = (properties, keyFn) => Object.entries(properties)
       }
       columnInfo.set = function (data) {
         if (data) {
-          this.setDataValue(data, JSON.stringify(data))
+          this.setDataValue(field, JSON.stringify(data))
         }
       }
     }

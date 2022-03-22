@@ -28,5 +28,13 @@ module.exports = async (dataSource, {
   if (indexes.length) {
     options.indexes = indexes
   }
-  return dataSource.define(modelName, parseModelProperties(properties), options)
+  return dataSource.define(
+    modelName,
+    parseModelProperties(properties),
+    {
+      ...options,
+      charset: 'utf8',
+      collate: 'utf8_unicode_ci'
+    }
+  )
 }

@@ -20,7 +20,13 @@ exports.createDataSource = options => {
       min: 0,
       idle: 10000
     },
-    logging: false
+    logging: false,
+    define: {
+      charset: 'utf8',
+      dialectOptions: {
+        collate: 'utf8_general_ci'
+      }
+    }
   }
   if (debug) {
     sequelizeOpts.logging = true

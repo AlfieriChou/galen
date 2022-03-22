@@ -26,7 +26,11 @@ exports.createDataSource = options => {
       dialectOptions: {
         collate: 'utf8_general_ci'
       }
-    }
+    },
+    dialectOptions: {
+      useUTC: false
+    },
+    timezone: '+08:00'
   }
   if (debug) {
     sequelizeOpts.logging = true

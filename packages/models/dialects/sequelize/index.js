@@ -9,7 +9,7 @@ const createCrudModel = require('./lib/crudModel')
 
 exports.createDataSource = options => {
   const {
-    database, user, password, host, port, pool, debug
+    database, user, password, host, port, pool, debug, timezone
   } = options
   const sequelizeOpts = {
     host,
@@ -30,7 +30,7 @@ exports.createDataSource = options => {
     dialectOptions: {
       useUTC: false
     },
-    timezone: '+08:00'
+    timezone: timezone || '+08:00'
   }
   if (debug) {
     sequelizeOpts.logging = true

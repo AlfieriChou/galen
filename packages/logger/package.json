@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/logger",
-  "version": "1.0.22",
+  "version": "1.0.24",
   "description": "galenjs logger",
   "keywords": [
     "logger"

@@ -142,6 +142,10 @@ module.exports = class RedisService {
     return this.select(name).scard(key)
   }
 
+  async isMember (name, key, member) {
+    return this.select(name).sismember(key, member)
+  }
+
   async setMembers (name, key, members, expire) {
     assert(members.length > 0, 'members must be non-empty')
     if (expire) {

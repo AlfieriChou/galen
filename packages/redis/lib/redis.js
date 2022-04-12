@@ -157,6 +157,14 @@ module.exports = class RedisService {
     return this.select(name).sadd(key, ...members)
   }
 
+  async del (name, key) {
+    return this.select(name).del(key)
+  }
+
+  async unlink (name, key) {
+    return this.select(name).unlink(key)
+  }
+
   async execLimit ({
     name, key, times, expires
   }) {

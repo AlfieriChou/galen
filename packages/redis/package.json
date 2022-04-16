@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/redis",
-  "version": "1.0.17",
+  "version": "1.0.25-alpha.0",
   "description": "galenjs redis.",
   "keywords": [
     "redis"

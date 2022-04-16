@@ -17,8 +17,10 @@ module.exports = class Application {
     await bindToContext(this.config)
     this.app = new KoaApplication(this.config)
     this.app.use(async (ctx, next) => {
+      const requestId = ctx.get('X-Request-Id') || shortId.generate()
+      ctx.state.requestId = requestId
       await this.app.als.run({
-        requestId: ctx.headers['X-Request-Id'] || shortId.generate(),
+        requestId,
         method: ctx.method,
         originalUrl: ctx.originalUrl
       }, async () => {
@@ -41,7 +43,6 @@ module.exports = class Application {
     this.middleware = {
       timing: () => async (ctx, next) => {
         let error
-        ctx.state.requestId = ctx.get('X-Request-Id') || shortId.generate()
         ctx.set('X-Response-Id', ctx.state.requestId)
         const { timing } = ctx
         timing.start('Total')
@@ -57,8 +58,7 @@ module.exports = class Application {
         if (error) {
           throw error
         }
-        if (use < 100) { return }
-        const log = `${ctx.status} [${ctx.state.requestId}] ${timing.toString()}`
+        const log = `${ctx.status} ${timing.toString()}`
         if (use > 10000) {
           ctx.logger.error('[timing]: ', log)
           return
@@ -67,7 +67,7 @@ module.exports = class Application {
           ctx.logger.warn('[timing]: ', log)
           return
         }
-        if (use > 100) {
+        if (use > 0) {
           ctx.logger.info('[timing]: ', log)
         }
       },

@@ -39,6 +39,38 @@ module.exports = class Application {
     })
 
     this.middleware = {
+      timing: () => async (ctx, next) => {
+        let error
+        ctx.state.requestId = ctx.get('X-Request-Id') || shortId.generate()
+        ctx.set('X-Response-Id', ctx.state.requestId)
+        const { timing } = ctx
+        timing.start('Total')
+        try {
+          await next()
+        } catch (e) {
+          error = e
+        }
+        timing.end('*')
+        ctx.set('Server-Timing', timing.toServerTiming())
+        const { use } = timing.toJSON(true)[0]
+        ctx.set('X-Response-Time', `${use}ms`)
+        if (error) {
+          throw error
+        }
+        if (use < 100) { return }
+        const log = `${ctx.status} [${ctx.state.requestId}] ${timing.toString()}`
+        if (use > 10000) {
+          ctx.logger.error('[timing]: ', log)
+          return
+        }
+        if (use > 3000) {
+          ctx.logger.warn('[timing]: ', log)
+          return
+        }
+        if (use > 100) {
+          ctx.logger.info('[timing]: ', log)
+        }
+      },
       cors: () => async (ctx, next) => {
         ctx.set(
           'Access-Control-Allow-Origin',

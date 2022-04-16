@@ -37,7 +37,8 @@
     "koa-compose": "^4.1.0",
     "lodash": "^4.17.21",
     "read-dir-filenames": "^1.0.6",
-    "shortid": "^2.2.16"
+    "shortid": "^2.2.16",
+    "supertiming": "^2.0.1"
   },
   "peerDependencies": {
     "@galenjs/factories": "^0.7.14"

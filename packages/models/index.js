@@ -73,8 +73,10 @@ module.exports = async ({
             [`${_.lowerFirst(modelName)}-${key}`]: value
           }), {})
         }
+        const {
+          createModel, migrate
         // eslint-disable-next-line import/no-dynamic-require, global-require
-        const { createModel, migrate } = require(`./dialects/${dialect}`)
+        } = require(`./dialects/${dialect}`)
         assert(createModel, `${dialect} required exports createModel method`)
         assert(migrate, `${dialect} required exports migrate method`)
         if (dataSources[dataSource]) {

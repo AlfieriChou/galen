@@ -22,9 +22,9 @@ const schema = {
   required: ['default', 'clients']
 }
 
-module.exports = async (options) => {
+module.exports = async options => {
   await validateSchema(options, schema, {
-    extendErr: '[@galenjs/redis]:'
+    extendErr: '[@galenjs/redis]: '
   })
   return new RedisService(options)
 }

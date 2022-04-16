@@ -73,7 +73,9 @@ const createTransports = (logDir, transportConfig, als) => {
       format: printfFormatter
     })]
   }
-  return ['error', 'warn', 'info'].map(level => {
+  return [
+    'error', 'warn', 'info'
+  ].map(level => {
     return new winston.transports.DailyRotateFile({
       level,
       ...transportConfig,

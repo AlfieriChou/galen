@@ -11,17 +11,20 @@ const checkRoles = async apiInfo => async (ctx, next) => {
   if (!apiInfo.roles || !ctx.roles) {
     return next()
   }
+  ctx.timing.start('checkRoles')
   const intersectionRoles = _.intersection(apiInfo.roles, ctx.roles)
+  ctx.timing.end('checkRoles')
   if (intersectionRoles.length === 0) {
     ctx.throw(403, 'permission denied')
   }
   return next()
 }
 
-const validate = async apiInfo => async (ctx, next) => {
+const validateRequestBody = async apiInfo => async (ctx, next) => {
   if (!apiInfo.requestBody) {
     return next()
   }
+  ctx.timing.start('validateRequestBody')
   const { body, required = [] } = apiInfo.requestBody
   const jsonSchema = {
     type: 'object',
@@ -44,7 +47,8 @@ const validate = async apiInfo => async (ctx, next) => {
     }, {})
   }
   jsonSchema.required = required
-  const validateRet = await v.validate(ctx.request.body, jsonSchema)
+  const validateRet = v.validate(ctx.request.body, jsonSchema)
+  ctx.timing.end('validateRequestBody')
   if (validateRet.errors.length > 0) {
     const errMsg = validateRet.errors.reduce((acc, error, index) => ([
       ...acc,
@@ -59,10 +63,11 @@ const decryptedData = async () => async (ctx, next) => {
   const { secretType } = ctx.remoteMethod
   // TODO: 支持双向加密
   if (secretType && secretType === 'client') {
-    ctx.assert(ctx.request.body.clientId)
-    ctx.assert(ctx.request.body.iv)
-    ctx.assert(ctx.request.body.encryptedKey)
-    ctx.assert(ctx.request.body.encryptedData)
+    ctx.timing.start('decryptedData')
+    ctx.assert(ctx.request.body.clientId, 'clientId is required')
+    ctx.assert(ctx.request.body.iv, 'iv is required')
+    ctx.assert(ctx.request.body.encryptedKey, 'encryptedKey is required')
+    ctx.assert(ctx.request.body.encryptedData, 'encryptedData is required')
     const {
       iv, encryptedKey, encryptedData, clientId
     } = ctx.request.body
@@ -79,6 +84,7 @@ const decryptedData = async () => async (ctx, next) => {
       ctx.logger.error('decrypted.error', err)
       ctx.throw(403, 'DECRYPTED_DATA_ERROR')
     }
+    ctx.timing.end('decryptedData')
   }
   return next()
 }
@@ -104,11 +110,13 @@ module.exports = async ({ remoteMethods, prefix = '/v1' }) => {
         },
         await decryptedData(),
         await checkRoles(apiInfo),
-        await validate(apiInfo),
+        await validateRequestBody(apiInfo),
         // eslint-disable-next-line consistent-return
         async ctx => {
           if (ctx.models[modelName] && ctx.models[modelName][handler]) {
+            ctx.timing.start('handler')
             const ret = await ctx.models[modelName][handler](ctx)
+            ctx.timing.end('handler')
             if (apiInfo.responseType && apiInfo.responseType === 'origin') {
               ctx.body = ret
               return

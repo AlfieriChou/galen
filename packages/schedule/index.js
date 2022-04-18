@@ -100,11 +100,13 @@ module.exports = class Schedule {
   async runScheduleByName (name, ctx) {
     const schedule = this.schedules[name]
     if (!schedule) {
-      this.logger.info('[schedule]: not found schedule ', name)
+      this.logger.info(`[@galenjs/schedule]: ${name} not found schedule`)
       return
     }
     const { task } = schedule
+    this.logger.info(`[@galenjs/schedule]: ${name} run schedule start`)
     await task(ctx)
+    this.logger.info(`[@galenjs/schedule]: ${name} run schedule done`)
   }
 
   async softExit () {

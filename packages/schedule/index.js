@@ -56,7 +56,7 @@ module.exports = class Schedule {
       workspace, schedulePath, plugins, app = {}
     } = options
     assert(schedulePath, 'schedulePath must be non-empty')
-    this.schedule = loadSchedule({
+    this.schedules = loadSchedule({
       workspace: workspace || app.workspace,
       schedulePath,
       plugins: plugins || app.plugins
@@ -68,7 +68,7 @@ module.exports = class Schedule {
 
   async init (ctx = {}) {
     const { als } = this.app
-    await Object.entries(this.schedule)
+    await Object.entries(this.schedules)
       .reduce(async (promise, [key, { schedule, task }]) => {
         await promise
         this.logger.info(`[@galenjs/schedule] start ${key} schedule`)
@@ -95,6 +95,16 @@ module.exports = class Schedule {
         job.start()
         this.logger.info(`[@galenjs/schedule] start ${key} schedule done`)
       }, Promise.resolve())
+  }
+
+  async runScheduleByName (name, ctx) {
+    const schedule = this.schedules[name]
+    if (!schedule) {
+      this.logger.info('[schedule]: not found schedule ', name)
+      return
+    }
+    const { task } = schedule
+    await task(ctx)
   }
 
   async softExit () {

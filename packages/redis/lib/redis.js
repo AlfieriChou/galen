@@ -25,9 +25,9 @@ module.exports = class RedisService {
     await [...this.redis.keys()]
       .reduce(async (promise, key) => {
         await promise
-        logger.info('[@galenjs/redis] client ', `{${key}} `, 'start close')
+        logger.info(`[@galenjs/redis] client ${key} start close`)
         await this.redis.get(key).quit()
-        logger.info('[@galenjs/redis] client ', `{${key}} `, 'closed')
+        logger.info(`[@galenjs/redis] client ${key} closed`)
       }, Promise.resolve())
   }
 
@@ -36,9 +36,9 @@ module.exports = class RedisService {
     await [...this.redis.keys()]
       .reduce(async (promise, key) => {
         await promise
-        logger.info('[@galenjs/redis] client ', `{${key}} `, 'start close')
+        logger.info(`[@galenjs/redis] client ${key} start close`)
         await this.redis.get(key).quit()
-        logger.info('[@galenjs/redis] client ', `{${key}} `, 'closed')
+        logger.info(`[@galenjs/redis] client ${key} closed`)
       }, Promise.resolve())
   }
 

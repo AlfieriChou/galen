@@ -68,13 +68,13 @@ module.exports = class Amqp {
         const { fields, content } = message
         const startedAt = Date.now()
         const { id } = JSON.parse(content.toString())
-        this.logger.info('[amqp] consumer: ', id, channelName, fields.consumerTag)
+        this.logger.info(`[amqp] ${channelName} ${fields.consumerTag} consumer start: `, id)
         try {
           await run(message)
         } catch (err) {
-          this.logger.info('[amqp] consumer error: ', id, channelName, fields.consumerTag, err)
+          this.logger.info(`[amqp] ${channelName} ${fields.consumerTag} consumer error: `, id, err)
         } finally {
-          this.logger.info('[amqp] consumer done: ', id, channelName, fields.consumerTag, Date.now() - startedAt)
+          this.logger.info(`[amqp] ${channelName} ${fields.consumerTag} consumer done: `, id, Date.now() - startedAt)
           this.channel.ack(message)
         }
       }

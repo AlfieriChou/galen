@@ -1,4 +1,6 @@
 const _ = require('lodash')
+const Sequelize = require('sequelize')
+
 const { parseModelProperties, sequelizeTypes } = require('./common')
 
 // TODO add cache
@@ -29,6 +31,9 @@ module.exports = async (dataSource, {
       const columnInfo = {
         ...value,
         type: sequelizeTypes[value.type]
+      }
+      if (value.type === 'string' && value.length) {
+        columnInfo.type = Sequelize.STRING(value.length)
       }
       if (value.default) {
         columnInfo.defaultValue = value.default

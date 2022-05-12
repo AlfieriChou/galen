@@ -24,6 +24,9 @@ const parseModelProperties = (properties, keyFn) => Object.entries(properties)
       ...value,
       type: sequelizeTypes[value.type]
     }
+    if (value.type === 'string' && value.length) {
+      columnInfo.type = Sequelize.STRING(value.length)
+    }
     if (value.default) {
       columnInfo.defaultValue = value.default
     }

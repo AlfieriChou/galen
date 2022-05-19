@@ -111,6 +111,7 @@ module.exports = class Amqp {
             .reduce(async (consumerMsgPromise, _item) => {
               await consumerMsgPromise
               // TODO: control cluster concurrency
+              await this.channel.prefetch(1)
               await this.consumer(key, async msg => {
                 const { als } = this.app
                 const ctx = this.app.context

@@ -23,6 +23,7 @@ galen是一个低代码平台，支持json、yaml文件生成sequelize模型、i
 - influx查询语句支持-[influx-query-filter](https://github.com/AlfieriChou/galen/tree/master/packages/influx-query-filter)
 - swagger文档-[swagger](https://github.com/AlfieriChou/galen/tree/master/packages/swagger)
 - amqp-[amqp](https://github.com/AlfieriChou/galen/tree/master/packages/amqp)
+- amqp-next-[amqp-next](https://github.com/AlfieriChou/galen/tree/master/packages/amqp-next)
 - timing-[timing](https://github.com/AlfieriChou/galen/tree/master/packages/timing)
 - 定时任务-[schedule](https://github.com/AlfieriChou/galen/tree/master/packages/schedule)
 - 日志--[logger](https://github.com/AlfieriChou/galen/tree/master/packages/logger)

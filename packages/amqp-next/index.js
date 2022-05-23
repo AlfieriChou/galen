@@ -61,26 +61,6 @@ module.exports = class Amqp {
     }
   }
 
-  async consumer (queue, run) {
-    await this.channel.consume(
-      queue,
-      async message => {
-        const { fields, content } = message
-        const startedAt = Date.now()
-        const { id } = JSON.parse(content.toString())
-        this.logger.info(`[amqp] ${fields.exchange} ${fields.routingKey} ${fields.consumerTag} consumer start: `, id)
-        try {
-          await run(message)
-        } catch (err) {
-          this.logger.info(`[amqp] ${fields.exchange} ${fields.routingKey} ${fields.consumerTag} consumer error: `, id, err)
-        } finally {
-          this.logger.info(`[amqp] ${fields.exchange} ${fields.routingKey} ${fields.consumerTag} consumer done: `, id, Date.now() - startedAt)
-          this.channel.ack(message)
-        }
-      }
-    )
-  }
-
   async setup () {
     this.client = await amqp.connect(this.config.url)
     this.channel = await this.client.createChannel()
@@ -115,13 +95,18 @@ module.exports = class Amqp {
             .reduce(async (consumerMsgPromise, _item) => {
               await consumerMsgPromise
               // TODO: control cluster concurrency
-              await this.channel.prefetch(1)
-              await this.consumer(qok.queue, async msg => {
+              const msg = await this.channel.get(qok.queue)
+              if (!msg) {
+                return
+              }
+              const startedAt = Date.now()
+              const { fields, content } = msg
+              const { id } = JSON.parse(content.toString())
+              this.logger.info(`[amqp] ${fields.exchange} ${fields.routingKey} ${fields.consumerTag} consumer start: `, id)
+              try {
                 const { als } = this.app
                 const ctx = this.app.context
                 if (als) {
-                  const { fields, content } = msg
-                  const { id } = JSON.parse(content.toString())
                   await als.run({
                     msgId: id,
                     tag: fields.consumerTag,
@@ -133,7 +118,12 @@ module.exports = class Amqp {
                 } else {
                   await this.amqpService[key].onMsg(msg, ctx)
                 }
-              })
+              } catch (err) {
+                this.logger.info(`[amqp] ${fields.exchange} ${fields.routingKey} ${fields.consumerTag} consumer error: `, id, err)
+              } finally {
+                this.logger.info(`[amqp] ${fields.exchange} ${fields.routingKey} ${fields.consumerTag} consumer done: `, id, Date.now() - startedAt)
+                this.channel.ack(msg)
+              }
             }, Promise.resolve())
           this.runTimers[key] = false
         }, pullInterval)

@@ -99,31 +99,31 @@ module.exports = class Amqp {
               if (!msg) {
                 return
               }
+              const { als } = this.app
+              const ctx = this.app.context
               const startedAt = Date.now()
               const { fields, content } = msg
               const { id } = JSON.parse(content.toString())
-              this.logger.info(`[amqp] ${fields.exchange} ${fields.routingKey} consumer start: `, id)
-              try {
-                const { als } = this.app
-                const ctx = this.app.context
-                if (als) {
-                  await als.run({
-                    msgId: id,
-                    tag: fields.consumerTag,
-                    topic: fields.exchange,
-                    routeKey: fields.routeKey
-                  }, async () => {
-                    await this.amqpService[key].onMsg(msg, ctx)
-                  })
-                } else {
+              const consumeMsg = async () => {
+                this.logger.info(`[amqp] ${fields.exchange} ${fields.routingKey} consumer start: `, id)
+                try {
                   await this.amqpService[key].onMsg(msg, ctx)
+                } catch (err) {
+                  this.logger.info(`[amqp] ${fields.exchange} ${fields.routingKey} consumer error: `, id, err)
+                } finally {
+                  this.logger.info(`[amqp] ${fields.exchange} ${fields.routingKey} consumer done: `, id, Date.now() - startedAt)
                 }
-              } catch (err) {
-                this.logger.info(`[amqp] ${fields.exchange} ${fields.routingKey} consumer error: `, id, err)
-              } finally {
-                this.logger.info(`[amqp] ${fields.exchange} ${fields.routingKey} consumer done: `, id, Date.now() - startedAt)
-                this.channel.ack(msg)
               }
+              if (als) {
+                await als.run({
+                  msgId: id,
+                  topic: fields.exchange,
+                  tag: fields.routingKey
+                }, consumeMsg)
+              } else {
+                await consumeMsg()
+              }
+              this.channel.ack(msg)
             }, Promise.resolve())
           this.runTimers[key] = false
         }, pullInterval)

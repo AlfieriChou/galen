@@ -102,7 +102,7 @@ module.exports = class Amqp {
               const startedAt = Date.now()
               const { fields, content } = msg
               const { id } = JSON.parse(content.toString())
-              this.logger.info(`[amqp] ${fields.exchange} ${fields.routingKey} ${fields.consumerTag} consumer start: `, id)
+              this.logger.info(`[amqp] ${fields.exchange} ${fields.routingKey} consumer start: `, id)
               try {
                 const { als } = this.app
                 const ctx = this.app.context
@@ -119,9 +119,9 @@ module.exports = class Amqp {
                   await this.amqpService[key].onMsg(msg, ctx)
                 }
               } catch (err) {
-                this.logger.info(`[amqp] ${fields.exchange} ${fields.routingKey} ${fields.consumerTag} consumer error: `, id, err)
+                this.logger.info(`[amqp] ${fields.exchange} ${fields.routingKey} consumer error: `, id, err)
               } finally {
-                this.logger.info(`[amqp] ${fields.exchange} ${fields.routingKey} ${fields.consumerTag} consumer done: `, id, Date.now() - startedAt)
+                this.logger.info(`[amqp] ${fields.exchange} ${fields.routingKey} consumer done: `, id, Date.now() - startedAt)
                 this.channel.ack(msg)
               }
             }, Promise.resolve())

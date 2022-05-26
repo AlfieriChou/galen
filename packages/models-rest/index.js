@@ -124,12 +124,14 @@ module.exports = async ({ remoteMethods, prefix = '/v1' }) => {
             ctx.body = {
               code: 0,
               message: 'success',
-              data: snakeJsonKeys(ret)
+              data: snakeJsonKeys(ret),
+              trace_id: ctx.state.requestId || ctx.get('X-Request-Id')
             }
           } else {
             ctx.body = {
               code: 404,
-              message: 'not fount api'
+              message: 'not fount api',
+              trace_id: ctx.state.requestId || ctx.get('X-Request-Id')
             }
           }
         }

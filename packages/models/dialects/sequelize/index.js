@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize')
+const { Sequelize } = require('@sequelize/core')
 const assert = require('assert')
 
 const createIndex = require('./lib/createIndex')

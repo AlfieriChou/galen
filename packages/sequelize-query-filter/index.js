@@ -68,7 +68,7 @@ const parseIncludes = (rets, models) => rets.map((data) => {
 module.exports = (query, models) => {
   const filter = {
     subQuery: false,
-    // distinct: true,
+    distinct: true,
     offset: 0,
     limit: 10
   }

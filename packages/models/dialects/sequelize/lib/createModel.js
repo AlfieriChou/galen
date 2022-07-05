@@ -1,3 +1,5 @@
+const { Model } = require('@sequelize/core')
+
 const { parseModelProperties } = require('./common')
 
 module.exports = async (dataSource, {
@@ -28,13 +30,12 @@ module.exports = async (dataSource, {
   if (indexes.length) {
     options.indexes = indexes
   }
-  return dataSource.define(
-    modelName,
-    parseModelProperties(properties),
-    {
-      ...options,
-      charset: 'utf8',
-      collate: 'utf8_unicode_ci'
-    }
-  )
+  const model = class extends Model {
+    // eslint-disable-next-line
+    static name = tableName
+  }
+  return model.init(parseModelProperties(properties), {
+    sequelize: dataSource,
+    ...options
+  })
 }

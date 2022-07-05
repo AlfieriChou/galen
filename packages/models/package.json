@@ -27,11 +27,11 @@
   "dependencies": {
     "@galenjs/factories": "^1.0.17",
     "@galenjs/sequelize-query-filter": "^1.0.0",
+    "@sequelize/core": "7.0.0-alpha.10",
     "js-yaml": "^4.1.0",
     "jsonschema": "^1.4.0",
     "lodash": "^4.17.21",
-    "read-dir-filenames": "^1.0.6",
-    "sequelize": "^6.6.5"
+    "read-dir-filenames": "^1.0.6"
   },
   "devDependencies": {
     "jest": "^27.0.6"

@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const Sequelize = require('sequelize')
+const { DataTypes } = require('@sequelize/core')
 
 const { parseModelProperties, sequelizeTypes } = require('./common')
 
@@ -33,7 +33,7 @@ module.exports = async (dataSource, {
         type: sequelizeTypes[value.type]
       }
       if (value.type === 'string' && value.length) {
-        columnInfo.type = Sequelize.STRING(value.length)
+        columnInfo.type = DataTypes.STRING(value.length)
       }
       if (value.default) {
         columnInfo.defaultValue = value.default

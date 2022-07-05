@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/framework",
-  "version": "1.0.17",
+  "version": "1.1.11-alpha.0",
   "description": "galenjs framework.",
   "keywords": [
     "framework"
@@ -29,7 +29,7 @@
   "dependencies": {
     "@galenjs/base": "^1.0.17",
     "@galenjs/class-loader": "^1.0.0",
-    "@galenjs/koa-router": "^1.0.17",
+    "@galenjs/koa-router": "^1.1.11-alpha.0",
     "koa": "^2.13.1",
     "koa-compose": "^4.1.0",
     "read-dir-filenames": "^1.0.6"

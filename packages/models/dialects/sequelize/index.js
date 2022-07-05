@@ -74,7 +74,7 @@ exports.createRelations = async (models, { modelName, relations }) => {
     if (value.primaryKey) {
       options.otherKey = value.primaryKey
     }
-    if (['belongsToMany', 'hasMany'].includes(value.type)) {
+    if (['belongsToMany'].includes(value.type)) {
       assert(value.through, 'through is required!')
       options.through = value.through
     }

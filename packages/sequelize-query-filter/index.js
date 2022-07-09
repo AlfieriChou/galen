@@ -1,5 +1,6 @@
 const _ = require('lodash')
 const Sequelize = require('sequelize')
+
 const { deepMapKeys } = require('./lib')
 
 const { Op } = Sequelize
@@ -40,7 +41,7 @@ const optAliases = {
   $col: Op.col
 }
 
-const parseIncludes = (rets, models) => rets.map((data) => {
+const parseIncludes = (rets, models) => rets.map(data => {
   const { where, include, model } = data
   if (!models[model]) {
     throw new Error(`Not found Model ${model}`)
@@ -56,12 +57,14 @@ const parseIncludes = (rets, models) => rets.map((data) => {
     return {
       ...data,
       model: models[model],
+      separate: true,
       include: parseIncludes(include, models)
     }
   }
   return {
     ...data,
-    model: models[model]
+    model: models[model],
+    separate: true
   }
 })
 

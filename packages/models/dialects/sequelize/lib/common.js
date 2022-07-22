@@ -29,9 +29,7 @@ const parseModelProperties = (properties, keyFn) => Object.entries(properties)
     }
     if (
       value.default
-      || value.default === false
-      || value.default === 0
-      || value.default === ''
+      || ['', 0, false].includes(value.default)
     ) {
       columnInfo.defaultValue = value.default
     }

@@ -35,7 +35,12 @@ module.exports = async (dataSource, {
       if (value.type === 'string' && value.length) {
         columnInfo.type = DataTypes.STRING(value.length)
       }
-      if (value.default) {
+      if (
+        value.default
+        || value.default === false
+        || value.default === 0
+        || value.default === ''
+      ) {
         columnInfo.defaultValue = value.default
       }
       if (value.description) {

@@ -10,7 +10,8 @@ module.exports = async (dataSource, {
   const options = {
     ...plugins,
     underscored: true,
-    tableName
+    tableName,
+    modelName
   }
   // indexes
   const indexes = Object.keys(properties).reduce((acc, key) => {
@@ -31,11 +32,11 @@ module.exports = async (dataSource, {
     options.indexes = indexes
   }
   const model = class extends Model {
-    // eslint-disable-next-line
-    static name = tableName
   }
-  return model.init(parseModelProperties(properties), {
+  const modelProperties = parseModelProperties(properties)
+  model.init(modelProperties, {
     sequelize: dataSource,
     ...options
   })
+  return model
 }

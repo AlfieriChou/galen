@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/sequelize-query-filter",
-  "version": "1.1.11-alpha.0",
+  "version": "1.2.0",
   "description": "Sequelize query filter.",
   "keywords": [
     "sequelize",
@@ -33,7 +33,7 @@
     "jest": "^26.6.3"
   },
   "dependencies": {
-    "lodash": "^4.17.20",
-    "sequelize": "^6.3.5"
+    "lodash": "^4.17.21",
+    "sequelize": "^6.21.2"
   }
 }

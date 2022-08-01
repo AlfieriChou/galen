@@ -25,6 +25,11 @@ module.exports = Model => {
       return data
     }
 
+    static async find (queryFilter, ctx) {
+      const filter = sequelizeQueryFilter(queryFilter, ctx.models)
+      return Model.findAll(filter)
+    }
+
     static async remoteFindPage (ctx) {
       const { request: { query } } = ctx
       const filter = sequelizeQueryFilter(query, ctx.models)

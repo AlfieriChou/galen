@@ -10,6 +10,7 @@ module.exports = async (dataSource, {
   const options = {
     ...plugins,
     underscored: true,
+    paranoid: true,
     tableName,
     modelName
   }

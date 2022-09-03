@@ -95,14 +95,22 @@ module.exports = ({
   })
   return {
     warn: (...args) => {
+      const errOptions = {}
       const err = args.find(arg => arg instanceof Error)
+      if (err) {
+        errOptions.stack = err.stack
+      }
       const messages = args.filter(arg => !(arg instanceof Error))
-      logger.log('warn', messages.join(' '), { stack: err.stack })
+      logger.log('warn', messages.join(' '), errOptions)
     },
     error: (...args) => {
+      const errOptions = {}
       const err = args.find(arg => arg instanceof Error)
+      if (err) {
+        errOptions.stack = err.stack
+      }
       const messages = args.filter(arg => !(arg instanceof Error))
-      logger.log('error', messages.join(' '), { stack: err.stack })
+      logger.log('error', messages.join(' '), errOptions)
     },
     info: (...args) => logger.info({
       level: 'info',

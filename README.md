@@ -28,7 +28,7 @@ galen是一个低代码平台，支持json、yaml文件生成sequelize模型、i
 - 定时任务-[schedule](https://github.com/AlfieriChou/galen/tree/master/packages/schedule)
 - 日志--[logger](https://github.com/AlfieriChou/galen/tree/master/packages/logger)
 
-#### v1
+#### v1 (停止维护)
 
 - 模型定义基础库-[base](https://github.com/AlfieriChou/galen/tree/master/packages/base)
 - sequelize模型-[sequelize-models](https://github.com/AlfieriChou/galen/tree/master/packages/sequelize-models)

@@ -8,10 +8,9 @@ const { parseModelProperties, sequelizeTypes } = require('./common')
 const getTableNames = async queryInterface => queryInterface.showAllTables()
 const getTableInfo = async (tableName, queryInterface) => queryInterface.describeTable(tableName)
 
-const checkTableProperties = async (queryInterface, {
-  tableName, properties
+const checkTableProperties = async ({
+  tableName, tableInfo, properties
 }) => {
-  const tableInfo = await getTableInfo(tableName, queryInterface)
   const fields = Object.keys(properties)
   fields.forEach(field => {
     assert(tableInfo[_.snakeCase(field)], `${tableName} ${field} column is not migrated`)
@@ -19,33 +18,33 @@ const checkTableProperties = async (queryInterface, {
 }
 
 const batchAddColumns = async (queryInterface, {
-  tableName, properties
+  tableName, tableInfo, properties
 }) => {
-  const tableInfo = await getTableInfo(tableName, queryInterface)
-  await Object.entries(properties).reduce(async (promise, [key, value]) => {
-    await promise
-    const column = tableInfo[_.snakeCase(key)]
-    if (!column) {
-      const columnInfo = {
-        ...value,
-        type: sequelizeTypes[value.type]
+  await Object.entries(properties)
+    .reduce(async (promise, [key, value]) => {
+      await promise
+      const column = tableInfo[_.snakeCase(key)]
+      if (!column) {
+        const columnInfo = {
+          ...value,
+          type: sequelizeTypes[value.type]
+        }
+        if (value.type === 'string' && value.length) {
+          columnInfo.type = DataTypes.STRING(value.length)
+        }
+        if (
+          value.default
+          || ['', 0, false].includes(value.default)
+        ) {
+          columnInfo.defaultValue = value.default
+        }
+        if (value.description) {
+          columnInfo.comment = value.description
+        }
+        await queryInterface.addColumn(tableName, _.snakeCase(key), columnInfo)
       }
-      if (value.type === 'string' && value.length) {
-        columnInfo.type = DataTypes.STRING(value.length)
-      }
-      if (
-        value.default
-        || ['', 0, false].includes(value.default)
-      ) {
-        columnInfo.defaultValue = value.default
-      }
-      if (value.description) {
-        columnInfo.comment = value.description
-      }
-      await queryInterface.addColumn(tableName, _.snakeCase(key), columnInfo)
-    }
-    // TODO modify field properties
-  }, Promise.resolve())
+      // TODO modify field properties
+    }, Promise.resolve())
 }
 
 module.exports = async (dataSource, {
@@ -54,13 +53,6 @@ module.exports = async (dataSource, {
 }) => {
   const queryInterface = dataSource.getQueryInterface()
   const allTableNames = await getTableNames(queryInterface)
-  if (stable) {
-    assert(allTableNames.includes(tableName), `${tableName} table is not created`)
-    await checkTableProperties(queryInterface, {
-      tableName, properties
-    })
-    return
-  }
   if (!allTableNames.includes(tableName)) {
     await queryInterface.createTable(
       tableName,
@@ -68,7 +60,14 @@ module.exports = async (dataSource, {
     )
     return
   }
+  const tableInfo = await getTableInfo(tableName, queryInterface)
+  if (stable) {
+    await checkTableProperties({
+      tableName, tableInfo, properties
+    })
+    return
+  }
   await batchAddColumns(queryInterface, {
-    tableName, properties
+    tableName, tableInfo, properties
   })
 }

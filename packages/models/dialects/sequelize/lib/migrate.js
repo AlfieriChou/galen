@@ -17,7 +17,7 @@ const checkTableProperties = async ({
   })
 }
 
-const batchAddColumns = async (queryInterface, {
+const checkTableIsAddColumn = async (queryInterface, {
   tableName, tableInfo, properties
 }) => {
   await Object.entries(properties)
@@ -67,7 +67,7 @@ module.exports = async (dataSource, {
     })
     return
   }
-  await batchAddColumns(queryInterface, {
+  await checkTableIsAddColumn(queryInterface, {
     tableName, tableInfo, properties
   })
 }

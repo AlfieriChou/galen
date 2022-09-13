@@ -52,9 +52,6 @@ exports.createModel = async (dataSource, { modelDef, jsonSchema }) => {
 }
 
 exports.migrate = async (dataSource, { modelDef, jsonSchema }) => {
-  if (modelDef.stable) {
-    return
-  }
   await migrateTable(dataSource, { modelDef, jsonSchema })
   await createIndex(dataSource, modelDef)
 }

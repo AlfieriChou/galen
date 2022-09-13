@@ -1,5 +1,6 @@
 const _ = require('lodash')
 const { DataTypes } = require('@sequelize/core')
+const assert = require('assert')
 
 const { parseModelProperties, sequelizeTypes } = require('./common')
 
@@ -7,25 +8,22 @@ const { parseModelProperties, sequelizeTypes } = require('./common')
 const getTableNames = async queryInterface => queryInterface.showAllTables()
 const getTableInfo = async (tableName, queryInterface) => queryInterface.describeTable(tableName)
 
-module.exports = async (dataSource, {
-  modelDef: { tableName },
-  jsonSchema: { properties }
-  // eslint-disable-next-line consistent-return
+const checkTableProperties = async (queryInterface, {
+  tableName, properties
 }) => {
-  const queryInterface = dataSource.getQueryInterface()
-  const allTableNames = await getTableNames(queryInterface)
-  if (!allTableNames.includes(tableName)) {
-    return queryInterface.createTable(
-      tableName,
-      parseModelProperties(properties, _.snakeCase)
-    )
-  }
-  // change table columns properties
   const tableInfo = await getTableInfo(tableName, queryInterface)
-  // eslint-disable-next-line consistent-return
+  const fields = Object.keys(properties)
+  fields.forEach(field => {
+    assert(tableInfo[_.snakeCase(field)], `${tableName} ${field} column is not migrated`)
+  })
+}
+
+const batchAddColumns = async (queryInterface, {
+  tableName, properties
+}) => {
+  const tableInfo = await getTableInfo(tableName, queryInterface)
   await Object.entries(properties).reduce(async (promise, [key, value]) => {
     await promise
-    // no column create column
     const column = tableInfo[_.snakeCase(key)]
     if (!column) {
       const columnInfo = {
@@ -44,8 +42,33 @@ module.exports = async (dataSource, {
       if (value.description) {
         columnInfo.comment = value.description
       }
-      return queryInterface.addColumn(tableName, _.snakeCase(key), columnInfo)
+      await queryInterface.addColumn(tableName, _.snakeCase(key), columnInfo)
     }
     // TODO modify field properties
   }, Promise.resolve())
+}
+
+module.exports = async (dataSource, {
+  modelDef: { tableName, stable },
+  jsonSchema: { properties }
+}) => {
+  const queryInterface = dataSource.getQueryInterface()
+  const allTableNames = await getTableNames(queryInterface)
+  if (stable) {
+    assert(allTableNames.includes(tableName), `${tableName} table is not ctrated`)
+    await checkTableProperties(queryInterface, {
+      tableName, properties
+    })
+    return
+  }
+  if (!allTableNames.includes(tableName)) {
+    await queryInterface.createTable(
+      tableName,
+      parseModelProperties(properties, _.snakeCase)
+    )
+    return
+  }
+  await batchAddColumns(queryInterface, {
+    tableName, properties
+  })
 }

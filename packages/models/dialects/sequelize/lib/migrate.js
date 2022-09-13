@@ -55,7 +55,7 @@ module.exports = async (dataSource, {
   const queryInterface = dataSource.getQueryInterface()
   const allTableNames = await getTableNames(queryInterface)
   if (stable) {
-    assert(allTableNames.includes(tableName), `${tableName} table is not ctrated`)
+    assert(allTableNames.includes(tableName), `${tableName} table is not created`)
     await checkTableProperties(queryInterface, {
       tableName, properties
     })

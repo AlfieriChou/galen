@@ -86,7 +86,7 @@ const createTransports = (logDir, transportConfig, als) => {
 }
 
 const stringifyMsgs = msgs => {
-  return msgs.map(msg => (typeof msg.message === 'object' ? JSON.stringify(msg) : msg))
+  return msgs.map(msg => (typeof msg === 'object' ? JSON.stringify(msg) : msg))
 }
 
 module.exports = ({

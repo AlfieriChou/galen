@@ -85,6 +85,10 @@ const createTransports = (logDir, transportConfig, als) => {
   })
 }
 
+const stringifyMsgs = msgs => {
+  return msgs.map(msg => (typeof msg.message === 'object' ? JSON.stringify(msg) : msg))
+}
+
 module.exports = ({
   logDir,
   ...loggerConfig
@@ -101,7 +105,7 @@ module.exports = ({
         errOptions.stack = err.stack
       }
       const messages = args.filter(arg => !(arg instanceof Error))
-      logger.log('warn', messages.join(' '), errOptions)
+      logger.log('warn', (stringifyMsgs(messages)).join(' '), errOptions)
     },
     error: (...args) => {
       const errOptions = {}
@@ -110,11 +114,11 @@ module.exports = ({
         errOptions.stack = err.stack
       }
       const messages = args.filter(arg => !(arg instanceof Error))
-      logger.log('error', messages.join(' '), errOptions)
+      logger.log('error', (stringifyMsgs(messages)).join(' '), errOptions)
     },
     info: (...args) => logger.info({
       level: 'info',
-      message: args.join(' ')
+      message: (stringifyMsgs(args)).join(' ')
     })
   }
 }

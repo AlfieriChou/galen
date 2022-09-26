@@ -1,6 +1,8 @@
+const logger = console
+
 module.exports = class Test {
   async onMsg (msg) {
-    console.log('[message]: ', msg)
-    console.log('----', msg.content.toString())
+    logger.info('[message]: ', msg)
+    logger.info('[message content]', msg.content.toString())
   }
 }

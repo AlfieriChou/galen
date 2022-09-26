@@ -28,5 +28,4 @@ setInterval(async () => {
 
 setTimeout(() => {
   amqp.softExit()
-  console.log('----', amqp.isSoftExit)
 }, 15000)

@@ -41,34 +41,51 @@ const optAliases = {
   $col: Op.col
 }
 
-const parseIncludes = (rets, models) => rets.map(data => {
-  const { where, include, model } = data
-  if (!models[model]) {
-    throw new Error(`Not found Model ${model}`)
-  }
-  if (where) {
-    // eslint-disable-next-line no-param-reassign
-    data.where = deepMapKeys(
-      _.isObject(where) ? where : JSON.parse(where),
-      key => optAliases[key] || key
-    )
-  }
-  if (include) {
-    return {
-      ...data,
-      model: models[model],
-      separate: true,
-      include: parseIncludes(include, models)
+const parseIncludes = (
+  { currentModelName, includeInsts },
+  models,
+  modelDefs
+) => {
+  return includeInsts.map(inst => {
+    const {
+      where, include, model, as
+    } = inst
+    if (!models[model]) {
+      throw new Error(`Not found Model ${model}`)
     }
-  }
-  return {
-    ...data,
-    model: models[model],
-    separate: true
-  }
-})
+    const modelDef = modelDefs[currentModelName]
+    if (where) {
+      // eslint-disable-next-line no-param-reassign
+      inst.where = deepMapKeys(
+        _.isObject(where) ? where : JSON.parse(where),
+        key => optAliases[key] || key
+      )
+    }
+    if (include) {
+      return {
+        ...inst,
+        model: models[model],
+        separate: !!modelDef.relations[as].type === 'hasMany',
+        include: parseIncludes(
+          { currentModelName: model, includeInsts: include },
+          models,
+          modelDefs
+        )
+      }
+    }
+    return {
+      ...inst,
+      model: models[model],
+      separate: !!modelDef.relations[as].type === 'hasMany'
+    }
+  })
+}
 
-module.exports = (query, models) => {
+module.exports = (
+  { modelName, query },
+  models,
+  modelDefs
+) => {
   const filter = {
     subQuery: false,
     distinct: true,
@@ -87,7 +104,14 @@ module.exports = (query, models) => {
   if (include) {
     const includes = Array.isArray(include)
       ? include.map(o => (_.isObject(o) ? o : JSON.parse(o))) : JSON.parse(include)
-    filter.include = parseIncludes(includes, models)
+    filter.include = parseIncludes(
+      {
+        currentModelName: modelName,
+        includeInsts: includes
+      },
+      models,
+      modelDefs
+    )
   }
   if (order) {
     filter.order = Array.isArray(order)

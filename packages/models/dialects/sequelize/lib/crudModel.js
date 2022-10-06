@@ -26,14 +26,22 @@ module.exports = Model => {
     }
 
     static async find (queryFilter, ctx) {
-      const filter = sequelizeQueryFilter(queryFilter, ctx.models)
+      const filter = sequelizeQueryFilter(
+        { query: queryFilter, modelName: Model.modelName },
+        ctx.models,
+        ctx.modelDefs
+      )
       const rows = await Model.findAll(filter)
       return rows.map(item => item.toJSON())
     }
 
     static async remoteFindPage (ctx) {
       const { request: { query } } = ctx
-      const filter = sequelizeQueryFilter(query, ctx.models)
+      const filter = sequelizeQueryFilter(
+        { query, modelName: Model.modelName },
+        ctx.models,
+        ctx.modelDefs
+      )
       const { count, rows } = await Model.findAndCountAll(filter)
       return {
         list: rows.map(item => item.toJSON()),

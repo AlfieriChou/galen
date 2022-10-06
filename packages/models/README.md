@@ -142,6 +142,15 @@ relations:
 
 - hasOne
 
+- hasMany
+
+```yaml
+relations:
+  roles:
+    type: 'hasMany'
+    model: 'Role'
+```
+
 - belongsToMany
 
 ```yaml

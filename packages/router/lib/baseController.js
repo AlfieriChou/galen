@@ -17,7 +17,7 @@ module.exports = class BaseController {
     }
     const filter = sequelizeQueryFilter({
       query, modelName
-    }, ctx.models, ctx.modelDefs)
+    }, ctx)
     return {
       total: await ctx.models[modelName].count(filter),
       list: await ctx.models[modelName].findAll(filter)

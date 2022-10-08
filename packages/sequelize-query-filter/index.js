@@ -43,8 +43,7 @@ const optAliases = {
 
 const parseIncludes = (
   { currentModelName, includeInsts },
-  models,
-  modelDefs
+  { models, modelDefs }
 ) => {
   return includeInsts.map(inst => {
     const {
@@ -68,8 +67,7 @@ const parseIncludes = (
         separate: !!modelDef.relations[as].type === 'hasMany',
         include: parseIncludes(
           { currentModelName: model, includeInsts: include },
-          models,
-          modelDefs
+          { models, modelDefs }
         )
       }
     }
@@ -83,8 +81,7 @@ const parseIncludes = (
 
 module.exports = (
   { modelName, query },
-  models,
-  modelDefs
+  { models, modelDefs }
 ) => {
   const filter = {
     subQuery: false,
@@ -109,8 +106,7 @@ module.exports = (
         currentModelName: modelName,
         includeInsts: includes
       },
-      models,
-      modelDefs
+      { models, modelDefs }
     )
   }
   if (order) {

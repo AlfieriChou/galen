@@ -28,8 +28,7 @@ module.exports = Model => {
     static async find (queryFilter, ctx) {
       const filter = sequelizeQueryFilter(
         { query: queryFilter, modelName: Model.modelName },
-        ctx.models,
-        ctx.modelDefs
+        ctx
       )
       const rows = await Model.findAll(filter)
       return rows.map(item => item.toJSON())
@@ -39,8 +38,7 @@ module.exports = Model => {
       const { request: { query } } = ctx
       const filter = sequelizeQueryFilter(
         { query, modelName: Model.modelName },
-        ctx.models,
-        ctx.modelDefs
+        ctx
       )
       const { count, rows } = await Model.findAndCountAll(filter)
       return {

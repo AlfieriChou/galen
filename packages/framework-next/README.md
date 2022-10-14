@@ -56,6 +56,15 @@
 }
 ```
 
+* pyroscope - pyroscope配置
+
+```javascript
+{
+  serverAddress: 'http://127.0.0.1:4040',
+  appName: 'app_name'
+}
+```
+
 * port - 端口配置
 
 ## Usage

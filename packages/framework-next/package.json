@@ -41,7 +41,7 @@
     "supertiming": "^2.0.1"
   },
   "peerDependencies": {
-    "@galenjs/factories": "^0.7.14",
+    "@galenjs/factories": "^1.4.0",
     "@pyroscope/nodejs": "^0.2.4"
   }
 }

@@ -1,7 +1,6 @@
 module.exports = {
   extends: [
-    'standard-airbnb-base',
-    'plugin:json/recommended'
+    'standard'
   ],
   rules: {
     semi: ['error', 'never'],

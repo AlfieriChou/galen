@@ -157,13 +157,15 @@ module.exports = async modelDirPath => {
     }
     const { modelName } = modelDef
     modelDefs[modelName] = {
-      properties: modelDef.dialect === 'sequelize' ? {
-        id: {
-          type: 'integer',
-          autoIncrement: true,
-          primaryKey: true
-        }
-      } : {},
+      properties: modelDef.dialect === 'sequelize'
+        ? {
+            id: {
+              type: 'integer',
+              autoIncrement: true,
+              primaryKey: true
+            }
+          }
+        : {},
       ...modelDef
     }
   }))

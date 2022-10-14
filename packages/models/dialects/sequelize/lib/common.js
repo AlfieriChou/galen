@@ -28,8 +28,8 @@ const parseModelProperties = (properties, keyFn) => Object.entries(properties)
       columnInfo.type = DataTypes.STRING(value.length)
     }
     if (
-      value.default
-      || ['', 0, false].includes(value.default)
+      value.default ||
+      ['', 0, false].includes(value.default)
     ) {
       columnInfo.defaultValue = value.default
     }
@@ -47,9 +47,11 @@ const parseModelProperties = (properties, keyFn) => Object.entries(properties)
     }
     if (['json', 'object', 'array'].includes(value.type)) {
       columnInfo.get = function () {
-        return this.getDataValue(field) ? JSON.parse(
-          this.getDataValue(field)
-        ) : this.getDataValue(field)
+        return this.getDataValue(field)
+          ? JSON.parse(
+            this.getDataValue(field)
+          )
+          : this.getDataValue(field)
       }
       columnInfo.set = function (data) {
         if (data) {

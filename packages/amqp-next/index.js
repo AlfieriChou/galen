@@ -38,8 +38,8 @@ module.exports = class Amqp {
     // eslint-disable-next-line no-underscore-dangle
       .filter(([, interval]) => !interval._destroyed)
     if (
-      !notDestroyedIntervals.length
-      || closedCheckCount > (this.config.closedCheckCount || 5)
+      !notDestroyedIntervals.length ||
+      closedCheckCount > (this.config.closedCheckCount || 5)
     ) {
       await this.client.close()
       return

@@ -141,13 +141,15 @@ const buildModels = async (modelDirPath) => {
     }
     const { modelName } = schema
     modelSchemas[modelName] = {
-      properties: schema.dialect === 'mysql' ? {
-        id: {
-          type: 'integer',
-          autoIncrement: true,
-          primaryKey: true
-        }
-      } : {},
+      properties: schema.dialect === 'mysql'
+        ? {
+            id: {
+              type: 'integer',
+              autoIncrement: true,
+              primaryKey: true
+            }
+          }
+        : {},
       ...schema
     }
   }))

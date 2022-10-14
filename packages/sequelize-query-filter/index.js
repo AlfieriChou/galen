@@ -100,7 +100,8 @@ module.exports = (
   }
   if (include) {
     const includes = Array.isArray(include)
-      ? include.map(o => (_.isObject(o) ? o : JSON.parse(o))) : JSON.parse(include)
+      ? include.map(o => (_.isObject(o) ? o : JSON.parse(o)))
+      : JSON.parse(include)
     filter.include = parseIncludes(
       {
         currentModelName: modelName,
@@ -111,7 +112,8 @@ module.exports = (
   }
   if (order) {
     filter.order = Array.isArray(order)
-      ? order.map(o => (_.isObject(o) ? o : JSON.parse(o))) : JSON.parse(order)
+      ? order.map(o => (_.isObject(o) ? o : JSON.parse(o)))
+      : JSON.parse(order)
   }
   if (attributes) {
     filter.attributes = Array.isArray(attributes) ? attributes : JSON.parse(attributes)

@@ -33,8 +33,8 @@ const checkTableIsAddColumn = async (queryInterface, {
           columnInfo.type = DataTypes.STRING(value.length)
         }
         if (
-          value.default
-          || ['', 0, false].includes(value.default)
+          value.default ||
+          ['', 0, false].includes(value.default)
         ) {
           columnInfo.defaultValue = value.default
         }

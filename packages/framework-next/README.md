@@ -38,6 +38,14 @@
 }
 ```
 
+* logger-日志配置信息
+
+```javascript
+{
+  logDir: `${process.cwd()}/logs`
+}
+```
+
 * redis - redis配置
 
 ```javascript

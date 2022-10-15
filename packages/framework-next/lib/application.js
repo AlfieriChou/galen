@@ -11,7 +11,7 @@ module.exports = class KoaApplication extends Application {
     this.plugins = config.plugins || []
     this.als = als
     this.context.als = als
-    this.coreLogger = config.loggerOptions ? createLogger(config.logger, als) : console
+    this.coreLogger = config.logger ? createLogger(config.logger, als) : console
     this.logger = this.coreLogger
     this.context.logger = this.coreLogger
   }

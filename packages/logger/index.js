@@ -1,7 +1,7 @@
 const winston = require('winston')
 require('winston-daily-rotate-file')
 
-const createTransports = (logDir, transportConfig, als) => {
+const createTransports = (config, als) => {
   const printfFormatter = winston.format.combine(
     winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss,SSS' }),
     winston.format(info => {
@@ -78,8 +78,8 @@ const createTransports = (logDir, transportConfig, als) => {
   ].map(level => {
     return new winston.transports.DailyRotateFile({
       level,
-      ...transportConfig,
-      filename: `${logDir}/logs/${level === 'info' ? 'application' : level}-%DATE%.log`,
+      ...config,
+      filename: `${level === 'info' ? 'application' : level}-%DATE%.log`,
       format: printfFormatter
     })
   })
@@ -89,11 +89,8 @@ const stringifyMsgs = msgs => {
   return msgs.map(msg => (typeof msg === 'object' ? JSON.stringify(msg) : msg))
 }
 
-module.exports = ({
-  logDir,
-  ...loggerConfig
-}, als) => {
-  const transports = createTransports(logDir, loggerConfig, als)
+module.exports = (config, als) => {
+  const transports = createTransports(config, als)
   const logger = winston.createLogger({
     transports
   })

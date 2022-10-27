@@ -97,6 +97,10 @@ module.exports = class Schedule {
       }, Promise.resolve())
   }
 
+  async runScheduleByName (name, ctx) {
+    await this.runSchedule({ name }, ctx)
+  }
+
   async runSchedule ({
     name, args = []
   }, ctx) {
@@ -113,10 +117,6 @@ module.exports = class Schedule {
     } catch (err) {
       this.logger.info(`[@galenjs/schedule]: ${name} run schedule error: `, err)
     }
-  }
-
-  async runScheduleByName (name, ctx) {
-    await this.runSchedule({ name }, ctx)
   }
 
   async softExit () {

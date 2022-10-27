@@ -143,6 +143,10 @@ module.exports = class Application {
     await this.afterClose()
   }
 
+  createContext () {
+    return this.app.context
+  }
+
   async start () {
     const server = await this.listen(this.config.port)
     await gracefulExit(server, async () => {

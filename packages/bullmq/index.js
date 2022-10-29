@@ -86,7 +86,8 @@ module.exports = class BullMq {
           },
           {
             autorun: false,
-            connection: this.config.connection
+            connection: this.config.connection,
+            ...options
           }
         )
         this.workers[key].run()

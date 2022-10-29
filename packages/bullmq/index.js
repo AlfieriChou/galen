@@ -49,12 +49,15 @@ module.exports = class BullMq {
         this.logger.info('[@galenjs/bullmq] key options: ', key, options)
         const { queueName } = options
         assert(queueName, 'queueName is required')
-        this.queues[queueName] = new Queue(
-          queueName,
-          {
-            connection: this.config.connection
-          }
-        )
+        if (!this.queues[queueName]) {
+          this.queues[queueName] = new Queue(
+            queueName,
+            {
+              connection: this.config.connection
+            }
+          )
+          await this.queues[queueName].waitUntilReady()
+        }
         this.workers[key] = new Worker(
           queueName,
           async job => {
@@ -80,9 +83,16 @@ module.exports = class BullMq {
                 await consumeMsg()
               }
             }
+          },
+          {
+            autorun: false,
+            connection: this.config.connection
           }
         )
-        const queueEvents = new QueueEvents(queueName)
+        this.workers[key].run()
+        const queueEvents = new QueueEvents(queueName, {
+          connection: this.config.connection
+        })
         queueEvents.on('completed', ({ jobId }) => {
           this.logger.info('[@galenjs/bullmq] done painting', jobId)
         })
@@ -94,13 +104,14 @@ module.exports = class BullMq {
       }, Promise.resolve())
   }
 
-  async send (jobName, queueName, data, options = {}) {
-    const queue = this.queueName[queueName]
+  async send (jobName, queueName, body, options = {}) {
+    const queue = this.queues[queueName]
     assert(queue, `not found queue: ${queueName}`)
-    return this.queue.add(jobName, {
+    const ret = await queue.add(jobName, {
       id: shortId.generate(),
-      data
+      body
     }, options)
+    return ret
   }
 
   async closed () {

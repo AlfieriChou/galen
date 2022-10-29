@@ -46,16 +46,17 @@ module.exports = class BullMq {
     await Object.entries(this.config.sub)
       .reduce(async (promise, [key, options]) => {
         await promise
-        assert(options.queueName, 'queueName is required')
         this.logger.info('[@galenjs/bullmq] key options: ', key, options)
-        this.queues[options.queueName] = new Queue(
-          options.queueName,
+        const { queueName } = options
+        assert(queueName, 'queueName is required')
+        this.queues[queueName] = new Queue(
+          queueName,
           {
             connection: this.config.connection
           }
         )
         this.workers[key] = new Worker(
-          options.queueName,
+          queueName,
           async job => {
             if (job.name === key) {
               const { id } = job.data
@@ -81,7 +82,7 @@ module.exports = class BullMq {
             }
           }
         )
-        const queueEvents = new QueueEvents(options.queueName)
+        const queueEvents = new QueueEvents(queueName)
         queueEvents.on('completed', ({ jobId }) => {
           this.logger.info('[@galenjs/bullmq] done painting', jobId)
         })

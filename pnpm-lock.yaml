@@ -81,11 +81,13 @@ importers:
       '@galenjs/class-loader': workspace:^1.4.0
       '@galenjs/factories': workspace:^1.4.0
       bullmq: ^3.0.0
+      jsonschema: ^1.4.0
       shortid: ^2.2.16
     dependencies:
       '@galenjs/class-loader': link:../class-loader
       '@galenjs/factories': link:../factories
       bullmq: 3.0.0
+      jsonschema: 1.4.1
       shortid: 2.2.16
 
   packages/class-loader:

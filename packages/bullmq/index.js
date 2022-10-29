@@ -94,12 +94,12 @@ module.exports = class BullMq {
       }, Promise.resolve())
   }
 
-  async send (jobName, queueName, body, options = {}) {
+  async send (jobName, queueName, data, options = {}) {
     const queue = this.queueName[queueName]
     assert(queue, `not found queue: ${queueName}`)
     return this.queue.add(jobName, {
       id: shortId.generate(),
-      body
+      data
     }, options)
   }
 

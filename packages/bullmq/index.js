@@ -68,31 +68,31 @@ module.exports = class BullMq {
     const ctx = this.app.context
     do {
       const job = await this.workers[key].getNextJob(key)
-      const consumeMsg = async () => {
-        await this.amqpService[key].onMsg(job.data, ctx)
-      }
       if (job) {
-        const startedAt = Date.now()
         const { id } = job.data
-        try {
-          this.logger.info(`[@galenjs/bullmq] ${key} consumer start: `, id)
-          if (this.app?.als) {
-            await this.app.als.run({
-              msgId: id,
-              jobName: key
-            }, consumeMsg)
-          } else {
-            await consumeMsg()
+        const consumeMsg = async () => {
+          const startedAt = Date.now()
+          try {
+            this.logger.info(`[@galenjs/bullmq] ${key} consumer start: `, id)
+            await this.amqpService[key].onMsg(job.data, ctx)
+            const [jobData, jobId] = await job.moveToCompleted('success', key)
+            if (jobData) {
+              Job.fromJSON(this.workers[key], jobData, jobId)
+            }
+            this.logger.info(`[@galenjs/bullmq] ${key} consumer done: `, id, Date.now() - startedAt)
+          } catch (err) {
+            this.logger.info(`[@galenjs/bullmq] ${key} consumer error: `, id, err)
+            await job.moveToFailed(new Error('failed'), key)
           }
-          const [jobData, jobId] = await job.moveToCompleted('success', key)
-          if (jobData) {
-            Job.fromJSON(this.workers[key], jobData, jobId)
-          }
-          this.logger.info(`[@galenjs/bullmq] ${key} consumer done: `, id, Date.now() - startedAt)
-        } catch (err) {
-          this.logger.info(`[@galenjs/bullmq] ${key} consumer error: `, id, err)
-          await job.moveToFailed(new Error('failed'), key)
         }
+        if (this.app?.als) {
+          await this.app.als.run({
+            msgId: id,
+            jobName: key
+          }, consumeMsg)
+          return
+        }
+        await consumeMsg()
       }
     } while (!this.isSoftExit)
   }

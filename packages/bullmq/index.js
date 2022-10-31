@@ -1,4 +1,4 @@
-const { Worker, Queue, QueueEvents } = require('bullmq')
+const { Worker, Queue, Job } = require('bullmq')
 const classLoader = require('@galenjs/class-loader')
 const assert = require('assert')
 const shortId = require('shortid')
@@ -42,7 +42,6 @@ module.exports = class BullMq {
 
   async setup () {
     this.amqpService = classLoader(this.config.consumerPath)
-    const ctx = this.app.context
     await Object.entries(this.config.sub)
       .reduce(async (promise, [key, options]) => {
         await promise
@@ -57,52 +56,45 @@ module.exports = class BullMq {
             }
           )
           await this.queues[queueName].waitUntilReady()
+          // TODO: support options connection
+          this.workers[key] = new Worker(queueName)
         }
-        this.workers[key] = new Worker(
-          queueName,
-          async job => {
-            if (job.name === key) {
-              const { id } = job.data
-              const consumeMsg = async () => {
-                const startedAt = Date.now()
-                this.logger.info(`[@galenjs/bullmq] ${key} consumer start: `, id)
-                try {
-                  await this.amqpService[key].onMsg(job.data, ctx)
-                } catch (err) {
-                  this.logger.info(`[@galenjs/bullmq] ${key} consumer error: `, id, err)
-                } finally {
-                  this.logger.info(`[@galenjs/bullmq] ${key} consumer done: `, id, Date.now() - startedAt)
-                }
-              }
-              if (this.app?.als) {
-                await this.app.als.run({
-                  msgId: id,
-                  jobName: key
-                }, consumeMsg)
-              } else {
-                await consumeMsg()
-              }
-            }
-          },
-          {
-            autorun: false,
-            connection: this.config.connection,
-            ...options
-          }
-        )
-        this.workers[key].run()
-        const queueEvents = new QueueEvents(queueName, {
-          connection: this.config.connection
-        })
-        queueEvents.on('completed', ({ jobId }) => {
-          this.logger.info('[@galenjs/bullmq] done painting', jobId)
-        })
-        queueEvents.on('failed', ({
-          jobId, failedReason
-        }) => {
-          this.logger.warn('[@galenjs/bullmq] error painting', jobId, failedReason)
-        })
+        this.consumer(key)
       }, Promise.resolve())
+  }
+
+  // TODO: support options
+  async consumer (key) {
+    const ctx = this.app.context
+    do {
+      const job = await this.workers[key].getNextJob(key)
+      const consumeMsg = async () => {
+        await this.amqpService[key].onMsg(job.data, ctx)
+      }
+      if (job) {
+        const startedAt = Date.now()
+        const { id } = job.data
+        try {
+          this.logger.info(`[@galenjs/bullmq] ${key} consumer start: `, id)
+          if (this.app?.als) {
+            await this.app.als.run({
+              msgId: id,
+              jobName: key
+            }, consumeMsg)
+          } else {
+            await consumeMsg()
+          }
+          const [jobData, jobId] = await job.moveToCompleted('success', key)
+          if (jobData) {
+            Job.fromJSON(this.workers[key], jobData, jobId)
+          }
+          this.logger.info(`[@galenjs/bullmq] ${key} consumer done: `, id, Date.now() - startedAt)
+        } catch (err) {
+          this.logger.info(`[@galenjs/bullmq] ${key} consumer error: `, id, err)
+          await job.moveToFailed(new Error('failed'), key)
+        }
+      }
+    } while (!this.isSoftExit)
   }
 
   async send (jobName, queueName, body, options = {}) {

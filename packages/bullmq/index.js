@@ -118,12 +118,11 @@ module.exports = class BullMq {
 
   async softExit () {
     this.isSoftExit = true
-    if (this.app?.on) {
-      this.app.on('pendingCount0', async () => {
-        await this.closed()
-      })
-    } else {
-      await this.closed()
-    }
+    await Object.entries(this.workers)
+      .reduce(async (promise, [name, worker]) => {
+        await promise
+        await worker.close()
+        this.logger.info(`[@galenjs/bullmq] ${name} worker closed!`)
+      }, Promise.resolve())
   }
 }

@@ -107,15 +107,6 @@ module.exports = class BullMq {
     return ret
   }
 
-  async closed () {
-    await Object.entries(this.workers)
-      .reduce(async (promise, [name, worker]) => {
-        await promise
-        await worker.close()
-        this.logger.info(`[@galenjs/bullmq] ${name} worker closed!`)
-      }, Promise.resolve())
-  }
-
   async softExit () {
     this.isSoftExit = true
     await Object.entries(this.workers)

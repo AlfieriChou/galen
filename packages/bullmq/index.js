@@ -56,8 +56,9 @@ module.exports = class BullMq {
             }
           )
           await this.queues[queueName].waitUntilReady()
-          // TODO: support options connection
-          this.workers[key] = new Worker(queueName)
+          this.workers[key] = new Worker(queueName, null, {
+            connection: this.config.connection
+          })
         }
         this.consumer(key)
       }, Promise.resolve())
@@ -66,33 +67,33 @@ module.exports = class BullMq {
   // TODO: support options
   async consumer (key) {
     const ctx = this.app.context
+    let job = null
     do {
-      const job = await this.workers[key].getNextJob(key)
       if (job) {
         const { id } = job.data
-        const consumeMsg = async () => {
+        await this.app.als.run({
+          jobId: id,
+          jobName: key
+        }, async () => {
+          this.logger.info(`[@galenjs/bullmq] ${key} consumer start: `, id)
           const startedAt = Date.now()
           try {
-            this.logger.info(`[@galenjs/bullmq] ${key} consumer start: `, id)
             await this.amqpService[key].onMsg(job.data, ctx)
             const [jobData, jobId] = await job.moveToCompleted('success', key)
             if (jobData) {
-              Job.fromJSON(this.workers[key], jobData, jobId)
+              job = Job.fromJSON(this.workers[key], jobData, jobId)
+            } else {
+              job = null
             }
             this.logger.info(`[@galenjs/bullmq] ${key} consumer done: `, id, Date.now() - startedAt)
           } catch (err) {
             this.logger.info(`[@galenjs/bullmq] ${key} consumer error: `, id, err)
             await job.moveToFailed(new Error('failed'), key)
+            job = null
           }
-        }
-        if (this.app?.als) {
-          await this.app.als.run({
-            msgId: id,
-            jobName: key
-          }, consumeMsg)
-          return
-        }
-        await consumeMsg()
+        })
+      } else {
+        job = await this.workers[key].getNextJob(key)
       }
     } while (!this.isSoftExit)
   }

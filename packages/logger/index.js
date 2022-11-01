@@ -9,7 +9,8 @@ const createTransports = (logDir, transportConfig, als) => {
         const {
           requestId, method, originalUrl,
           taskId, taskName,
-          msgId, tag, topic
+          msgId, tag, topic, jobId,
+          jobName
         } = als.get()
         return {
           ...info,
@@ -20,7 +21,9 @@ const createTransports = (logDir, transportConfig, als) => {
           taskName,
           msgId,
           tag,
-          topic
+          topic,
+          jobId,
+          jobName
         }
       }
       return info
@@ -36,6 +39,8 @@ const createTransports = (logDir, transportConfig, als) => {
         logStr += `schedule/${info.taskId}/`
       } else if (info.msgId) {
         logStr += `amqp/${info.msgId}/`
+      } else if (info.jobId) {
+        logStr += `bullMq/${info.jobId}/`
       } else {
         logStr += 'system/'
       }
@@ -57,6 +62,9 @@ const createTransports = (logDir, transportConfig, als) => {
       }
       if (info.topic) {
         logStr += ` ${info.topic}`
+      }
+      if (info.jobName) {
+        logStr += ` ${info.jobName}`
       }
 
       if (info.message) {

@@ -56,10 +56,10 @@ module.exports = class BullMq {
             }
           )
           await this.queues[queueName].waitUntilReady()
-          this.workers[key] = new Worker(queueName, null, {
-            connection: this.config.connection
-          })
         }
+        this.workers[key] = new Worker(queueName, null, {
+          connection: this.config.connection
+        })
         this.consumer(key)
       }, Promise.resolve())
   }

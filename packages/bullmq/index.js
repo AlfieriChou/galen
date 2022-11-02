@@ -56,16 +56,17 @@ module.exports = class BullMq {
             }
           )
           await this.queues[queueName].waitUntilReady()
+          this.workers[queueName] = new Worker(queueName, null, {
+            connection: this.config.connection
+          })
         }
-        this.workers[key] = new Worker(queueName, null, {
-          connection: this.config.connection
-        })
-        this.consumer(key)
+        this.consumer(key, options)
       }, Promise.resolve())
   }
 
-  // TODO: support options
-  async consumer (key) {
+  async consumer (key, options) {
+    const { queueName } = options
+    const worker = this.workers[queueName]
     const ctx = this.app.context
     let job = null
     do {
@@ -81,7 +82,7 @@ module.exports = class BullMq {
             await this.amqpService[key].onMsg(job.data, ctx)
             const [jobData, jobId] = await job.moveToCompleted('success', key)
             if (jobData) {
-              job = Job.fromJSON(this.workers[key], jobData, jobId)
+              job = Job.fromJSON(worker, jobData, jobId)
             } else {
               job = null
             }
@@ -93,7 +94,7 @@ module.exports = class BullMq {
           }
         })
       } else {
-        job = await this.workers[key].getNextJob(key)
+        job = await worker.getNextJob(key)
       }
     } while (!this.isSoftExit)
   }

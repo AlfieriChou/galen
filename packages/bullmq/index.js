@@ -3,6 +3,7 @@ const classLoader = require('@galenjs/class-loader')
 const assert = require('assert')
 const shortId = require('shortid')
 const validateSchema = require('@galenjs/factories/validateJsonSchema')
+const { sleep } = require('@galenjs/factories/sleep')
 
 module.exports = class BullMq {
   constructor ({
@@ -46,18 +47,18 @@ module.exports = class BullMq {
       .reduce(async (promise, [key, options]) => {
         await promise
         this.logger.info('[@galenjs/bullmq] key options: ', key, options)
-        const { queueName } = options
-        assert(queueName, 'queueName is required')
-        const topic = `${queueName}_${key}`
-        if (!this.queues[topic]) {
-          this.queues[topic] = new Queue(
-            topic,
+        const { group, topic } = options
+        assert(topic, 'topic is required')
+        const groupName = group || `${topic}_${key}`
+        if (!this.queues[groupName]) {
+          this.queues[groupName] = new Queue(
+            groupName,
             {
               connection: this.config.connection
             }
           )
-          await this.queues[topic].waitUntilReady()
-          this.workers[topic] = new Worker(topic, null, {
+          await this.queues[groupName].waitUntilReady()
+          this.workers[groupName] = new Worker(groupName, null, {
             connection: this.config.connection
           })
         }
@@ -66,9 +67,9 @@ module.exports = class BullMq {
   }
 
   async consumer (key, options) {
-    const { queueName } = options
-    const topic = `${queueName}_${key}`
-    const worker = this.workers[topic]
+    const { topic, group, pullInterval } = options
+    const groupName = group || `${topic}_${key}`
+    const worker = this.workers[groupName]
     const ctx = this.app.context
     let job = null
     do {
@@ -102,13 +103,16 @@ module.exports = class BullMq {
       } else {
         job = await worker.getNextJob(key)
       }
+      if (pullInterval) {
+        await sleep(pullInterval)
+      }
     } while (!this.isSoftExit)
   }
 
-  async send (jobName, queueName, body, options = {}) {
-    const topic = `${queueName}_${jobName}`
-    const queue = this.queues[topic]
-    assert(queue, `not found queue: ${topic}`)
+  async send (jobName, topic, body, options = {}) {
+    const groupName = `${topic}_${jobName}`
+    const queue = this.queues[groupName]
+    assert(queue, `not found queue: ${groupName}`)
     const ret = await queue.add(jobName, {
       id: shortId.generate(),
       body

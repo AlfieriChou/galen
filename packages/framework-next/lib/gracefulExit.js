@@ -3,7 +3,7 @@ const exitTimeout = 60 * 1000
 
 module.exports = async (server, cleanUp, logger) => {
   const close = () => {
-    logger.info('on SIGTERM wait requests')
+    logger.info('on SIGINT/SIGTERM/SIGUSR2 graceful exit!')
     server.close(async () => {
       logger.info('wait cleanUp')
       await cleanUp()

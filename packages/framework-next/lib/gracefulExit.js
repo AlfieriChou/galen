@@ -17,4 +17,5 @@ module.exports = async (server, cleanUp, logger) => {
   }
   process.on('SIGINT', close)
   process.on('SIGTERM', close)
+  process.on('SIGUSR2', close)
 }

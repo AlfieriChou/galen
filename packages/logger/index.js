@@ -2,7 +2,7 @@ const winston = require('winston')
 require('winston-daily-rotate-file')
 
 const createTransports = (logDir, transportConfig, als) => {
-  const printfFormatter = winston.format.combine(
+  const printFormatter = winston.format.combine(
     winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss,SSS' }),
     winston.format(info => {
       if (als && als.get()) {
@@ -78,7 +78,7 @@ const createTransports = (logDir, transportConfig, als) => {
   )
   if (process.env.NODE_ENV !== 'production') {
     return [new winston.transports.Console({
-      format: printfFormatter
+      format: printFormatter
     })]
   }
   return [
@@ -88,7 +88,7 @@ const createTransports = (logDir, transportConfig, als) => {
       level,
       ...transportConfig,
       filename: `${logDir}/logs/${level === 'info' ? 'application' : level}-%DATE%.log`,
-      format: printfFormatter
+      format: printFormatter
     })
   })
 }

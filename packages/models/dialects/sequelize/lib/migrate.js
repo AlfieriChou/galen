@@ -1,8 +1,10 @@
 const _ = require('lodash')
-const { DataTypes } = require('@sequelize/core')
 const assert = require('assert')
 
-const { parseModelProperties, sequelizeTypes } = require('./common')
+const {
+  parseModelProperties,
+  getColumnInfo
+} = require('./common')
 
 // TODO add cache
 const getTableNames = async queryInterface => queryInterface.showAllTables()
@@ -20,31 +22,16 @@ const checkTableProperties = async ({
 const checkTableIsAddColumn = async (queryInterface, {
   tableName, tableInfo, properties
 }) => {
-  await Object.entries(properties)
-    .reduce(async (promise, [key, value]) => {
-      await promise
-      const column = tableInfo[_.snakeCase(key)]
-      if (!column) {
-        const columnInfo = {
-          ...value,
-          type: sequelizeTypes[value.type]
-        }
-        if (value.type === 'string' && value.length) {
-          columnInfo.type = DataTypes.STRING(value.length)
-        }
-        if (
-          value.default ||
-          ['', 0, false].includes(value.default)
-        ) {
-          columnInfo.defaultValue = value.default
-        }
-        if (value.description) {
-          columnInfo.comment = value.description
-        }
-        await queryInterface.addColumn(tableName, _.snakeCase(key), columnInfo)
-      }
-      // TODO modify field properties
-    }, Promise.resolve())
+  for (const key in properties) {
+    const column = tableInfo[_.snakeCase(key)]
+    if (!column) {
+      await queryInterface.addColumn(
+        tableName,
+        _.snakeCase(key),
+        getColumnInfo(key, properties[key])
+      )
+    }
+  }
 }
 
 module.exports = async (dataSource, {
@@ -56,7 +43,7 @@ module.exports = async (dataSource, {
   if (!allTableNames.includes(tableName)) {
     await queryInterface.createTable(
       tableName,
-      parseModelProperties(properties, _.snakeCase)
+      await parseModelProperties(properties, _.snakeCase)
     )
     return
   }

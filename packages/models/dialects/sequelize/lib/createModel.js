@@ -34,7 +34,7 @@ module.exports = async (dataSource, {
   }
   const model = class extends Model {
   }
-  const modelProperties = parseModelProperties(properties)
+  const modelProperties = await parseModelProperties(properties)
   model.init(modelProperties, {
     sequelize: dataSource,
     ...options

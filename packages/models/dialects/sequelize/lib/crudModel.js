@@ -3,7 +3,12 @@ const sequelizeQueryFilter = require('@galenjs/sequelize-query-filter')
 module.exports = Model => {
   return class extends Model {
     toJSON () {
-      const values = { ...Model.get({ plain: true }) }
+      const values = {
+        ...this.get({
+          raw: true,
+          nest: true
+        })
+      }
       if (typeof values === 'object') {
         if (Array.isArray(values)) {
           return values.map(value => this.$formatJson(value))
@@ -17,9 +22,13 @@ module.exports = Model => {
       const { modelDef: { properties = {} } } = Model
       Object.keys(data).forEach(key => {
         const property = properties[key]
-        if (property && property.hidden) {
+        if (property?.hidden) {
           // eslint-disable-next-line no-param-reassign
           delete data[key]
+        }
+        // TODO: 通过property的type判断，或者通过模型声明处理
+        if (data[key] instanceof Date) {
+          data[key] = data[key] ? data[key].getTime() : 0
         }
       })
       return data

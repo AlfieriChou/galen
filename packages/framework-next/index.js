@@ -1,7 +1,6 @@
 const compose = require('koa-compose')
 const createModelsRest = require('@galenjs/models-rest')
 const shortId = require('shortid')
-const assert = require('assert')
 
 const bindToContext = require('./lib/context')
 const gracefulExit = require('./lib/gracefulExit')
@@ -30,19 +29,7 @@ module.exports = class Application {
     })
   }
 
-  async afterInit () {
-    if (this.config.pyroscope) {
-      assert(this.config.pyroscope.serverAddress, 'pyroscope server address is required')
-      assert(this.config.pyroscope.serverAddress, 'pyroscope app name is required')
-      // eslint-disable-next-line global-require, import/no-unresolved
-      const Pyroscope = require('@pyroscope/nodejs')
-      Pyroscope.init({
-        serverAddress: this.config.pyroscope.serverAddress,
-        appName: this.config.pyroscope.appName
-      })
-      Pyroscope.start()
-    }
-  }
+  async afterInit () {}
 
   async init () {
     await this.beforeInit()

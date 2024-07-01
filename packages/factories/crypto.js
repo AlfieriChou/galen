@@ -41,12 +41,6 @@ const sortObject = o => {
   )
 }
 
-exports.sortObject = sortObject
-
-exports.base64 = (str, encoding = 'utf8') => {
-  return Buffer.from(str, encoding).toString('base64')
-}
-
 const updateData = (hash, data, encoding = 'utf8') => {
   const isBuffer = Buffer.isBuffer(data)
   let toUpdateData = data
@@ -54,6 +48,12 @@ const updateData = (hash, data, encoding = 'utf8') => {
     toUpdateData = JSON.stringify(sortObject(data))
   }
   return hash.update(toUpdateData, isBuffer ? 'binary' : encoding)
+}
+
+exports.sortObject = sortObject
+
+exports.base64 = (str, encoding = 'utf8') => {
+  return Buffer.from(str, encoding).toString('base64')
 }
 
 exports.hmac = (key, data, algorithm = 'sha256', format = 'hex') => {

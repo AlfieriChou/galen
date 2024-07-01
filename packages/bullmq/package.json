@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/bullmq",
-  "version": "1.4.16",
+  "version": "1.6.1",
   "description": "galenjs bullmq.",
   "keywords": [
     "bullmq",
@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@galenjs/class-loader": "^1.4.0",
-    "@galenjs/factories": "^1.4.0",
+    "@galenjs/factories": "^1.6.1",
     "bullmq": "^3.0.0",
     "jsonschema": "^1.4.0",
     "shortid": "^2.2.16"

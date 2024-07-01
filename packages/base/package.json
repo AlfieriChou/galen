@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/base",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "galenjs base.",
   "keywords": [
     "json",
@@ -31,7 +31,7 @@
     "url": "https://github.com/AlfieriChou/galen/issues"
   },
   "dependencies": {
-    "@galenjs/factories": "^1.6.1",
+    "@galenjs/factories": "^1.7.0",
     "js-yaml": "^3.14.0",
     "jsonschema": "^1.4.0",
     "lodash": "^4.17.20",

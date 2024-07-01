@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/models-rest",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "galenjs models rest",
   "keywords": [
     "rest"
@@ -24,7 +24,7 @@
     "url": "https://github.com/AlfieriChou/galen/issues"
   },
   "dependencies": {
-    "@galenjs/factories": "^1.6.1",
+    "@galenjs/factories": "^1.7.0",
     "date-fns": "^2.25.0",
     "jsonschema": "^1.4.0",
     "koa-router": "^10.0.0",

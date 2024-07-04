@@ -1,6 +1,6 @@
 {
   "name": "@galenjs/models",
-  "version": "1.7.0",
+  "version": "1.7.1-alpha.0",
   "description": "galenjs models",
   "keywords": [
     "models"

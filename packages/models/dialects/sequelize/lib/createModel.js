@@ -1,4 +1,4 @@
-const { Model } = require('@sequelize/core')
+const { Model } = require('sequelize')
 
 const { parseModelProperties } = require('./common')
 
